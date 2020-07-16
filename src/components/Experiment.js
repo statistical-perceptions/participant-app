@@ -1,51 +1,57 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
+
+import { getExpt } from "../actions/dataActions";
+
+
+
+import './Slider.css'
 
 class Experiment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ParticipantID: '',
-      JSONtoManifest: {}
+      valueNow: 0
     }
-    this.onChange = this.onChange.bind(this);
-    this.getData = this.getData.bind(this);
-    this.sendData = this.sendData.bind(this);
-    this.showState = this.showState.bind(this);
   }
 
   componentDidMount() {
     this.getData();
-  }
-
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value })
-  }
-
-  showState() {
-    console.log(this.state.JSONtoManifest);
-    console.log(this.state.ParticipantID);
+    this.displayExpt();
   }
 
   getData() {
     const username = this.props.match.params.username;
     const studyName = this.props.match.params.expt.split("-")[0];
     const exptName = this.props.match.params.expt.split("-")[1];
-    const API_URL = 'https://test-api-615.herokuapp.com/api/feedback/' +
-      username + '/info/' + 'studyName-' + studyName;
-    axios
-      .get(API_URL)
-      .then(res => {
-        const experiments = res.data.experiments;
-        var thisExpt = {};
-        experiments.forEach(element => {
-          if (element.exptName == exptName) {
-            thisExpt = element;
-          }
-        });
-        this.setState({ JSONtoManifest: thisExpt });
-        console.log("got data")
-      })
+    this.props.getExpt(username, studyName, exptName);
+  }
+
+  displayExpt() {
+    const expt = this.props.expt.exptToDisplay;
+    const allKeys = Object.keys(expt);
+    const questionKeys = allKeys.filter(k =>
+      k != "userID" && k != "exptName" && k != "count" && k != "type")
+    // if (expt["q0"]) {
+      
+    // }
+    return questionKeys.map(k => {
+      if (expt[k]) {
+        if (expt[k]["Type"] == "slider") {
+          const lowRange = expt[k]["lowRange"];
+          const highRange = expt[k]["highRange"];
+          return (
+            <div className="container">
+
+            </div>
+          )
+        }
+      }
+    })
   }
 
   sendData(finalData) {
@@ -63,20 +69,33 @@ class Experiment extends Component {
 
   render() {
     const exptName = this.props.match.params.expt;
+    const participant = this.props.expt.participantID;
     return (
       <div className="container">
-        Experiment name: <br/>
-        <b>{exptName}</b>
-        <br/>
-        <form onSubmit={this.showState}>
-          <input type="text" name="ParticipantID" 
-            value={this.state.ParticipantID} onChange={this.onChange}/>
-          <input type="submit" value="OK"/>
-        </form>
-        <input type="button" className="btn" value="Click me" onClick={this.showState}/>
-      </div>
+      Experiment name: <br/>
+      <b>{exptName}</b>
+      <br/>
+      Participant ID: <br/>
+      <b>{participant}</b>
+      <br/><br/>
+      {this.displayExpt()}
+    </div>
     )
   }
 }
 
-export default Experiment;
+Experiment.propTypes = {
+  getExpt: PropTypes.func.isRequired,
+  expt: PropTypes.object.isRequired,
+  participantID: PropTypes.string.isRequired
+};
+
+const mapStateToProps = state => ({
+  expt: state.expt,
+  participantID: state.participantID
+})
+
+export default connect(
+  mapStateToProps,
+  { getExpt }
+)(Experiment);
