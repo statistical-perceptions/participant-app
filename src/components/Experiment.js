@@ -3,9 +3,11 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
-import Slider from '@material-ui/core/Slider';
-import { getExpt } from "../actions/dataActions";
+
+import { 
+  getExpt,
+  sendExpt
+} from "../actions/dataActions";
 
 import './Slider.css'
 
@@ -17,12 +19,18 @@ class Experiment extends Component {
     }
 
     this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentDidMount() {
     this.getData();
-    this.displayExpt();
+
+    const username = this.props.match.params.username;
+    const expt = this.props.match.params.expt;
+    if (!this.props.expt.participantID) {
+      alert("Please enter your unique ID");
+      this.props.history.push("/" + username + "/" + expt);
+    }
   }
 
   onChange(e) {
@@ -30,7 +38,14 @@ class Experiment extends Component {
   }
 
   onSubmit() {
-
+    const finalObj = { 
+      "PartID": this.props.expt.participantID,
+      "sliderVal": this.state.value
+    };
+    const username = this.props.match.params.username;
+    const expt = this.props.match.params.expt;
+    this.props.sendExpt(username, expt, finalObj);
+    this.props.history.push("/");
   }
 
   getData() {
@@ -45,8 +60,30 @@ class Experiment extends Component {
     const allKeys = Object.keys(expt);
     const questionKeys = allKeys.filter(k =>
       k != "userID" && k != "exptName" && k != "count" && k != "type");
-    console.log(questionKeys);
-
+    const questionKey = questionKeys[0];
+    if (expt[questionKey]) {
+      if (expt[questionKey]["Type"] == "slider") {
+        const lowRange = expt[questionKey]["lowRange"];
+        const highRange = expt[questionKey]["highRange"];
+        const question = expt[questionKey]["Question"];
+        return (
+          <div className="container">
+            {question} <br/>
+            <input 
+              type="range" 
+              min={lowRange} 
+              max={highRange}
+              name="value"
+              value={this.state.value}
+              onChange={this.onChange}
+            />
+            {this.state.value}
+            <br/>
+            <input type="submit" className="btn" onClick={this.onSubmit}/>
+          </div>
+        )
+      }
+    }
     // return questionKeys.map(k => {
     //   if (expt[k]) {
     //     if (expt[k]["Type"] == "slider") {
@@ -109,7 +146,8 @@ class Experiment extends Component {
 Experiment.propTypes = {
   getExpt: PropTypes.func.isRequired,
   expt: PropTypes.object.isRequired,
-  participantID: PropTypes.string.isRequired
+  participantID: PropTypes.string.isRequired,
+  sendExpt: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -119,5 +157,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getExpt }
+  { getExpt, sendExpt }
 )(Experiment);

@@ -4,7 +4,7 @@ class HomePage extends Component {
   render() {
     return (
       <div className="container">
-        Hello, this is the homepage.
+        <h1>Thank you for your submission!</h1>
       </div>
     )
   }
