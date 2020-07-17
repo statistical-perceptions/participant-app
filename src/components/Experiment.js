@@ -4,10 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
-
+import Slider from '@material-ui/core/Slider';
 import { getExpt } from "../actions/dataActions";
-
-
 
 import './Slider.css'
 
@@ -15,13 +13,24 @@ class Experiment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      valueNow: 0
+      value: 0
     }
+
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onChange.bind(this);
   }
 
   componentDidMount() {
     this.getData();
     this.displayExpt();
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value })
+  }
+
+  onSubmit() {
+
   }
 
   getData() {
@@ -35,20 +44,32 @@ class Experiment extends Component {
     const expt = this.props.expt.exptToDisplay;
     const allKeys = Object.keys(expt);
     const questionKeys = allKeys.filter(k =>
-      k != "userID" && k != "exptName" && k != "count" && k != "type")
-    // if (expt["q0"]) {
-      
-    // }
+      k != "userID" && k != "exptName" && k != "count" && k != "type");
+
     return questionKeys.map(k => {
       if (expt[k]) {
         if (expt[k]["Type"] == "slider") {
           const lowRange = expt[k]["lowRange"];
           const highRange = expt[k]["highRange"];
+          const question = expt[k]["Question"];
           return (
             <div className="container">
-
+              <form onSubmit={this.onSubmit}>
+                {question} <br/><br/>
+                <input 
+                  type="range" 
+                  min={lowRange} 
+                  max={highRange}
+                  name="value"
+                  value={this.state.value}
+                  onChange={this.onChange}
+                />
+                {this.state.value}
+                <br/>
+                <input type="submit" className="btn"/>
+              </form>
             </div>
-          )
+          );
         }
       }
     })
