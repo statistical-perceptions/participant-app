@@ -8,6 +8,7 @@ import store from "./store";
 import EnterID from "./components/EnterID";
 import HomePage from "./components/HomePage";
 import Experiment from "./components/Experiment";
+import Success from "./components/Success";
 
 function App() {
   return (
@@ -15,8 +16,9 @@ function App() {
       <HashRouter basename="/participant-app/">
         <div className="App">
           < Route exact path="/" component={HomePage} />
+          < Route exact path="/:username/:expt/success" component={Success}/>
           < Route exact path="/:username/:expt" component={EnterID} />
-          < Route exact path="/:username/:expt/experiment" component={Experiment}/>
+          < Route exact path="/:username/:expt/:qKey" component={Experiment}/>
         </div>
       </HashRouter>
     </Provider>

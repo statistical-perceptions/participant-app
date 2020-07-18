@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 
 import { 
   getExpt,
-  sendExpt
+  sendExpt,
+  isFinalQ,
+  storeAnswer
 } from "../actions/dataActions";
 
 import './Slider.css'
@@ -20,6 +22,7 @@ class Experiment extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onFinalSubmit = this.onFinalSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -38,14 +41,31 @@ class Experiment extends Component {
   }
 
   onSubmit() {
-    const finalObj = { 
-      "PartID": this.props.expt.participantID,
-      "sliderVal": this.state.value
-    };
     const username = this.props.match.params.username;
     const expt = this.props.match.params.expt;
-    this.props.sendExpt(username, expt, finalObj);
-    this.props.history.push("/");
+    const currentQ = this.props.match.params.qKey.charAt(1);
+    const nextQ = Number(currentQ) + 1;
+    const lastQ = this.props.expt.questionKeys[this.props.expt.questionKeys.length - 1];
+    if (nextQ == Number(lastQ.charAt(1))) {
+      console.log("haha");
+      this.props.isFinalQ(true);
+    }
+    // put answer into store
+    const question = this.props.expt.exptToDisplay[this.props.match.params.qKey]["Question"];
+    this.props.storeAnswer(question, this.state.value);
+    this.props.history.push("/" + username + "/" + expt + 
+      "/q" + nextQ.toString());
+    const nextQMin = this.props.expt.exptToDisplay["q" + nextQ.toString()]["lowRange"];
+    this.setState({ value: nextQMin })
+  }
+
+  onFinalSubmit() {
+    const username = this.props.match.params.username;
+    const expt = this.props.match.params.expt;
+
+    const question = this.props.expt.exptToDisplay[this.props.match.params.qKey]["Question"];
+    this.props.storeAnswer(question, this.state.value);
+    this.props.history.push("/" + username + "/" + expt + "/success");
   }
 
   getData() {
@@ -57,15 +77,12 @@ class Experiment extends Component {
 
   displayExpt() {
     const expt = this.props.expt.exptToDisplay;
-    const allKeys = Object.keys(expt);
-    const questionKeys = allKeys.filter(k =>
-      k != "userID" && k != "exptName" && k != "count" && k != "type");
-    const questionKey = questionKeys[0];
-    if (expt[questionKey]) {
-      if (expt[questionKey]["Type"] == "slider") {
-        const lowRange = expt[questionKey]["lowRange"];
-        const highRange = expt[questionKey]["highRange"];
-        const question = expt[questionKey]["Question"];
+    const key = this.props.match.params.qKey;
+    if (expt[key]) {
+      if (expt[key]["Type"] == "slider") {
+        const lowRange = expt[key]["lowRange"];
+        const highRange = expt[key]["highRange"];
+        const question = expt[key]["Question"];
         return (
           <div className="container">
             {question} <br/>
@@ -79,38 +96,20 @@ class Experiment extends Component {
             />
             {this.state.value}
             <br/>
-            <input type="submit" className="btn" onClick={this.onSubmit}/>
+            {
+              !this.props.expt.isFinalQ ? 
+              <input type="submit" className="btn" value="Confirm and Next Question"
+                onClick={this.onSubmit}/> :
+              <div>
+                This is the final question. <p></p>
+              <input type="submit" className="btn" value="Submit"
+                onClick={this.onFinalSubmit}/>
+              </div>
+            }
           </div>
         )
       }
     }
-    // return questionKeys.map(k => {
-    //   if (expt[k]) {
-    //     if (expt[k]["Type"] == "slider") {
-    //       const lowRange = expt[k]["lowRange"];
-    //       const highRange = expt[k]["highRange"];
-    //       const question = expt[k]["Question"];
-    //       return (
-    //         <div className="container">
-    //           <form onSubmit={this.onSubmit}>
-    //             {question} <br/><br/>
-    //             <input 
-    //               type="range" 
-    //               min={lowRange} 
-    //               max={highRange}
-    //               name="value"
-    //               value={this.state.value}
-    //               onChange={this.onChange}
-    //             />
-    //             {this.state.value}
-    //             <br/>
-    //             <input type="submit" className="btn"/>
-    //           </form>
-    //         </div>
-    //       );
-    //     }
-    //   }
-    // })
   }
 
   sendData(finalData) {
@@ -147,7 +146,9 @@ Experiment.propTypes = {
   getExpt: PropTypes.func.isRequired,
   expt: PropTypes.object.isRequired,
   participantID: PropTypes.string.isRequired,
-  sendExpt: PropTypes.func.isRequired
+  sendExpt: PropTypes.func.isRequired,
+  isFinalQ: PropTypes.func.isRequired,
+  storeAnswer: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -157,5 +158,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getExpt, sendExpt }
+  { getExpt, sendExpt, isFinalQ, storeAnswer }
 )(Experiment);

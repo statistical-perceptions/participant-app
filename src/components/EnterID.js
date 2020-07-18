@@ -4,7 +4,12 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { storePartID } from "../actions/dataActions";
+import { 
+  storePartID, 
+  getExpt,
+  storeQKeys
+} 
+from "../actions/dataActions";
 
 class EnterID extends Component {
   constructor(props) {
@@ -18,6 +23,14 @@ class EnterID extends Component {
   }
 
   componentDidMount() {
+    this.getData();
+  }
+
+  getData() {
+    const username = this.props.match.params.username;
+    const studyName = this.props.match.params.expt.split("-")[0];
+    const exptName = this.props.match.params.expt.split("-")[1];
+    this.props.getExpt(username, studyName, exptName);
   }
 
   onChange(e) {
@@ -28,7 +41,16 @@ class EnterID extends Component {
     this.props.storePartID(this.state.ParticipantID);
     const username = this.props.match.params.username;
     const studyExpt = this.props.match.params.expt;
-    this.props.history.push("/" + username + "/" + studyExpt + "/experiment");
+    var questionKeys = [];
+    if (this.props.expt.exptToDisplay) {
+      const allKeys = Object.keys(this.props.expt.exptToDisplay);
+      // in the JSON file each question must have index q0, q1, q2, ... 
+      questionKeys = allKeys.filter(str => str.charAt(0) == "q");
+      this.props.storeQKeys(questionKeys);
+    }
+    console.log(questionKeys);
+    this.props.history.push("/" + username + "/" + studyExpt + 
+      "/" + questionKeys[0]);
   }
 
   render() {
@@ -44,16 +66,20 @@ class EnterID extends Component {
         <br/>
         <input type="button" className="btn" value="Start Experiment" 
           onClick={this.showExpt}/>
-        <br/>
+        <br/><br/>
+        Note: once you submit your answer for one question, you won't be
+        able to change it. 
       </div>
       )
   }
 }
 
 EnterID.propTypes = {
+  getExpt: PropTypes.func.isRequired,
   expt: PropTypes.object.isRequired,
   storePartID: PropTypes.func.isRequired,
-  participantID: PropTypes.string.isRequired
+  participantID: PropTypes.string.isRequired,
+  storeQKeys: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -63,5 +89,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { storePartID }
+  { storePartID, getExpt, storeQKeys }
 )(EnterID);
