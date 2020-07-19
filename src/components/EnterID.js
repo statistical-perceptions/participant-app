@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import { 
   storePartID, 
   getExpt,
-  storeQKeys
+  storeQKeys,
+  isFinalQ
 } 
 from "../actions/dataActions";
 
@@ -49,6 +50,9 @@ class EnterID extends Component {
       this.props.storeQKeys(questionKeys);
     }
     console.log(questionKeys);
+    if (questionKeys.length == 1) {
+      this.props.isFinalQ(true);
+    }
     this.props.history.push("/" + username + "/" + studyExpt + 
       "/" + questionKeys[0]);
   }
@@ -79,7 +83,8 @@ EnterID.propTypes = {
   expt: PropTypes.object.isRequired,
   storePartID: PropTypes.func.isRequired,
   participantID: PropTypes.string.isRequired,
-  storeQKeys: PropTypes.func.isRequired
+  storeQKeys: PropTypes.func.isRequired,
+  isFinalQ: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -89,5 +94,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { storePartID, getExpt, storeQKeys }
+  { storePartID, getExpt, storeQKeys, isFinalQ }
 )(EnterID);

@@ -47,7 +47,6 @@ class Experiment extends Component {
     const nextQ = Number(currentQ) + 1;
     const lastQ = this.props.expt.questionKeys[this.props.expt.questionKeys.length - 1];
     if (nextQ == Number(lastQ.charAt(1))) {
-      console.log("haha");
       this.props.isFinalQ(true);
     }
     // put answer into store
@@ -102,8 +101,8 @@ class Experiment extends Component {
                 onClick={this.onSubmit}/> :
               <div>
                 This is the final question. <p></p>
-              <input type="submit" className="btn" value="Submit"
-                onClick={this.onFinalSubmit}/>
+                <input type="submit" className="btn" value="Submit"
+                  onClick={this.onFinalSubmit}/>
               </div>
             }
           </div>
