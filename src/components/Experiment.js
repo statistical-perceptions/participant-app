@@ -11,7 +11,7 @@ import {
   storeAnswer
 } from "../actions/dataActions";
 
-import './Slider.css'
+import Slider from "../items/Slider"
 
 class Experiment extends Component {
   constructor(props) {
@@ -23,6 +23,7 @@ class Experiment extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onFinalSubmit = this.onFinalSubmit.bind(this);
+    this.whichSubmit = this.whichSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -43,17 +44,23 @@ class Experiment extends Component {
   onSubmit() {
     const username = this.props.match.params.username;
     const expt = this.props.match.params.expt;
+
+    // checking if the next question is the final question 
     const currentQ = this.props.match.params.qKey.charAt(1);
     const nextQ = Number(currentQ) + 1;
     const lastQ = this.props.expt.questionKeys[this.props.expt.questionKeys.length - 1];
     if (nextQ == Number(lastQ.charAt(1))) {
       this.props.isFinalQ(true);
     }
-    // put answer into store
+
+    // put answer into store. 
     const question = this.props.expt.exptToDisplay[this.props.match.params.qKey]["Question"];
     this.props.storeAnswer(question, this.state.value);
     this.props.history.push("/" + username + "/" + expt + 
       "/q" + nextQ.toString());
+
+    // storing the lowest range of the next question for UIUX purposes 
+    // not modular
     const nextQMin = this.props.expt.exptToDisplay["q" + nextQ.toString()]["lowRange"];
     this.setState({ value: nextQMin })
   }
@@ -67,8 +74,26 @@ class Experiment extends Component {
     this.props.history.push("/" + username + "/" + expt + "/success");
   }
 
+  whichSubmit() {
+    return (
+      <div>
+        {
+          !this.props.expt.isFinalQ ? 
+          <input type="submit" className="btn" value="Confirm and Next Question"
+            onClick={this.onSubmit}/> :
+          <div>
+            This is the final question. <p></p>
+            <input type="submit" className="btn" value="Submit"
+              onClick={this.onFinalSubmit}/>
+          </div>
+        }
+      </div>
+    )
+  }
+
   getData() {
     const username = this.props.match.params.username;
+    // there will be problems if user's study name / experiment name inclues "-"
     const studyName = this.props.match.params.expt.split("-")[0];
     const exptName = this.props.match.params.expt.split("-")[1];
     this.props.getExpt(username, studyName, exptName);
@@ -77,14 +102,19 @@ class Experiment extends Component {
   displayExpt() {
     const expt = this.props.expt.exptToDisplay;
     const key = this.props.match.params.qKey;
+    console.log(expt);
     if (expt[key]) {
+      // NEED TO make each if statement modular
+      // a map here on a list of documents of experiment types (each document
+      // contains experiment parameters) to match expt[key]["Type"] 
+      // with "slider"
       if (expt[key]["Type"] == "slider") {
         const lowRange = expt[key]["lowRange"];
         const highRange = expt[key]["highRange"];
         const question = expt[key]["Question"];
         return (
           <div className="container">
-            {question} <br/>
+            {/* {question} <br/>
             <input 
               type="range" 
               min={lowRange} 
@@ -93,21 +123,17 @@ class Experiment extends Component {
               value={this.state.value}
               onChange={this.onChange}
             />
-            {this.state.value}
+            {this.state.value} */}
+            <Slider 
+              question={question} lowRange={lowRange} 
+              highRange={highRange} />
             <br/>
-            {
-              !this.props.expt.isFinalQ ? 
-              <input type="submit" className="btn" value="Confirm and Next Question"
-                onClick={this.onSubmit}/> :
-              <div>
-                This is the final question. <p></p>
-                <input type="submit" className="btn" value="Submit"
-                  onClick={this.onFinalSubmit}/>
-              </div>
-            }
+            <this.whichSubmit />
           </div>
         )
       }
+      // add more if statements here for other experiments types
+      // follow the format of the slider if statement
     }
   }
 

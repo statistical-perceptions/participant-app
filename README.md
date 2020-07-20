@@ -1,3 +1,22 @@
+## Format for experiment config data
+```
+{
+  exptName: "",
+  q0: {
+        Type: "",
+        Question: "",
+        ...      
+      },
+  q1: {
+        Type: "",
+        Question: "",
+        ...      
+      },
+  ...
+}
+```
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
