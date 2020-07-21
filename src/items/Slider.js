@@ -14,22 +14,42 @@ import {
 class Slider extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      submitted: false,
-      question: this.props.question,
-      lowRange: this.props.lowRange,
-      highRange: this.props.highRange,
-      value: 0,
-    }
+    // this.state = {
+    //   submitted: false,
+    //   // question: this.props.question,
+    //   // lowRange: this.props.lowRange,
+    //   // highRange: this.props.highRange,
+    //   value: 0,
+    // }
+    this.state = this.initialState;
 
     this.onChange = this.onChange.bind(this);
     this.showSlider = this.showSlider.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.resetState = this.resetState.bind(this);
+  }
+
+  get initialState() {
+    return {
+      submitted: false,
+      value: 0
+    };
+  }
+
+  resetState() {
+    this.setState(this.initialState);
   }
 
   componentDidMount() {
+    const { childRef } = this.props;
+    childRef(this);
     this.getData();
   }
+
+  componentWillUnmount() {
+    const { childRef } = this.props;
+    childRef(undefined);
+   }
 
   getData() {
     const db = this.props.expt.dbInfo.db;
@@ -46,11 +66,11 @@ class Slider extends Component {
   showSlider() {
     return (
       <div className="container">
-        {this.state.question} <br/>
+        {this.props.question} <br/>
         <input 
           type="range"
-          min={this.state.lowRange}
-          max={this.state.highRange}
+          min={this.props.lowRange}
+          max={this.props.highRange}
           name="value"
           value={this.state.value}
           onChange={this.onChange}
@@ -67,10 +87,10 @@ class Slider extends Component {
 
   // part of template: 
   onSubmit() {
-    console.log(this.props);
-    const question = this.state.question;
+    const question = this.props.question;
+    // put answer in our redux store to be sent via API later
     this.props.storeAnswer(question, this.state.value);
-    this.state.submitted = true;
+    this.setState({ submitted: true });
   }
 
   render() {

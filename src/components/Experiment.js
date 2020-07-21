@@ -17,10 +17,8 @@ class Experiment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0
     }
 
-    this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onFinalSubmit = this.onFinalSubmit.bind(this);
     this.whichSubmit = this.whichSubmit.bind(this);
@@ -37,15 +35,15 @@ class Experiment extends Component {
     }
   }
 
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value })
-  }
-
   onSubmit() {
+    this.child.resetState();
+
     const username = this.props.match.params.username;
     const expt = this.props.match.params.expt;
 
     // checking if the next question is the final question 
+    // we have to regulate name of question (such as q0, q1, q2 ...)
+    // because we are not using mongoose schema
     const currentQ = this.props.match.params.qKey.charAt(1);
     const nextQ = Number(currentQ) + 1;
     const lastQ = this.props.expt.questionKeys[this.props.expt.questionKeys.length - 1];
@@ -53,23 +51,24 @@ class Experiment extends Component {
       this.props.isFinalQ(true);
     }
 
-    // put answer into store. 
-    const question = this.props.expt.exptToDisplay[this.props.match.params.qKey]["Question"];
-    this.props.storeAnswer(question, this.state.value);
+    // put answer into store. EDIT: no need for this anymore
+    // this funcationality is in individual components now  
+    // const question = this.props.expt.exptToDisplay[this.props.match.params.qKey]["Question"];
+    // this.props.storeAnswer(question, this.state.value);
     this.props.history.push("/" + username + "/" + expt + 
       "/q" + nextQ.toString());
 
     // storing the lowest range of the next question for UIUX purposes 
     // not modular
-    const nextQMin = this.props.expt.exptToDisplay["q" + nextQ.toString()]["lowRange"];
-    this.setState({ value: nextQMin })
+    // const nextQMin = this.props.expt.exptToDisplay["q" + nextQ.toString()]["lowRange"];
+    // this.setState({ value: nextQMin })
   }
 
   onFinalSubmit() {
     const username = this.props.match.params.username;
     const expt = this.props.match.params.expt;
 
-    const question = this.props.expt.exptToDisplay[this.props.match.params.qKey]["Question"];
+    // const question = this.props.expt.exptToDisplay[this.props.match.params.qKey]["Question"];
     // this.props.storeAnswer(question, this.state.value);
     this.props.history.push("/" + username + "/" + expt + "/success");
   }
@@ -79,7 +78,7 @@ class Experiment extends Component {
       <div>
         {
           !this.props.expt.isFinalQ ? 
-          <input type="submit" className="btn" value="Confirm and Next Question"
+          <input type="submit" className="btn" value="Next Question"
             onClick={this.onSubmit}/> :
           <div>
             This is the final question. <p></p>
@@ -113,9 +112,10 @@ class Experiment extends Component {
         const lowRange = expt[key]["lowRange"];
         const highRange = expt[key]["highRange"];
         const question = expt[key]["Question"];
+        // console.log(question);
         return (
           <div className="container">
-            <Slider 
+            <Slider childRef={ref => (this.child = ref)}
               question={question} lowRange={lowRange} 
               highRange={highRange} />
             <br/>
@@ -126,19 +126,6 @@ class Experiment extends Component {
       // add more if statements here for other experiments types
       // follow the format of the slider if statement
     }
-  }
-
-  sendData(finalData) {
-    const username = this.props.match.params.username;
-    const exptName = this.props.match.params.expt;
-    const API_URL = 'https://test-api-615.herokuapp.com/api/feedback/' +
-      username + '/' + exptName;
-    axios
-      .post(API_URL, finalData)
-      .then(res => {
-        console.log(res);
-        alert("You have successfully submitted your response.");
-      })
   }
 
   render() {
