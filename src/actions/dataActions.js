@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  DB_INFO,
   GET_EXPT,
   PART_ID,
   SEND_EXPT,
@@ -7,6 +8,16 @@ import {
   FINAL_Q,
   ANSWER
 } from "./types"
+
+export const storeDBInfo = (which_database, which_collection) => dispatch => {
+  dispatch({
+    type: DB_INFO,
+    payload: {
+      db: which_database,
+      col: which_collection
+    }
+  })
+}
 
 export const getExpt = (which_db, study_name, expt_name) => dispatch => {
   const API_URL = 'https://test-api-615.herokuapp.com/api/feedback/' +
@@ -42,7 +53,7 @@ export const sendExpt = (which_db, which_col, dataToPOST) => dispatch => {
   axios
     .post(API_URL, dataToPOST)
     .then(res => {
-      console.log(res);
+      // console.log(res);
     })
 }
 

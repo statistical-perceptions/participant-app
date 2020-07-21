@@ -1,4 +1,5 @@
 import {
+  DB_INFO,
   GET_EXPT,
   PART_ID,
   Q_KEYS,
@@ -9,6 +10,7 @@ import { act } from "react-dom/test-utils";
 import { bindActionCreators } from "redux";
 
 const initialState = {
+  dbInfo: {},
   exptToDisplay: {},
   participantID: '',
   questionKeys: [],
@@ -18,6 +20,11 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case DB_INFO:
+      return {
+        ...state,
+        dbInfo: action.payload
+      };
     case GET_EXPT:
       return {
         ...state,

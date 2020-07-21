@@ -70,7 +70,7 @@ class Experiment extends Component {
     const expt = this.props.match.params.expt;
 
     const question = this.props.expt.exptToDisplay[this.props.match.params.qKey]["Question"];
-    this.props.storeAnswer(question, this.state.value);
+    // this.props.storeAnswer(question, this.state.value);
     this.props.history.push("/" + username + "/" + expt + "/success");
   }
 
@@ -92,6 +92,7 @@ class Experiment extends Component {
   }
 
   getData() {
+    // console.log(this.props);
     const username = this.props.match.params.username;
     // there will be problems if user's study name / experiment name inclues "-"
     const studyName = this.props.match.params.expt.split("-")[0];
@@ -102,7 +103,7 @@ class Experiment extends Component {
   displayExpt() {
     const expt = this.props.expt.exptToDisplay;
     const key = this.props.match.params.qKey;
-    console.log(expt);
+    // console.log(expt);
     if (expt[key]) {
       // NEED TO make each if statement modular
       // a map here on a list of documents of experiment types (each document
@@ -114,16 +115,6 @@ class Experiment extends Component {
         const question = expt[key]["Question"];
         return (
           <div className="container">
-            {/* {question} <br/>
-            <input 
-              type="range" 
-              min={lowRange} 
-              max={highRange}
-              name="value"
-              value={this.state.value}
-              onChange={this.onChange}
-            />
-            {this.state.value} */}
             <Slider 
               question={question} lowRange={lowRange} 
               highRange={highRange} />

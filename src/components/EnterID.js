@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { 
+  storeDBInfo,
   storePartID, 
   getExpt,
   storeQKeys,
@@ -25,6 +26,10 @@ class EnterID extends Component {
 
   componentDidMount() {
     this.getData();
+
+    const username = this.props.match.params.username;
+    const studyExpt = this.props.match.params.expt;
+    this.props.storeDBInfo(username, studyExpt);
   }
 
   getData() {
@@ -79,6 +84,7 @@ class EnterID extends Component {
 }
 
 EnterID.propTypes = {
+  storeDBInfo: PropTypes.func.isRequired,
   getExpt: PropTypes.func.isRequired,
   expt: PropTypes.object.isRequired,
   storePartID: PropTypes.func.isRequired,
@@ -94,5 +100,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { storePartID, getExpt, storeQKeys, isFinalQ }
+  { storeDBInfo, storePartID, getExpt, storeQKeys, isFinalQ }
 )(EnterID);
