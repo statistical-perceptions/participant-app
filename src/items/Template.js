@@ -9,11 +9,7 @@ import {
   storeAnswer
 } from "../actions/dataActions";
 
-// This component should do the following:
-// - Display question
-// - Display an experiment item (in this case, a slider)
-// - Store answer into Redux store upon submission 
-class Slider extends Component {
+class Template extends Component {
   constructor(props) {
     super(props);
     this.state = this.initialState;
@@ -21,72 +17,76 @@ class Slider extends Component {
     this.resetState = this.resetState.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.showSlider = this.showSlider.bind(this);
+    
+    // ###TODO###: change the name of the following binding if you see fit
+    // this binds the state to the showItem function below
+    this.showItem = this.showItem.bind(this);
   }
 
+  // setting the initial state of this component 
   get initialState() {
     return {
+      // this submitted variable is required 
       submitted: false,
-      value: 0
+      // ###TODO###: add more variables below 
     };
   }
 
+  // reset state to initial state 
+  // this will be called when Experiment.js spins up another instance 
+  // of this component 
   resetState() {
     this.setState(this.initialState);
   }
 
+  // additional setup to communicate with Experiment.js
   componentDidMount() {
     const { childRef } = this.props;
     childRef(this);
     this.getData();
   }
 
+  // additional setup to communicate with Experiment.js
   componentWillUnmount() {
     const { childRef } = this.props;
     childRef(undefined);
   }
 
+  // get experiment data from the database 
   getData() {
     const db = this.props.expt.dbInfo.db;
-    // there will be problems if user's study name / experiment name inclues "-"
     const studyName = this.props.expt.dbInfo.col.split("-")[0];
     const exptName = this.props.expt.dbInfo.col.split("-")[1];
     this.props.getExpt(db, studyName, exptName);
   }
 
+  // handles change in user input 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value })
   }
 
-  showSlider() {
-    return (
-      <div className="container">
-        {this.props.question} <br/>
-        <input 
-          type="range"
-          min={this.props.lowRange}
-          max={this.props.highRange}
-          name="value"
-          value={this.state.value}
-          onChange={this.onChange}
-        />
-        {this.state.value} <br/>
-      </div>
-    )
-  }
-
-  // part of template: 
+  // trigger this action to save user answer in the Redux store 
+  // all answers in store will be sent to the database later 
   onSubmit() {
     const question = this.props.question;
-    // put answer in our redux store to be sent via API later
     this.props.storeAnswer(question, this.state.value);
     this.setState({ submitted: true });
   }
 
+  // ###TODO###: add your own function(s) to show experiment item(s)
+  showItem() {
+    return (
+      <div className="container">
+        <input type="text"/>
+      </div>
+    )
+  }
+
+  // please render anything else you see fit
   render() {
     return (
-      <div>
-        {this.showSlider()} <br/>
+      <div className="container">
+        {this.showItem()} <br/>
         {
           !this.state.submitted && 
           <div>
@@ -101,19 +101,25 @@ class Slider extends Component {
       </div>
     )
   }
+
 }
 
-Slider.propTypes = {
+// Listing required functions / data
+Template.propTypes = {
   getExpt: PropTypes.func.isRequired,
   expt: PropTypes.object.isRequired,
   storeAnswer: PropTypes.func.isRequired
 }
 
+// mapping Redux state to props that we can use in our component
+// expt contains all info from a given experiment 
 const mapStateToProps = state => ({
   expt: state.expt
 })
 
+// connecting props to our component
+// export our component so that Experiment.js can use it 
 export default connect(
   mapStateToProps,
   { getExpt, storeAnswer }
-)(Slider);
+)(Template);

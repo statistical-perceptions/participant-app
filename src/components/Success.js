@@ -22,10 +22,17 @@ class Success extends Component {
     }
   }
 
+  onClose() {
+    window.opener = null;
+    window.open("", "_self");
+    window.close();
+  }
+
   render() {
     return (
       <div className="container">
-        <h1>Thank you for your submission!</h1>
+        <h1>Thank you for your submission!</h1> <br/>
+        <button onClick={this.onClose}>Close tab</button> 
       </div>
     )
   }
