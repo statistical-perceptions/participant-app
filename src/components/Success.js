@@ -9,8 +9,8 @@ import {
 class Success extends Component {
   componentDidMount() {
     console.log(this.props);
-    const username = this.props.match.params.username;
-    const expt = this.props.match.params.expt;
+    const username = this.props.expt.dbInfo.db;
+    const expt = this.props.expt.dbInfo.col;
     if (!this.props.expt.answer.length == 0) {
       const finalObj = {
         participantID: this.props.expt.participantID
@@ -22,17 +22,12 @@ class Success extends Component {
     }
   }
 
-  onClose() {
-    window.opener = null;
-    window.open("", "_self");
-    window.close();
-  }
-
   render() {
     return (
       <div className="container">
         <h1>Thank you for your submission!</h1> <br/>
-        <button onClick={this.onClose}>Close tab</button> 
+        Please go back to the Qualtrics survey and complete 
+        the rest of the questions. 
       </div>
     )
   }

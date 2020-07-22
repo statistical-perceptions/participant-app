@@ -58,7 +58,7 @@ class EnterID extends Component {
     if (questionKeys.length == 1) {
       this.props.isFinalQ(true);
     }
-    this.props.history.push("/" + username + "/" + studyExpt + 
+    this.props.history.push("/expt/" + username + "/" + studyExpt + 
       "/" + questionKeys[0]);
   }
 

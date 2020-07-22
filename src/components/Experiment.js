@@ -31,7 +31,7 @@ class Experiment extends Component {
     const expt = this.props.match.params.expt;
     if (!this.props.expt.participantID) {
       alert("Please enter your unique ID");
-      this.props.history.push("/" + username + "/" + expt);
+      this.props.history.push("/expt/" + username + "/" + expt);
     }
   }
 
@@ -51,11 +51,7 @@ class Experiment extends Component {
       this.props.isFinalQ(true);
     }
 
-    // put answer into store. EDIT: no need for this anymore
-    // this funcationality is in individual components now  
-    // const question = this.props.expt.exptToDisplay[this.props.match.params.qKey]["Question"];
-    // this.props.storeAnswer(question, this.state.value);
-    this.props.history.push("/" + username + "/" + expt + 
+    this.props.history.push("/expt/" + username + "/" + expt + 
       "/q" + nextQ.toString());
 
     // storing the lowest range of the next question for UIUX purposes 
@@ -65,12 +61,7 @@ class Experiment extends Component {
   }
 
   onFinalSubmit() {
-    const username = this.props.match.params.username;
-    const expt = this.props.match.params.expt;
-
-    // const question = this.props.expt.exptToDisplay[this.props.match.params.qKey]["Question"];
-    // this.props.storeAnswer(question, this.state.value);
-    this.props.history.push("/" + username + "/" + expt + "/success");
+    this.props.history.push("/success");
   }
 
   whichSubmit() {
@@ -91,7 +82,6 @@ class Experiment extends Component {
   }
 
   getData() {
-    // console.log(this.props);
     const username = this.props.match.params.username;
     // there will be problems if user's study name / experiment name inclues "-"
     const studyName = this.props.match.params.expt.split("-")[0];
@@ -102,29 +92,24 @@ class Experiment extends Component {
   displayExpt() {
     const expt = this.props.expt.exptToDisplay;
     const key = this.props.match.params.qKey;
-    // console.log(expt);
     if (expt[key]) {
-      // NEED TO make each if statement modular
-      // a map here on a list of documents of experiment types (each document
-      // contains experiment parameters) to match expt[key]["Type"] 
-      // with "slider"
+      // ###TODO### add more if statements here for your experiment type
+      // follow the following format
       if (expt[key]["Type"] == "slider") {
         const lowRange = expt[key]["lowRange"];
         const highRange = expt[key]["highRange"];
         const question = expt[key]["Question"];
-        // console.log(question);
         return (
           <div className="container">
             <Slider childRef={ref => (this.child = ref)}
               question={question} lowRange={lowRange} 
               highRange={highRange} />
             <br/>
+            {/* keep the following line */}
             <this.whichSubmit />
           </div>
         )
       }
-      // add more if statements here for other experiments types
-      // follow the format of the slider if statement
     }
   }
 
