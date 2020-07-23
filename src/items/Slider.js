@@ -12,8 +12,9 @@ import {
 // - Display an experiment item (in this case, a slider)
 // - Store answer into Redux store upon submission 
 class Slider extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    // putting super() here so that we can use this.blahblah
+    super();
     this.state = this.initialState;
 
     this.resetState = this.resetState.bind(this);
@@ -73,7 +74,6 @@ class Slider extends Component {
     )
   }
 
-  // part of template: 
   onSubmit() {
     const question = this.props.question;
     // put answer in our redux store to be sent via API later

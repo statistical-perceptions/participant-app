@@ -36,7 +36,7 @@ class Experiment extends Component {
   }
 
   onSubmit() {
-    this.child.resetState();
+    this.childSlider.resetState();
 
     const username = this.props.match.params.username;
     const expt = this.props.match.params.expt;
@@ -53,11 +53,6 @@ class Experiment extends Component {
 
     this.props.history.push("/expt/" + username + "/" + expt + 
       "/q" + nextQ.toString());
-
-    // storing the lowest range of the next question for UIUX purposes 
-    // not modular
-    // const nextQMin = this.props.expt.exptToDisplay["q" + nextQ.toString()]["lowRange"];
-    // this.setState({ value: nextQMin })
   }
 
   onFinalSubmit() {
@@ -95,20 +90,24 @@ class Experiment extends Component {
     if (expt[key]) {
       // ###TODO### add more if statements here for your experiment type
       // follow the following format
-      if (expt[key]["Type"] == "slider") {
-        const lowRange = expt[key]["lowRange"];
-        const highRange = expt[key]["highRange"];
-        const question = expt[key]["Question"];
-        return (
-          <div className="container">
-            <Slider childRef={ref => (this.child = ref)}
-              question={question} lowRange={lowRange} 
-              highRange={highRange} />
-            <br/>
-            {/* keep the following line */}
-            <this.whichSubmit />
-          </div>
-        )
+      switch(expt[key]["Type"]) {
+        case "slider":
+          const lowRange = expt[key]["lowRange"];
+          const highRange = expt[key]["highRange"];
+          const question = expt[key]["Question"];
+          return (
+            <div className="container">
+              <Slider childRef={ref => (this.childSlider = ref)}
+                question={question} lowRange={lowRange} 
+                highRange={highRange} />
+              <br/>
+              {/* keep the following line */}
+              <this.whichSubmit />
+            </div>
+          )
+          break;
+        default: 
+          return (<div>Unknown Experiment Type</div>)
       }
     }
   }
