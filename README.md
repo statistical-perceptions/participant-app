@@ -12,6 +12,8 @@ How Redux works: https://www.youtube.com/watch?v=nFryvdyMI8s&t=238s
 [Actions Descriptions](#actions)
 [Experiment Configuration Format](#exptformat)
 
+---
+
 ### Create a new Experiment Type 
 
 Navigate to **/src/items** and open **Template.js**. You can build on this template and create your own experiment item. Follow the ```TODO``` tags to add more code. Note that this template is the bare minimum strucutre for a component to work with participant-app. You can always add more functions depending on what you need. 
@@ -21,6 +23,8 @@ Below is a walk-through of an example where we create a simple slider. Navigate 
 ##### *TIP: How do React components work?*
 
 Your Experiment Type will be written into a React component. A React app consists of many components, and these components can talk to each other using ```props``` which stands for properties. When a parent component talks to a child component, it can pass ```props``` to the child component, and the child component can use these ```props```. We will see how this works in code in the section [Connect your Component to Experiment.js]. 
+
+---
 
 ##### Connect your Component to Redux 
 
@@ -54,10 +58,10 @@ Slider.propTypes = {
 ```
 We require functions  ```getExpt``` and ```storeAnswer```. The object ```expt``` includes an object ```dbInfo```. Here's an example of ```dbInfo```:
 ```sh
-    dbInfo: {
-      db: 'Sean',
-      col: 'study1-expt1'
-    }
+dbInfo: {
+  db: 'Sean',
+  col: 'study1-expt1'
+}
 ```
 ```db``` is the name of the database from which we get our experiment configuration data.
 
@@ -78,6 +82,8 @@ export default connect(
 )(Slider); 
 ```
 
+---
+
 ##### How Component State and Functions Interact
 
 Take a look at ```constructor()``` and ```initialState()```.
@@ -86,8 +92,8 @@ The reason that we have an ```initialState``` is that we need to reset our compo
 
 ```initialState``` includes:
 ```sh
-      submitted: false,
-      value: 0
+submitted: false,
+value: 0
 ```
 ```submitted``` is a ```Boolean``` that checks if a user has clicked on the "Ok" button. The function ```onSubmit()``` will set ```submitted``` to ```true```.
 
@@ -101,31 +107,49 @@ The component that you create will also need ```render()```. This tells React th
 
 We have gone over all the functions that are self-contained in the ```Slider``` component. Now, let's discuss how the ```Slider``` component is incorporated into our app. 
 
+---
+
 ##### Connect your Component to Experiment.js
 
-Take a look at **/src/components/Experiment.js**. This file serves to create a survey-like flow for our app. It gets experiment config data from the database, talks to individual components, and decides if the next question is the last question. If the next question is the last question, ```Experiment``` will show a *Submit* button and directs users to ```Success``` page. If not, ```Experiment``` will push another question to a child component. 
+Take a look at **/src/components/Experiment.js**. This file serves to create a survey-like flow for our app. It gets experiment config data from the database, talks to individual components, and decides if the next question is the last question. If the next question is the last question, ```Experiment``` will show a *Submit* button and directs users to ```Success``` page. If not, ```Experiment``` will display a child component. 
 
 Now we will talk about how ```Experiment``` talks to its child components. 
 
-First of all, in **Experiment.js**, we need to ```import Slider from "../items/Slider"```. Take a look at ```displayExpt()```. This function has a switch statement that tells the component what experiment type to display. After you make your own component, you need to add a ```case``` to detect your experiment type. 
+First of all, in **Experiment.js**, we need to ```import Slider from "../items/Slider"```. Take a look at ```displayExpt()```. This function has a switch statement that tells the component which experiment type to display. After you make your own component, you need to add a ```case``` to detect your experiment type. You may follow the ```Slider``` case. 
 
+Examine the following few lines in ```displayExpt()```:
+```sh
+const lowRange = expt[key]["lowRange"];
+const highRange = expt[key]["highRange"];
+const question = expt[key]["Question"];
+<Slider childRef={ref => (this.childSlider = ref)}
+    question={question} lowRange={lowRange} highRange={highRange} />
+```
+We use ```childRef``` to let the ```Experiment``` know that ```Slider``` is a child component. The anonymous function in the curly bracket simply means that we will call ```this.childSlider``` in our ```Experiment``` component whenever we want to refer to the ```Slider``` child component. For instance, look at ```onSubmit()```. The first line calls the ```resetState()``` method in the ```Slider``` component. This ensures that the state of our ```Slider``` component refreshes to a clean ```initialState``` whenever the component is called. You may see the following two functions in ```Slider```:
+```
+componentDidMount() {
+const { childRef } = this.props;
+childRef(this);
+this.getData();
+}
 
+componentWillUnmount() {
+const { childRef } = this.props;
+childRef(undefined);
+}
+```
+These two functions make sure that ```Slider``` knows that it's a child component. 
 
+Take a closer look at ```question```, ```lowRange```, and ```highRange``` inside the ```Slider``` tag. These three properties are passed into ```Slider``` component as ```props```. When we want to access these values in **Slider.js**, we will simply call ```this.props.question```, ```this.props.lowRange```, and ```this.props.highRange```.
 
+---
 
+##### Conclusion
+This is the end of the walk-through. If you get stuck somewhere, please use ```console.log``` to debug. If you have more questions about Redux, feel free to check out this YouTube video: [https://www.youtube.com/watch?v=93p3LxR9xfM&t=1534s].
 
+---
 
-
-
-
-
-
-
-
-
-
-
-## Format for experiment config data
+#### Format for experiment config data
 ```
 {
   exptName: "",
@@ -143,6 +167,7 @@ First of all, in **Experiment.js**, we need to ```import Slider from "../items/S
 }
 ```
 
+---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
