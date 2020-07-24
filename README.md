@@ -8,9 +8,9 @@ How Redux works: https://www.youtube.com/watch?v=nFryvdyMI8s&t=238s
 
 ## Table of Contents
 
-[Create a new Experiment Type](#create)
-[Actions Descriptions](#actions)
-[Experiment Configuration Format](#exptformat)
+- [Create a new Experiment Type](#create)
+- [Actions Descriptions](#actions)
+- [Experiment Configuration Format](#exptformat)
 
 ---
 
@@ -149,7 +149,7 @@ This is the end of the walk-through. If you get stuck somewhere, please use ```c
 
 ---
 
-#### Format for experiment config data
+#### Experiment Configuration Format
 ```
 {
   exptName: "",
