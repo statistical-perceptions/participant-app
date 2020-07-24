@@ -3,18 +3,28 @@
 This tutorial will walk you through the process to add your own experiment type to the app. Even though the tutorial covers some concepts of React and React-Redux, please read the Medium post below and the short YouTube video to get a better understanding of React and how Redux works with React. 
 
 How React works: https://medium.com/leanjs/introduction-to-react-3000e9cbcd26#:~:text=What%20is%20React%3F,utilise%20it%20with%20other%20libraries
+
 How Redux works: https://www.youtube.com/watch?v=nFryvdyMI8s&t=238s
 
 
 ## Table of Contents
 
 - [Create a new Experiment Type](#create)
-- [Actions Descriptions](#actions)
 - [Experiment Configuration Format](#exptformat)
+- [Actions Descriptions](#actions)
 
 ---
 
+<a name="create"/>
+
 ### Create a new Experiment Type 
+
+Jump to:
+
+- [Connect your Component to Redux](#redux)
+- [How Component State and Functions Interact](#interact)
+- [Connect your Component to Experiment.js](#expt)
+- [Conclusion](#conclusion)
 
 Navigate to **/src/items** and open **Template.js**. You can build on this template and create your own experiment item. Follow the ```TODO``` tags to add more code. Note that this template is the bare minimum strucutre for a component to work with participant-app. You can always add more functions depending on what you need. 
 
@@ -25,6 +35,8 @@ Below is a walk-through of an example where we create a simple slider. Navigate 
 Your Experiment Type will be written into a React component. A React app consists of many components, and these components can talk to each other using ```props``` which stands for properties. When a parent component talks to a child component, it can pass ```props``` to the child component, and the child component can use these ```props```. We will see how this works in code in the section [Connect your Component to Experiment.js]. 
 
 ---
+
+<a name="redux"/>
 
 ##### Connect your Component to Redux 
 
@@ -84,6 +96,8 @@ export default connect(
 
 ---
 
+<a name="interact"/>
+
 ##### How Component State and Functions Interact
 
 Take a look at ```constructor()``` and ```initialState()```.
@@ -108,6 +122,8 @@ The component that you create will also need ```render()```. This tells React th
 We have gone over all the functions that are self-contained in the ```Slider``` component. Now, let's discuss how the ```Slider``` component is incorporated into our app. 
 
 ---
+
+<a name="expt"/>
 
 ##### Connect your Component to Experiment.js
 
@@ -144,10 +160,14 @@ Take a closer look at ```question```, ```lowRange```, and ```highRange``` inside
 
 ---
 
+<a name="conclusion"/>
+
 ##### Conclusion
 This is the end of the walk-through. If you get stuck somewhere, please use ```console.log``` to debug. If you have more questions about Redux, feel free to check out this YouTube video: [https://www.youtube.com/watch?v=93p3LxR9xfM&t=1534s].
 
 ---
+
+<a name="exptformat"/>
 
 #### Experiment Configuration Format
 ```
