@@ -38,7 +38,7 @@ Your Experiment Type will be written into a React component. A React app consist
 
 <a name="redux"/>
 
-##### Connect your Component to Redux 
+#### Connect your Component to Redux 
 
 First, we need to import the following packages.
 ```sh
@@ -98,7 +98,7 @@ export default connect(
 
 <a name="interact"/>
 
-##### How Component State and Functions Interact
+#### How Component State and Functions Interact
 
 Take a look at ```constructor()``` and ```initialState()```.
 
@@ -125,7 +125,7 @@ We have gone over all the functions that are self-contained in the ```Slider``` 
 
 <a name="expt"/>
 
-##### Connect your Component to Experiment.js
+#### Connect your Component to Experiment.js
 
 Take a look at **/src/components/Experiment.js**. This file serves to create a survey-like flow for our app. It gets experiment config data from the database, talks to individual components, and decides if the next question is the last question. If the next question is the last question, ```Experiment``` will show a *Submit* button and directs users to ```Success``` page. If not, ```Experiment``` will display a child component. 
 
@@ -162,7 +162,7 @@ Take a closer look at ```question```, ```lowRange```, and ```highRange``` inside
 
 <a name="conclusion"/>
 
-##### Conclusion
+#### Conclusion
 This is the end of the walk-through. If you get stuck somewhere, please use ```console.log``` to debug. If you have more questions about Redux, feel free to check out this YouTube video: [https://www.youtube.com/watch?v=93p3LxR9xfM&t=1534s].
 
 ---

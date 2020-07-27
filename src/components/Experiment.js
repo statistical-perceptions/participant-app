@@ -8,10 +8,12 @@ import {
   getExpt,
   sendExpt,
   isFinalQ,
-  storeAnswer
+  storeAnswer,
+  getItemData
 } from "../actions/dataActions";
 
-import Slider from "../items/Slider"
+import Slider from "../items/Slider";
+import NormalCurve from "../items/NormalCurve.jsx"
 
 class Experiment extends Component {
   constructor(props) {
@@ -37,6 +39,7 @@ class Experiment extends Component {
 
   onSubmit() {
     this.childSlider.resetState();
+    this.childNormalCurve.resetState();
 
     const username = this.props.match.params.username;
     const expt = this.props.match.params.expt;
@@ -85,6 +88,7 @@ class Experiment extends Component {
   }
 
   displayExpt() {
+    const username = this.props.match.params.username;
     const expt = this.props.expt.exptToDisplay;
     const key = this.props.match.params.qKey;
     if (expt[key]) {
@@ -106,11 +110,27 @@ class Experiment extends Component {
             </div>
           )
           break;
+        case "normal-curve":
+          const questionNC = expt[key]["Question"];
+          const data1 = expt[key]["Data1"];
+          const data2 = expt[key]["Data2"];
+          const dataFileName = expt[key]["FileName"];
+          // put data in store for Normal Curve to grab
+          this.props.getItemData(username, dataFileName);
+          return (
+            <div className="container">
+              <NormalCurve childRef={ref => (this.childNormalCurve = ref)} 
+                questionNC={questionNC} data1={data1} data2={data2} />
+              <br/>
+              <this.whichSubmit />
+            </div>
+          )
         default: 
           return (<div>Unknown Experiment Type</div>)
       }
     }
   }
+
 
   render() {
     const exptName = this.props.match.params.expt;
@@ -135,7 +155,8 @@ Experiment.propTypes = {
   participantID: PropTypes.string.isRequired,
   sendExpt: PropTypes.func.isRequired,
   isFinalQ: PropTypes.func.isRequired,
-  storeAnswer: PropTypes.func.isRequired
+  storeAnswer: PropTypes.func.isRequired,
+  getItemData: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -145,5 +166,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getExpt, sendExpt, isFinalQ, storeAnswer }
+  { getExpt, sendExpt, isFinalQ, storeAnswer, getItemData }
 )(Experiment);

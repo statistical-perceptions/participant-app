@@ -4,7 +4,8 @@ import {
   PART_ID,
   Q_KEYS,
   FINAL_Q,
-  ANSWER
+  ANSWER,
+  ITEM_DATA
 } from "../actions/types";
 import { act } from "react-dom/test-utils";
 import { bindActionCreators } from "redux";
@@ -15,7 +16,8 @@ const initialState = {
   participantID: '',
   questionKeys: [],
   isFinalQ: false,
-  answer: []
+  answer: [],
+  fileContent: {}
 };
 
 export default function(state = initialState, action) {
@@ -50,6 +52,11 @@ export default function(state = initialState, action) {
         ...state,
         answer: [...state.answer, action.payload]
       };
+    case ITEM_DATA:
+      return {
+        ...state,
+        fileContent: action.payload
+      }
     default:
       return state;
   }

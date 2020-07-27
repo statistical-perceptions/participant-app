@@ -6,7 +6,8 @@ import {
   SEND_EXPT,
   Q_KEYS,
   FINAL_Q,
-  ANSWER
+  ANSWER,
+  ITEM_DATA
 } from "./types"
 
 export const storeDBInfo = (which_database, which_collection) => dispatch => {
@@ -36,7 +37,6 @@ export const getExpt = (which_db, study_name, expt_name) => dispatch => {
         type: GET_EXPT,
         payload: thisExpt
       })
-      console.log("dispatched");
     })
 }
 
@@ -80,4 +80,18 @@ export const storeAnswer = (question, answer) => dispatch => {
       ans: answer
     }
   })
+}
+
+export const getItemData = (which_database, fileName) => dispatch => {
+  const API_URL = 'https://test-api-615.herokuapp.com/api/feedback/' +
+    which_database + "/itemData";
+  axios
+    .get(API_URL)
+    .then(res => {
+      const fileContent = res.data.filter(doc => doc.fileName == fileName)[0].fileContent
+      dispatch({
+        type: ITEM_DATA,
+        payload: fileContent
+      })
+    })
 }
