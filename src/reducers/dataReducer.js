@@ -3,6 +3,7 @@ import {
   GET_EXPT,
   PART_ID,
   Q_KEYS,
+  NUM_Q,
   FINAL_Q,
   ANSWER,
   ITEM_DATA
@@ -15,6 +16,7 @@ const initialState = {
   exptToDisplay: {},
   participantID: '',
   questionKeys: [],
+  numQ: Number,
   isFinalQ: false,
   answer: [],
   fileContent: {}
@@ -42,6 +44,11 @@ export default function(state = initialState, action) {
         ...state,
         questionKeys: action.payload
       };
+    case NUM_Q:
+      return {
+        ...state,
+        numQ: action.payload
+      }
     case FINAL_Q:
       return {
         ...state,

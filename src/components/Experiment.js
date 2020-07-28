@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { 
   getExpt,
   sendExpt,
+  setNumQ,
   isFinalQ,
   storeAnswer,
   getItemData
@@ -19,11 +20,17 @@ class Experiment extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      whichItem: ""
     }
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onFinalSubmit = this.onFinalSubmit.bind(this);
     this.whichSubmit = this.whichSubmit.bind(this);
+    this.setWhichItem = this.setWhichItem.bind(this);
+  }
+
+  setWhichItem(str) {
+    this.setState({ whichItem: str })
   }
 
   componentDidMount() {
@@ -39,10 +46,7 @@ class Experiment extends Component {
     console.log(this.props.expt);
   }
 
-  onSubmit() {
-    this.childSlider.resetState();
-    this.childNormalCurve.resetState();
-
+  nextQuestion() {
     const username = this.props.match.params.username;
     const expt = this.props.match.params.expt;
 
@@ -50,14 +54,38 @@ class Experiment extends Component {
     // we have to regulate name of question (such as q0, q1, q2 ...)
     // because we are not using mongoose schema
     const currentQ = this.props.match.params.qKey.charAt(1);
-    const nextQ = Number(currentQ) + 1;
+    // instead of +1, we need to do next in questionKeys arr.
+    const nextQ = this.props.expt.questionKeys[this.props.expt.numQ + 1];
     const lastQ = this.props.expt.questionKeys[this.props.expt.questionKeys.length - 1];
-    if (nextQ == Number(lastQ.charAt(1))) {
+    if (nextQ == lastQ) {
       this.props.isFinalQ(true);
     }
 
+    // set num q to + 1 of current
+    this.props.setNumQ(this.props.expt.numQ + 1);
     this.props.history.push("/expt/" + username + "/" + expt + 
-      "/q" + nextQ.toString());
+      "/" + nextQ.toString());
+  }
+
+  onSubmit() {
+    // switch (this.state.whichItem) {
+    //   case "slider":
+    //     this.childSlider.resetState();
+    //     this.nextQuestion();
+    //   case "normal-curve":
+    //     this.childNormalCurve.resetState();
+    //     this.nextQuestion();
+    //   default: 
+    //     return (<div>Unknown Experiment Type</div>)
+    // }
+    if (this.childSlider) {
+      this.childSlider.resetState();
+      this.nextQuestion();
+    };
+    if (this.childNormalCurve) {
+      this.childNormalCurve.resetState();
+      this.nextQuestion();
+    }; 
   }
 
   onFinalSubmit() {
@@ -105,7 +133,7 @@ class Experiment extends Component {
             <div className="container">
               <Slider childRef={ref => (this.childSlider = ref)}
                 question={question} lowRange={lowRange} 
-                highRange={highRange} />
+                highRange={highRange} setWhichItem={this.setWhichItem}/>
               <br/>
               {/* keep the following line */}
               <this.whichSubmit />
@@ -127,7 +155,8 @@ class Experiment extends Component {
             <div className="container">
               <NormalCurve childRef={ref => (this.childNormalCurve = ref)} 
                 questionNC={questionNC} graph1={graph1} graph2={graph2} 
-                fileName={dataFileName} data={dataFileContent} />
+                fileName={dataFileName} data={dataFileContent} 
+                setWhichItem={this.setWhichItem} />
               <br/>
               <this.whichSubmit />
             </div>
@@ -161,6 +190,7 @@ Experiment.propTypes = {
   expt: PropTypes.object.isRequired,
   participantID: PropTypes.string.isRequired,
   sendExpt: PropTypes.func.isRequired,
+  setNumQ: PropTypes.func.isRequired,
   isFinalQ: PropTypes.func.isRequired,
   storeAnswer: PropTypes.func.isRequired,
   getItemData: PropTypes.func.isRequired
@@ -173,5 +203,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getExpt, sendExpt, isFinalQ, storeAnswer, getItemData }
+  { getExpt, sendExpt, setNumQ, isFinalQ, storeAnswer, getItemData }
 )(Experiment);

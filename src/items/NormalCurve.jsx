@@ -29,6 +29,7 @@ class NormalCurve extends Component {
 
     this.resetState = this.resetState.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.setWhichItem = this.setWhichItem.bind(this);
     // onchange
     // onsubmit
 
@@ -85,11 +86,16 @@ class NormalCurve extends Component {
     const { childRef } = this.props;
     childRef(this);
     this.getData();
+    this.setWhichItem("normal-curve");
   }
 
   componentWillUnmount() {
     const { childRef } = this.props;
     childRef(undefined);
+  }
+
+  setWhichItem(str) {
+    this.props.setWhichItem(str);
   }
 
   getData() {

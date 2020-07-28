@@ -9,6 +9,7 @@ import {
   storePartID, 
   getExpt,
   storeQKeys,
+  setNumQ,
   isFinalQ
 } 
 from "../actions/dataActions";
@@ -50,14 +51,16 @@ class EnterID extends Component {
     var questionKeys = [];
     if (this.props.expt.exptToDisplay) {
       const allKeys = Object.keys(this.props.expt.exptToDisplay);
+      console.log(allKeys);
       // in the JSON file each question must have index q0, q1, q2, ... 
       questionKeys = allKeys.filter(str => str.charAt(0) == "q");
       this.props.storeQKeys(questionKeys);
     }
-    console.log(questionKeys);
+    // console.log(questionKeys);
     if (questionKeys.length == 1) {
       this.props.isFinalQ(true);
     }
+    this.props.setNumQ(0);
     this.props.history.push("/expt/" + username + "/" + studyExpt + 
       "/" + questionKeys[0]);
   }
@@ -90,6 +93,7 @@ EnterID.propTypes = {
   storePartID: PropTypes.func.isRequired,
   participantID: PropTypes.string.isRequired,
   storeQKeys: PropTypes.func.isRequired,
+  setNumQ: PropTypes.func.isRequired,
   isFinalQ: PropTypes.func.isRequired
 };
 
@@ -100,5 +104,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { storeDBInfo, storePartID, getExpt, storeQKeys, isFinalQ }
+  { storeDBInfo, storePartID, getExpt, storeQKeys, setNumQ, isFinalQ }
 )(EnterID);

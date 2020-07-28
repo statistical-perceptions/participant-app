@@ -5,6 +5,7 @@ import {
   PART_ID,
   SEND_EXPT,
   Q_KEYS,
+  NUM_Q,
   FINAL_Q,
   ANSWER,
   ITEM_DATA
@@ -61,6 +62,13 @@ export const storeQKeys = (keys) => dispatch => {
   dispatch({
     type: Q_KEYS,
     payload: keys
+  })
+}
+
+export const setNumQ = (num) => dispatch => {
+  dispatch({
+    type: NUM_Q,
+    payload: num
   })
 }
 
