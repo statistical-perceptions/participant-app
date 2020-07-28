@@ -35,6 +35,8 @@ class Experiment extends Component {
       alert("Please enter your unique ID");
       this.props.history.push("/expt/" + username + "/" + expt);
     }
+
+    console.log(this.props.expt);
   }
 
   onSubmit() {
@@ -112,15 +114,20 @@ class Experiment extends Component {
           break;
         case "normal-curve":
           const questionNC = expt[key]["Question"];
-          const data1 = expt[key]["Data1"];
-          const data2 = expt[key]["Data2"];
+          const graph1 = expt[key]["Data1"];
+          const graph2 = expt[key]["Data2"];
           const dataFileName = expt[key]["FileName"];
-          // put data in store for Normal Curve to grab
-          this.props.getItemData(username, dataFileName);
+          const dataFileContent = expt[key]["FileContent"];
+          // this line should not be put here. it's overloading the API
+          // this.props.getItemData(username, dataFileName);
+          // if (!Object.keys(this.props.expt.fileContent).length == 0) {
+          //   console.log(this.props.expt.fileContent);
+          // }
           return (
             <div className="container">
               <NormalCurve childRef={ref => (this.childNormalCurve = ref)} 
-                questionNC={questionNC} data1={data1} data2={data2} />
+                questionNC={questionNC} graph1={graph1} graph2={graph2} 
+                fileName={dataFileName} data={dataFileContent} />
               <br/>
               <this.whichSubmit />
             </div>

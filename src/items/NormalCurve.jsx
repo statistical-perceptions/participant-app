@@ -5,9 +5,12 @@ import { connect } from "react-redux";
 
 import {
   getExpt,
-  storeAnswer
+  storeAnswer,
+  getItemData
 } from "../actions/dataActions";
 
+
+// safeguard everything below with if (!Object.keys(this.props.data).length == 0)
 class NormalCurve extends Component {
   constructor(props) {
     super(props);
@@ -33,41 +36,42 @@ class NormalCurve extends Component {
   }
 
   get initialState() {
-    console.log(this.props.expt);
-    const unitHeight = this.props.expt.fileContent["max-height"];
-    const circRad = this.props.expt.fileContent["circle-radius"];
+    // console.log(this.props.expt);
+
+    const unitHeight = this.props.data["max-height"];
+    const circRad = this.props.data["circle-radius"];
     const distancing = circRad * 4 - 1;
     const height = (Math.ceil((distancing * unitHeight) / 50) + 1) * 50;
     const ceilDist = height - 50;
-    const length = Math.ceil((distancing * this.props.expt.fileContent["len1"] * 2 + distancing * this.props.expt.fileContent["len2"] * 2) / 100) * 100;
+    const length = Math.ceil((distancing * this.props.data["len1"] * 2 + distancing * this.props.data["len2"] * 2) / 100) * 100;
     const colNum = Math.round(length / distancing);
-    console.log(height, distancing, ceilDist, colNum);
+    // console.log(height, distancing, ceilDist, colNum);
     return {
-      submitted: false,
+      submitted: false,      
       x: 0, y: 0, isDown: false,
       rectX: 12.5,
       down: false,
       svgWidth: length,
       svgHeight: height,
       svgX: 6,
-      len1: this.props.expt.fileContent["len1"],
-      colValHeiS: this.props.expt.fileContent["colValHeiS"],
-      len2: this.props.expt.fileContent["len2"],
-      colValHeiS2: this.props.expt.fileContent["colValHeiS2"],
+      len1: this.props.data["len1"],
+      colValHeiS: this.props.data["colValHeiS"],
+      len2: this.props.data["len2"],
+      colValHeiS2: this.props.data["colValHeiS2"],
       distancing: distancing,
-      distancing1: (this.props.expt.fileContent["len2"] + 1) * distancing,
-      distancing2: (this.props.expt.fileContent["len1"] + this.props.expt.fileContent["len2"] + 4) * distancing,
-      triCent1: Math.round((0.5 * this.props.expt.fileContent["len1"]) * distancing) + distancing,
-      triCent2: Math.round((0.5 * this.props.expt.fileContent["len2"]) * distancing) + distancing,
+      distancing1: (this.props.data["len2"] + 1) * distancing,
+      distancing2: (this.props.data["len1"] + this.props.data["len2"] + 4) * distancing,
+      triCent1: Math.round((0.5 * this.props.data["len1"]) * distancing) + distancing,
+      triCent2: Math.round((0.5 * this.props.data["len2"]) * distancing) + distancing,
       mousePointerRange: 0,
       triDown: false,
-      col11: this.props.expt.fileContent["len2"] + 1,
-      col12: this.props.expt.fileContent["len1"] + this.props.expt.fileContent["len2"] + 1,
-      col21: this.props.expt.fileContent["len1"] + this.props.expt.fileContent["len2"] + 3,
-      col22: this.props.expt.fileContent["len1"] + 2 * this.props.expt.fileContent["len2"] + 3,
-      colLim1: Math.round((length - (this.props.expt.fileContent["len1"] * distancing)) / distancing),
-      colLim2: Math.round((length - (this.props.expt.fileContent["len2"] * distancing)) / distancing),
-      overlapVals: this.props.expt.fileContent["overlapVals"],
+      col11: this.props.data["len2"] + 1,
+      col12: this.props.data["len1"] + this.props.data["len2"] + 1,
+      col21: this.props.data["len1"] + this.props.data["len2"] + 3,
+      col22: this.props.data["len1"] + 2 * this.props.data["len2"] + 3,
+      colLim1: Math.round((length - (this.props.data["len1"] * distancing)) / distancing),
+      colLim2: Math.round((length - (this.props.data["len2"] * distancing)) / distancing),
+      overlapVals: this.props.data["overlapVals"],
       circRad: circRad,
       ceilDist: ceilDist
     }
@@ -97,8 +101,11 @@ class NormalCurve extends Component {
 
   // add user x positions in here
   onSubmit() {
-    const question = this.props.question;
-    // this.props.storeAnswer(question, this.state.value);
+    const question = this.props.questionNC;
+    this.props.storeAnswer("Question", question);
+    this.props.storeAnswer("graph1xpos", this.state.col11);
+    this.props.storeAnswer("graph2xpos", this.state.col21);
+    this.props.storeAnswer("area", this.state.overlapVals[Math.abs(this.state.col22 - this.state.col11)])
     this.setState({ submitted: true });
   }
 
@@ -111,7 +118,6 @@ class NormalCurve extends Component {
 
     const CX = this.state.distancing1 + this.state.distancing * xPosOrig + 10;
     const CY = this.state.ceilDist - this.state.distancing * yPos + 10;
-
 
     // const soft = <circle className="icon" stroke="#555" fill="#555" fillOpacity="0.3" strokeOpacity="0.4" cx={CX} cy={CY} r="2"></circle>;
     var hard = <circle className="icon" stroke="DarkCyan" fill="DarkCyan" fillOpacity="0.3" strokeOpacity="0.3" cx={CX} cy={CY} r={this.state.circRad}></circle>;
@@ -237,11 +243,12 @@ class NormalCurve extends Component {
   render() {
     
     return (
-      <div
-        onMouseMove={e => this.triDrag(e)}
-        onMouseUp={e => this.triUp(e)}>
+      <div onMouseMove={e => this.triDrag(e)} onMouseUp={e => this.triUp(e)}>
+        <div className="container">
+          <h3>Question: {this.props.questionNC}</h3>
+        </div> 
         <svg width={this.state.svgWidth} height={this.state.svgHeight} ref={this.svgRef}>
-          {/* <rect opacity="0.2" width="100%" height="100%" fill="red" /> */}
+          <rect opacity="0.2" width="100%" height="100%" fill="red" />
           {[...Array(this.state.len1).keys()].map(
             (col) =>
               [...Array(this.state.colValHeiS[col]).keys()].map(
@@ -257,8 +264,8 @@ class NormalCurve extends Component {
           <polygon
             points={
               [
-                [this.state.triCent1 + this.state.distancing1 - 15, this.state.ceilDist + 35],
-                [this.state.triCent1 + this.state.distancing1 + 15, this.state.ceilDist + 35],
+                [this.state.triCent1 + this.state.distancing1 - 5, this.state.ceilDist + 35],
+                [this.state.triCent1 + this.state.distancing1 + 5, this.state.ceilDist + 35],
                 [this.state.triCent1 + this.state.distancing1, this.state.ceilDist + 20]
               ]
             }
@@ -267,8 +274,8 @@ class NormalCurve extends Component {
           <polygon
             points={
               [
-                [this.state.triCent2 + this.state.distancing2 - 15, this.state.ceilDist + 35],
-                [this.state.triCent2 + this.state.distancing2 + 15, this.state.ceilDist + 35],
+                [this.state.triCent2 + this.state.distancing2 - 5, this.state.ceilDist + 35],
+                [this.state.triCent2 + this.state.distancing2 + 5, this.state.ceilDist + 35],
                 [this.state.triCent2 + this.state.distancing2, this.state.ceilDist + 20]
               ]
             }
@@ -279,13 +286,13 @@ class NormalCurve extends Component {
         <br />
         <div class="boxed">
           <div class="color-box" style={{ backgroundColor: "DarkCyan" }}></div>
-          <input type="text" id="Data1" name="Data1"></input>
+          {this.props.graph1}
           <br />
           <div class="color-box" style={{ backgroundColor: "Crimson" }}></div>
-          <input type="text" id="Data2" name="Data2"></input>
+          {this.props.graph2}
         </div>
         <br />
-        <h1>Area Under Curve: <span ref={this.areaRef}></span> | First x-coordinate: {this.state.col11} | Second x-coordinate: {this.state.col21} </h1>
+        <h4>Area Under Curve: <span ref={this.areaRef}></span> | First x-coordinate: {this.state.col11} | Second x-coordinate: {this.state.col21} </h4>
         {
           !this.state.submitted && 
           <div>
@@ -305,7 +312,8 @@ class NormalCurve extends Component {
 NormalCurve.propTypes = {
   getExpt: PropTypes.func.isRequired,
   expt: PropTypes.object.isRequired,
-  storeAnswer: PropTypes.func.isRequired
+  storeAnswer: PropTypes.func.isRequired,
+  getItemData: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -314,5 +322,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getExpt, storeAnswer }
+  { getExpt, storeAnswer, getItemData }
 )(NormalCurve);
