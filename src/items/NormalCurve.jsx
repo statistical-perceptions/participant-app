@@ -108,10 +108,12 @@ class NormalCurve extends Component {
   // add user x positions in here
   onSubmit() {
     const question = this.props.questionNC;
-    this.props.storeAnswer("Question", question);
-    this.props.storeAnswer("graph1xpos", this.state.col11);
-    this.props.storeAnswer("graph2xpos", this.state.col21);
-    this.props.storeAnswer("area", this.state.overlapVals[Math.abs(this.state.col22 - this.state.col11)])
+    const answer = {
+      graph1xpos: this.state.col11,
+      graph2xpos: this.state.col21,
+      area: this.state.overlapVals[Math.abs(this.state.col22 - this.state.col11)]
+    }
+    this.props.storeAnswer(question, answer);
     this.setState({ submitted: true });
   }
 

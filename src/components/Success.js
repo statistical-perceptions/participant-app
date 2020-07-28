@@ -18,6 +18,7 @@ class Success extends Component {
       this.props.expt.answer.map(entry => {
         finalObj[entry.que] = entry.ans
       })
+      console.log(finalObj);
       this.props.sendExpt(username, expt, finalObj);
     }
   }
