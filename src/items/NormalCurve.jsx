@@ -241,7 +241,6 @@ class NormalCurve extends Component {
       this.areaRef.current.innerHTML = 0;
     }
     else {
-      // console.log(this.state.col22, this.state.col11, Math.abs(this.state.col22 - this.state.col11));
       this.areaRef.current.innerHTML = 
         this.state.overlapVals[Math.abs(this.state.col22 - this.state.col11)];
     }

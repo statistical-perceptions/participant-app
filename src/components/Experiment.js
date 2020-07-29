@@ -9,8 +9,7 @@ import {
   sendExpt,
   setNumQ,
   isFinalQ,
-  storeAnswer,
-  getItemData
+  storeAnswer
 } from "../actions/dataActions";
 
 import Slider from "../items/Slider";
@@ -23,7 +22,7 @@ class Experiment extends Component {
       whichItem: ""
     }
 
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onNextQuestion = this.onNextQuestion.bind(this);
     this.onFinalSubmit = this.onFinalSubmit.bind(this);
     this.whichSubmit = this.whichSubmit.bind(this);
   }
@@ -52,7 +51,8 @@ class Experiment extends Component {
       "/" + nextQ.toString());
   }
 
-  onSubmit() {
+  // will be triggered when the next question is not the final question
+  onNextQuestion() {
     // ###TODO###: add more if statements below that follow the templates 
     if (this.childSlider) {
       this.childSlider.resetState();
@@ -64,17 +64,20 @@ class Experiment extends Component {
     }; 
   }
 
+  // will be triggered when the next question is the final question 
   onFinalSubmit() {
     this.props.history.push("/success");
   }
 
+  // decides which button to show for the next question based whether the next
+  // question is the final question of the experiment
   whichSubmit() {
     return (
       <div>
         {
           !this.props.expt.isFinalQ ? 
           <input type="submit" className="btn" value="Next Question"
-            onClick={this.onSubmit}/> :
+            onClick={this.onNextQuestion}/> :
           <div>
             This is the final question. <p></p>
             <input type="submit" className="btn" value="Submit"
@@ -165,8 +168,7 @@ Experiment.propTypes = {
   sendExpt: PropTypes.func.isRequired,
   setNumQ: PropTypes.func.isRequired,
   isFinalQ: PropTypes.func.isRequired,
-  storeAnswer: PropTypes.func.isRequired,
-  getItemData: PropTypes.func.isRequired
+  storeAnswer: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -176,5 +178,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getExpt, sendExpt, setNumQ, isFinalQ, storeAnswer, getItemData }
+  { getExpt, sendExpt, setNumQ, isFinalQ, storeAnswer }
 )(Experiment);

@@ -17,7 +17,7 @@ How Redux works: https://www.youtube.com/watch?v=nFryvdyMI8s&t=238s
 
 <a name="create"/>
 
-### Create a new Experiment Type 
+## Create a new Experiment Type 
 
 Jump to:
 
@@ -38,7 +38,7 @@ Your Experiment Type will be written into a React component. A React app consist
 
 <a name="redux"/>
 
-#### Connect your Component to Redux 
+### Connect your Component to Redux 
 
 First, we need to import the following packages.
 ```sh
@@ -98,7 +98,7 @@ export default connect(
 
 <a name="interact"/>
 
-#### How Component State and Functions Interact
+### How Component State and Functions Interact
 
 Take a look at ```constructor()``` and ```initialState()```.
 
@@ -125,7 +125,7 @@ We have gone over all the functions that are self-contained in the ```Slider``` 
 
 <a name="expt"/>
 
-#### Connect your Component to Experiment.js
+### Connect your Component to Experiment.js
 
 Take a look at **/src/components/Experiment.js**. This file serves to create a survey-like flow for our app. It gets experiment config data from the database, talks to individual components, and decides if the next question is the last question. If the next question is the last question, ```Experiment``` will show a *Submit* button and directs users to ```Success``` page. If not, ```Experiment``` will display a child component. 
 
@@ -162,20 +162,22 @@ Take a closer look at ```question```, ```lowRange```, and ```highRange``` inside
 
 <a name="conclusion"/>
 
-#### Conclusion
+### Conclusion
 This is the end of the walk-through. If you get stuck somewhere, please use ```console.log``` to debug. If you have more questions about Redux, feel free to check out this YouTube video: [https://www.youtube.com/watch?v=93p3LxR9xfM&t=1534s].
 
 ---
 
 <a name="exptformat"/>
 
-#### Experiment Configuration Format
+### Experiment Configuration Format
 ```
 {
   exptName: "",
   q0: {
         Type: "",
         Question: "",
+        FileName: "",
+        FileContent: ""
         ...      
       },
   q1: {
@@ -186,6 +188,71 @@ This is the end of the walk-through. If you get stuck somewhere, please use ```c
   ...
 }
 ```
+Note: the number after ```q``` doesn't have to be in sequence. ```Experiment.js``` pushes users to the next question based on the index of the question keys rather than on the actual numbering of questions. 
+
+---
+
+<a name="actions"/>
+
+### Actions Descriptions
+
+You may also look at the comments in ```dataActions.js``` for descriptions. It might be easier to just take a look here if you don't want to dig into folders in the branch. Actions that are used when adding a new experiment type is labeled __[:star:]__ in front of their names.  
+
+**storeDBInfo**
+
+Input: name of a database, name of a collection 
+Output: a JSON object containing the input
+Action: puts database - collection information into redux store so that it's easily accessible for all components
+
+__[:star:]__**getExpt**
+
+Input: name of a database, name of a study, name of an experiment
+Output: a JSON object containing configuration data of the given experiment in the given study 
+Action: a GET request to get the output. 
+
+**storePartID**
+
+Input: participant ID
+Output: participant ID
+Action: puts participant ID into redux store so that it's easily accessible for all components 
+
+__[:star:]__**sendExpt**
+
+Input: name of a database, name of a collection, JSON object containing user responses
+Output: NONE
+Action: a POST request to send user response to the appropriate collection in Mongo database. 
+
+**storeQKeys**
+
+Input: an array representing questions keys of an experiment
+Output: the same array
+Action: puts the array into redux store so that it's easily accessible for all components
+
+__[:star:]__**setNumQ**
+
+Input: a number representing the index of the questions keys array. This number tells Experiment.js what to display next
+Output: the same number
+Action: puts the number into redux store so that it's easily accessible for all components
+
+__[:star:]__**isFinalQ**
+
+Input: a boolean indicating whether the next question to display is the last question. This boolean determines which type of <button> to show
+Output: the same boolean
+Action: puts the boolean into redux store so that it's easily accessible for all components
+
+__[:star:]__**storeAnswer**
+
+Input: a string representing a question, any representing an answer
+Output: a JSON object containing the inputs
+Action: puts the object into redux store. Notice the redux reducer appends the answer to the existing state. In this way, ```Success.js``` can send all stored answers via API at the end of the experiment. 
+
+**getItemData [Deprecated]**
+
+Reason: there's a lag in receiving the output, which causes errors when displaying experiment items. 
+
+Input: name of a database, name of an uploaded file whose content is a JSON object containing experiment item data
+Output: the content of the file
+Action: puts the output into redux store so that it's easily accessible for all components.
 
 ---
 
@@ -202,58 +269,3 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

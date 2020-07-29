@@ -11,6 +11,10 @@ import {
   ITEM_DATA
 } from "./types"
 
+// Input: name of a database, name of a collection 
+// Output: a JSON object containing the input
+// Action: puts database - collection information into redux store so that 
+//         it's easily accessible for all components
 export const storeDBInfo = (which_database, which_collection) => dispatch => {
   dispatch({
     type: DB_INFO,
@@ -21,6 +25,10 @@ export const storeDBInfo = (which_database, which_collection) => dispatch => {
   })
 }
 
+// Input: name of a database, name of a study, name of an experiment
+// Output: a JSON object containing configuration data of the given experiment 
+//         in the given study 
+// Action: a GET request to get the output. 
 export const getExpt = (which_db, study_name, expt_name) => dispatch => {
   const API_URL = 'https://test-api-615.herokuapp.com/api/feedback/' +
     which_db + '/info/' + 'studyName-' + study_name;
@@ -41,6 +49,10 @@ export const getExpt = (which_db, study_name, expt_name) => dispatch => {
     })
 }
 
+// Input: participant ID
+// Output: participant ID
+// Action: puts participant ID into redux store so that it's easily accessible 
+//         for all components 
 export const storePartID = (part_id) => dispatch => {
   dispatch({
     type: PART_ID,
@@ -48,6 +60,11 @@ export const storePartID = (part_id) => dispatch => {
   })
 }
 
+// Input: name of a database, name of a collection, JSON object containing 
+//        user responses
+// Output: NONE
+// Action: a POST request to send user response to the appropriate collection 
+//         in Mongo database. 
 export const sendExpt = (which_db, which_col, dataToPOST) => dispatch => {
   const API_URL = 'https://test-api-615.herokuapp.com/api/feedback/' +
     which_db + "/" + which_col;
@@ -58,6 +75,10 @@ export const sendExpt = (which_db, which_col, dataToPOST) => dispatch => {
     })
 }
 
+// Input: an array representing questions keys of an experiment
+// Output: the same array
+// Action: puts the array into redux store so that it's easily accessible for 
+//         all components
 export const storeQKeys = (keys) => dispatch => {
   dispatch({
     type: Q_KEYS,
@@ -65,6 +86,11 @@ export const storeQKeys = (keys) => dispatch => {
   })
 }
 
+// Input: a number representing the index of the questions keys array. 
+//        This number tells Experiment.js what to display next
+// Output: the same number
+// Action: puts the number into redux store so that it's easily accessible 
+//         for all components
 export const setNumQ = (num) => dispatch => {
   dispatch({
     type: NUM_Q,
@@ -72,6 +98,11 @@ export const setNumQ = (num) => dispatch => {
   })
 }
 
+// Input: a boolean indicating whether the next question to display is the 
+//        last question. This boolean determines which type of <button> to show
+// Output: the same boolean
+// Action: puts the boolean into redux store so that it's easily accessible 
+//         for all components
 export const isFinalQ = (is) => dispatch => {
   dispatch({
     type: FINAL_Q,
@@ -79,7 +110,10 @@ export const isFinalQ = (is) => dispatch => {
   })
 }
 
-// entry should be in the format of: { "somequestion": "answer" }
+// Input: a string representing a question, any representing an answer
+// Output: a JSON object containing the inputs
+// Action: puts the object into redux store. Notice the redux reducer 
+//         appends the answer to the existing state. In this way, ```Success.js``` can send all stored answers via API at the end of the experiment. 
 export const storeAnswer = (question, answer) => dispatch => {
   dispatch({
     type: ANSWER,
@@ -90,6 +124,14 @@ export const storeAnswer = (question, answer) => dispatch => {
   })
 }
 
+// ###DEPRECATED###
+// Reason: there's a lag in receiving the output, which causes errors when 
+//         displaying experiment items. 
+// Input: name of a database, name of an uploaded file whose content is a 
+//        JSON object containing experiment item data
+// Output: the content of the file
+// Action: puts the output into redux store so that it's easily accessible 
+//         for all components.
 export const getItemData = (which_database, fileName) => dispatch => {
   const API_URL = 'https://test-api-615.herokuapp.com/api/feedback/' +
     which_database + "/itemData";
