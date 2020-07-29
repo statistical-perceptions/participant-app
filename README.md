@@ -196,54 +196,70 @@ Note: the number after ```q``` doesn't have to be in sequence. ```Experiment.js`
 
 ### Actions Descriptions
 
-You may also look at the comments in ```dataActions.js``` for descriptions. It might be easier to just take a look here if you don't want to dig into folders in the branch. Actions that are used when adding a new experiment type is labeled __[:star:]__ in front of their names.  
+You may also look at the comments in ```dataActions.js``` for descriptions. It might be easier to just take a look here if you don't want to dig into folders in the branch. Actions that are used when adding a new experiment type is labeled :star: in front of their names.  
 
 **storeDBInfo**
 
 Input: name of a database, name of a collection 
+
 Output: a JSON object containing the input
+
 Action: puts database - collection information into redux store so that it's easily accessible for all components
 
-__[:star:]__**getExpt**
+:star:**getExpt**
 
 Input: name of a database, name of a study, name of an experiment
+
 Output: a JSON object containing configuration data of the given experiment in the given study 
+
 Action: a GET request to get the output. 
 
 **storePartID**
 
 Input: participant ID
+
 Output: participant ID
+
 Action: puts participant ID into redux store so that it's easily accessible for all components 
 
-__[:star:]__**sendExpt**
+:star:**sendExpt**
 
 Input: name of a database, name of a collection, JSON object containing user responses
+
 Output: NONE
+
 Action: a POST request to send user response to the appropriate collection in Mongo database. 
 
 **storeQKeys**
 
 Input: an array representing questions keys of an experiment
+
 Output: the same array
+
 Action: puts the array into redux store so that it's easily accessible for all components
 
-__[:star:]__**setNumQ**
+:star:**setNumQ**
 
 Input: a number representing the index of the questions keys array. This number tells Experiment.js what to display next
+
 Output: the same number
+
 Action: puts the number into redux store so that it's easily accessible for all components
 
-__[:star:]__**isFinalQ**
+:star:**isFinalQ**
 
 Input: a boolean indicating whether the next question to display is the last question. This boolean determines which type of <button> to show
+
 Output: the same boolean
+
 Action: puts the boolean into redux store so that it's easily accessible for all components
 
-__[:star:]__**storeAnswer**
+:star:**storeAnswer**
 
 Input: a string representing a question, any representing an answer
+
 Output: a JSON object containing the inputs
+
 Action: puts the object into redux store. Notice the redux reducer appends the answer to the existing state. In this way, ```Success.js``` can send all stored answers via API at the end of the experiment. 
 
 **getItemData [Deprecated]**
@@ -251,7 +267,9 @@ Action: puts the object into redux store. Notice the redux reducer appends the a
 Reason: there's a lag in receiving the output, which causes errors when displaying experiment items. 
 
 Input: name of a database, name of an uploaded file whose content is a JSON object containing experiment item data
+
 Output: the content of the file
+
 Action: puts the output into redux store so that it's easily accessible for all components.
 
 ---
