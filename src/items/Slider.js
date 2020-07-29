@@ -7,7 +7,7 @@ import {
   storeAnswer
 } from "../actions/dataActions";
 
-// This component should do the following:
+// This component does the following:
 // - Display question
 // - Display an experiment item (in this case, a slider)
 // - Store answer into Redux store upon submission 
@@ -21,8 +21,6 @@ class Slider extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.showSlider = this.showSlider.bind(this);
-
-    this.setWhichItem = this.setWhichItem.bind(this);
   }
 
   get initialState() {
@@ -40,16 +38,11 @@ class Slider extends Component {
     const { childRef } = this.props;
     childRef(this);
     this.getData();
-    this.setWhichItem("slider");
   }
 
   componentWillUnmount() {
     const { childRef } = this.props;
     childRef(undefined);
-  }
-
-  setWhichItem(str) {
-    this.props.setWhichItem(str);
   }
 
   getData() {
