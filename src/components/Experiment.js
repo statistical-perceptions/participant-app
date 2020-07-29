@@ -8,8 +8,7 @@ import {
   getExpt,
   sendExpt,
   setNumQ,
-  isFinalQ,
-  storeAnswer
+  isFinalQ
 } from "../actions/dataActions";
 
 import Slider from "../items/Slider";
@@ -167,8 +166,7 @@ Experiment.propTypes = {
   participantID: PropTypes.string.isRequired,
   sendExpt: PropTypes.func.isRequired,
   setNumQ: PropTypes.func.isRequired,
-  isFinalQ: PropTypes.func.isRequired,
-  storeAnswer: PropTypes.func.isRequired
+  isFinalQ: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -178,5 +176,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getExpt, sendExpt, setNumQ, isFinalQ, storeAnswer }
+  { getExpt, sendExpt, setNumQ, isFinalQ }
 )(Experiment);

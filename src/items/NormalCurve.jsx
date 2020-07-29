@@ -254,7 +254,7 @@ class NormalCurve extends Component {
         </div> 
         <svg width={this.state.svgWidth} height={this.state.svgHeight} 
           ref={this.svgRef}>
-          <rect opacity="0.2" width="100%" height="100%" fill="red" />
+          <rect opacity="0.2" width="100%" height="100%" />
           {[...Array(this.state.len1).keys()].map(
             (col) =>
               [...Array(this.state.colValHeiS[col]).keys()].map(

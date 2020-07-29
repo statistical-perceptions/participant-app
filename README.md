@@ -196,7 +196,7 @@ Note: the number after ```q``` doesn't have to be in sequence. ```Experiment.js`
 
 ### Actions Descriptions
 
-You may also look at the comments in ```dataActions.js``` for descriptions. It might be easier to just take a look here if you don't want to dig into folders in the branch. Actions that are used when adding a new experiment type is labeled :star: in front of their names.  
+You may also look at the comments in ```dataActions.js``` for descriptions. It might be easier to just take a look here if you don't want to dig into folders in the branch. Actions that are used when adding a new experiment type are labeled :star: in front of their names.  
 
 **storeDBInfo**
 
