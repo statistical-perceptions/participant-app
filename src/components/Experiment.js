@@ -12,7 +12,8 @@ import {
 } from "../actions/dataActions";
 
 import Slider from "../items/Slider";
-import NormalCurve from "../items/NormalCurve.jsx"
+import StaticText from "../items/StaticText";
+import NormalCurve from "../items/NormalCurve.jsx";
 
 class Experiment extends Component {
   constructor(props) {
@@ -61,6 +62,9 @@ class Experiment extends Component {
       this.childNormalCurve.resetState();
       this.nextQuestion();
     }; 
+    if (this.childStaticText) {
+      this.nextQuestion();
+    };
   }
 
   // will be triggered when the next question is the final question 
@@ -121,6 +125,16 @@ class Experiment extends Component {
             </div>
           )
           break;
+        case "static-text":
+          const text = expt[key]["Static Text"];
+          return (
+            <div className="container">
+              <StaticText childRef={ref => (this.childStaticText = ref)}
+                text={text}/>
+              <br/>
+              <this.whichSubmit />
+            </div>
+          )
         case "normal-curve":
           const questionNC = expt[key]["Question"];
           const graph1 = expt[key]["Data1"];
