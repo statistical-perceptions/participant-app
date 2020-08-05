@@ -8,7 +8,7 @@ import {
 
 class Success extends Component {
   componentDidMount() {
-    console.log(this.props);
+    // console.log(this.props);
     const username = this.props.expt.dbInfo.db;
     const expt = this.props.expt.dbInfo.col;
     if (!this.props.expt.answer.length == 0) {
@@ -24,11 +24,11 @@ class Success extends Component {
   }
 
   render() {
+    const link = this.props.expt.exptToDisplay.link;
     return (
       <div className="container">
         <h1>Thank you for your submission!</h1> <br/>
-        Please go back to the Qualtrics survey and complete 
-        the rest of the questions. 
+        Please click on this <a href={link} target="_blank">link</a> to complete the final survey. 
       </div>
     )
   }
