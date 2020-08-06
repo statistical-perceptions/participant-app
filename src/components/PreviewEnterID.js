@@ -79,8 +79,8 @@ class PreviewEnterID extends Component {
         <input type="button" className="btn" value="Start Experiment" 
           onClick={this.showExpt}/>
         <br/><br/>
-        Note: once you click "Ok" for one question, you won't be
-        able to change your response. 
+        Hi Researchers! You may enter any ID to preview your experiment. <br/>
+        Note: experiment preview will <b>NOT</b> record any data. 
       </div>
       )
   }
