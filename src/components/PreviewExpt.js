@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 import { 
   getExpt,
-  sendExpt,
   setNumQ,
   isFinalQ
 } from "../actions/dataActions";
@@ -15,7 +14,7 @@ import Slider from "../items/Slider";
 import StaticText from "../items/StaticText";
 import NormalCurve from "../items/NormalCurve.jsx";
 
-class Experiment extends Component {
+class PreviewExpt extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +32,7 @@ class Experiment extends Component {
     const expt = this.props.match.params.expt;
     if (!this.props.expt.participantID) {
       alert("Please enter your unique ID");
-      this.props.history.push("/expt/" + username + "/" + expt);
+      this.props.history.push("/preview/" + username + "/" + expt);
     }
   }
 
@@ -47,7 +46,7 @@ class Experiment extends Component {
       this.props.isFinalQ(true);
     }
     this.props.setNumQ(this.props.expt.numQ + 1);
-    this.props.history.push("/expt/" + username + "/" + expt + 
+    this.props.history.push("/preview/" + username + "/" + expt + 
       "/" + nextQ.toString());
   }
 
@@ -69,7 +68,7 @@ class Experiment extends Component {
 
   // will be triggered when the next question is the final question 
   onFinalSubmit() {
-    this.props.history.push("/success");
+    this.props.history.push("/previewSuccess");
   }
 
   // decides which button to show for the next question based whether the next
@@ -174,11 +173,10 @@ class Experiment extends Component {
   }
 }
 
-Experiment.propTypes = {
+PreviewExpt.propTypes = {
   getExpt: PropTypes.func.isRequired,
   expt: PropTypes.object.isRequired,
   participantID: PropTypes.string.isRequired,
-  sendExpt: PropTypes.func.isRequired,
   setNumQ: PropTypes.func.isRequired,
   isFinalQ: PropTypes.func.isRequired
 };
@@ -190,5 +188,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getExpt, sendExpt, setNumQ, isFinalQ }
-)(Experiment);
+  { getExpt, setNumQ, isFinalQ }
+)(PreviewExpt);
