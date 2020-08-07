@@ -14,6 +14,7 @@ import {
 import Slider from "../items/Slider";
 import StaticText from "../items/StaticText";
 import NormalCurve from "../items/NormalCurve.jsx";
+import NormalCurveSurvey from "../items/NormalCurveSurvey";
 
 class Experiment extends Component {
   constructor(props) {
@@ -79,8 +80,11 @@ class Experiment extends Component {
       <div>
         {
           !this.props.expt.isFinalQ ? 
-          <input type="submit" className="btn" value="Next Question"
-            onClick={this.onNextQuestion}/> :
+          <div>
+            Please click "OK" above before clicking "Next Question" <br/>
+            <input type="submit" className="btn" value="Next Question"
+              onClick={this.onNextQuestion}/>
+          </div> :
           <div>
             This is the final question. <p></p>
             <input type="submit" className="btn" value="Submit"
