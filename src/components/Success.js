@@ -19,16 +19,20 @@ class Success extends Component {
         finalObj[entry.que] = entry.ans
       })
       console.log(finalObj);
-      this.props.sendExpt(username, expt, finalObj);
+      // this.props.sendExpt(username, expt, finalObj);
     }
   }
 
   render() {
     const link = this.props.expt.exptToDisplay.link;
+    const participantID = this.props.expt.participantID;
     return (
       <div className="container">
         <h1>Thank you for your submission!</h1> <br/>
-        Please click on this <a href={link} target="_blank">link</a> to complete the final survey. 
+        You are <b>67%</b> done with the experiment! Now you will need to:  <br/><br/>
+        1. Please copy your ID shown below: <br/>
+        <b>{participantID}</b> <br/> 
+        2. Please click on this <a href={link} target="_blank">link</a>, paste your ID in the first page and complete the final survey. 
       </div>
     )
   }

@@ -226,7 +226,7 @@ class NormalCurveSurvey extends Component {
     var x = svgP.x - distFromCent + this.state.mousePointerRange;
     var col = Math.round((x - this.state.axisStart) / this.state.distancing) + variance;
     var colRelative = Math.round((x - this.state.axisStart) / this.state.distancing) + 1;
-    console.log(col, colRelative, variance);
+    // console.log(col, colRelative, variance);
     return [col, colRelative];
   }
 
@@ -293,7 +293,7 @@ class NormalCurveSurvey extends Component {
     var cols = this.svgColReturn(e, dragger);
     var col = cols[0];
     var colRelative = cols[1]
-    console.log(col);
+    // console.log(col);
     this.svgColPlacement(col, colRelative, dragger);
     this.curveArea();
   }

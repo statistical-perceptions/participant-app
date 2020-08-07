@@ -86,6 +86,7 @@ class Experiment extends Component {
               onClick={this.onNextQuestion}/>
           </div> :
           <div>
+            Please click "OK" above before clicking "Submit" <br/>
             This is the final question. <p></p>
             <input type="submit" className="btn" value="Submit"
               onClick={this.onFinalSubmit}/>
@@ -147,7 +148,7 @@ class Experiment extends Component {
           const dataFileContent = expt[key]["FileContent"];
           return (
             <div className="container">
-              <NormalCurve childRef={ref => (this.childNormalCurve = ref)} 
+              <NormalCurveSurvey childRef={ref => (this.childNormalCurve = ref)} 
                 questionNC={questionNC} graph1={graph1} graph2={graph2} 
                 fileName={dataFileName} data={dataFileContent} />
               <br/>
