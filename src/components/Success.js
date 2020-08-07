@@ -19,7 +19,7 @@ class Success extends Component {
         finalObj[entry.que] = entry.ans
       })
       console.log(finalObj);
-      // this.props.sendExpt(username, expt, finalObj);
+      this.props.sendExpt(username, expt, finalObj);
     }
   }
 
