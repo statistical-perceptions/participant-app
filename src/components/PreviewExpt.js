@@ -78,9 +78,13 @@ class PreviewExpt extends Component {
       <div>
         {
           !this.props.expt.isFinalQ ? 
-          <input type="submit" className="btn" value="Next Question"
-            onClick={this.onNextQuestion}/> :
           <div>
+            Please click "OK" above before clicking "Next Question" <br/>
+            <input type="submit" className="btn" value="Next Question"
+              onClick={this.onNextQuestion}/>
+          </div> :
+          <div>
+            Please click "OK" above before clicking "Submit" <br/>
             This is the final question. <p></p>
             <input type="submit" className="btn" value="Submit"
               onClick={this.onFinalSubmit}/>
