@@ -11,6 +11,7 @@ class Success extends Component {
     // console.log(this.props);
     const username = this.props.expt.dbInfo.db;
     const expt = this.props.expt.dbInfo.col;
+    // console.log(this.props.expt.exptToDisplay);
     if (!this.props.expt.answer.length == 0) {
       const finalObj = {
         participantID: this.props.expt.participantID
@@ -18,7 +19,8 @@ class Success extends Component {
       this.props.expt.answer.map(entry => {
         finalObj[entry.que] = entry.ans
       })
-      console.log(finalObj);
+      finalObj["condition"] = this.props.expt.exptToDisplay.condition;
+      // console.log(finalObj);
       this.props.sendExpt(username, expt, finalObj);
     }
   }
