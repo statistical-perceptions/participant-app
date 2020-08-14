@@ -76,8 +76,9 @@ class Slider extends Component {
 
   onSubmit() {
     const question = this.props.question;
+    const sliderCSVKey = this.props.sliderCSVKey;
     // put answer in our redux store to be sent via API later
-    this.props.storeAnswer(question, this.state.value);
+    this.props.storeAnswer(sliderCSVKey, this.state.value);
     this.setState({ submitted: true });
   }
 

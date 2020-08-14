@@ -9,11 +9,18 @@ import {
 class StaticText extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = this.initialState;
     
     // ###TODO###: change the name of the following binding if you see fit
     // this binds the state to the showItem function below
     this.showItem = this.showItem.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  get initialState() {
+    return {
+      submitted: false
+    };
   }
 
   // additional setup to communicate with Experiment.js
@@ -46,11 +53,22 @@ class StaticText extends Component {
     )
   }
 
+  onSubmit() {
+    this.setState({ submitted: true });
+  }
+
   // please render anything else you see fit
   render() {
     return (
       <div className="container">
-        {this.showItem()} <br/>
+        {this.showItem()} <br/><br/>
+        {
+          !this.state.submitted && 
+          <div>
+            <input type="submit" className="btn" value="Ok"
+              onClick={this.onSubmit}/> <br/>
+          </div>
+        }
       </div>
     )
   }

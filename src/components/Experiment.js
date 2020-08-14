@@ -119,11 +119,12 @@ class Experiment extends Component {
           const lowRange = expt[key]["lowRange"];
           const highRange = expt[key]["highRange"];
           const question = expt[key]["Question"];
+          const sliderCSVKey = expt[key]["slider-key"];
           return (
             <div className="container">
               <Slider childRef={ref => (this.childSlider = ref)}
-                question={question} lowRange={lowRange} 
-                highRange={highRange} />
+                question={question} sliderCSVKey={sliderCSVKey}
+                lowRange={lowRange} highRange={highRange} />
               <br/>
               {/* keep the following line */}
               <this.whichSubmit />
