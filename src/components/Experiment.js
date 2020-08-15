@@ -15,6 +15,7 @@ import Slider from "../items/Slider";
 import StaticText from "../items/StaticText";
 import NormalCurve from "../items/NormalCurve.jsx";
 import NormalCurveSurvey from "../items/NormalCurveSurvey";
+import Histogram from "../items/Histogram";
 
 class Experiment extends Component {
   constructor(props) {
@@ -152,6 +153,20 @@ class Experiment extends Component {
               <NormalCurveSurvey childRef={ref => (this.childNormalCurve = ref)} 
                 questionNC={questionNC} graph1={graph1} graph2={graph2} 
                 fileName={dataFileName} data={dataFileContent} />
+              <br/>
+              <this.whichSubmit />
+            </div>
+          )
+        case "threshold":
+          const questionHist = expt[key]["Question"];
+          const histLowRange = expt[key]["lowRange"];
+          const histHighRange = expt[key]["highRange"];
+          const histFileContent = expt[key]["FileContent"];
+          return (
+            <div className="container">
+              <Histogram childRef={ref => (this.childHistogram = ref)} 
+                questionHist={questionHist} histLowRange={histLowRange}
+                histHighRange={histHighRange} histData={histFileContent} />
               <br/>
               <this.whichSubmit />
             </div>
