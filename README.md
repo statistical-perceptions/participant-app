@@ -9,9 +9,26 @@ How Redux works: https://www.youtube.com/watch?v=nFryvdyMI8s&t=238s
 
 ## Table of Contents
 
+- [Getting Started](#start)
 - [Create a new Experiment Type](#create)
 - [Experiment Configuration Format](#exptformat)
 - [Actions Descriptions](#actions)
+
+---
+
+<a name="start"/>
+
+## Getting Started 
+
+Before adding your component to the participant app, you should have already added it to the researcher app and created an experiment that contains your component. 
+
+Run ```npm install``` and  start up the app with ```npm run``` or ```yarn start```. You will be directed to a page with title "This is the home page". This is because the app recoginizes what experiment to display via URL query. Go back to your experiment in the researcher app, copy the link over. Below is an example: 
+```
+http://localhost:3001/participant-app/#/participant-app/expt/user1/test-slider
+```
+where ```user1``` is username, ```test``` is the study name, and ```slider``` is the experiment name. 
+
+If you wish to use the Redux store while developing (recommended), please uncommnet the line in **src/store.js** and install chrome extensions **React Developer Tools** and **Redux DevTools**. Please make sure to comment the line again before deploying your app. 
 
 ---
 
