@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 import { 
   getExpt,
+  sendExpt,
   setNumQ,
   isFinalQ
 } from "../actions/dataActions";
@@ -13,8 +14,10 @@ import {
 import Slider from "../items/Slider";
 import StaticText from "../items/StaticText";
 import NormalCurve from "../items/NormalCurve.jsx";
+import NormalCurveSurvey from "../items/NormalCurveSurvey";
+import Histogram from "../items/Histogram";
 
-class PreviewExpt extends Component {
+class Experiment extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -79,15 +82,18 @@ class PreviewExpt extends Component {
         {
           !this.props.expt.isFinalQ ? 
           <div>
-            Please click "OK" above before clicking "Next Question" <br/>
+            Please click "OK" above before clicking "Next Question" <br/><br/>
             <input type="submit" className="btn" value="Next Question"
               onClick={this.onNextQuestion}/>
           </div> :
           <div>
-            Please click "OK" above before clicking "Submit" <br/>
+            Please click "OK" above before clicking "Submit" <br/><br/>
             This is the final question. <p></p>
             <input type="submit" className="btn" value="Submit"
               onClick={this.onFinalSubmit}/>
+            <div>
+              <br/><br/><br/>
+            </div>
           </div>
         }
       </div>
@@ -117,11 +123,12 @@ class PreviewExpt extends Component {
           const lowRange = expt[key]["lowRange"];
           const highRange = expt[key]["highRange"];
           const question = expt[key]["Question"];
+          const sliderCSVKey = expt[key]["slider-key"];
           return (
             <div className="container">
               <Slider childRef={ref => (this.childSlider = ref)}
-                question={question} lowRange={lowRange} 
-                highRange={highRange} />
+                question={question} sliderCSVKey={sliderCSVKey}
+                lowRange={lowRange} highRange={highRange} />
               <br/>
               {/* keep the following line */}
               <this.whichSubmit />
@@ -142,13 +149,36 @@ class PreviewExpt extends Component {
           const questionNC = expt[key]["Question"];
           const graph1 = expt[key]["graph1key"];
           const graph2 = expt[key]["graph2key"];
+          const questionNCKey = expt[key]["normal-curve-question-key"];
+          const graph1legend = expt[key]["normal-curve-legend-key1"];
+          const graph2legend = expt[key]["normal-curve-legend-key2"];
           const dataFileName = expt[key]["FileName"];
           const dataFileContent = expt[key]["FileContent"];
           return (
             <div className="container">
-              <NormalCurve childRef={ref => (this.childNormalCurve = ref)} 
+              <NormalCurveSurvey childRef={ref => (this.childNormalCurve = ref)} 
                 questionNC={questionNC} graph1={graph1} graph2={graph2} 
+                questionNCKey={questionNCKey} 
+                graph1legend={graph1legend}
+                graph2legend={graph2legend}
                 fileName={dataFileName} data={dataFileContent} />
+              <br/>
+              <this.whichSubmit />
+            </div>
+          )
+        case "threshold":
+          const questionHist = expt[key]["Question"];
+          const questionHistKey = expt[key]["threshold-key"];
+          const histLowRange = expt[key]["lowRange"];
+          const histHighRange = expt[key]["highRange"];
+          const histFileContent = expt[key]["FileContent"];
+          return (
+            <div className="container">
+              <Histogram childRef={ref => (this.childHistogram = ref)} 
+                questionHist={questionHist} 
+                questionHistKey={questionHistKey}
+                histLowRange={histLowRange}
+                histHighRange={histHighRange} histData={histFileContent} />
               <br/>
               <this.whichSubmit />
             </div>
@@ -177,10 +207,11 @@ class PreviewExpt extends Component {
   }
 }
 
-PreviewExpt.propTypes = {
+Experiment.propTypes = {
   getExpt: PropTypes.func.isRequired,
   expt: PropTypes.object.isRequired,
   participantID: PropTypes.string.isRequired,
+  sendExpt: PropTypes.func.isRequired,
   setNumQ: PropTypes.func.isRequired,
   isFinalQ: PropTypes.func.isRequired
 };
@@ -192,5 +223,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getExpt, setNumQ, isFinalQ }
-)(PreviewExpt);
+  { getExpt, sendExpt, setNumQ, isFinalQ }
+)(Experiment);

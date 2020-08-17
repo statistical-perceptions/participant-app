@@ -79,7 +79,7 @@ class EnterID extends Component {
         <input type="button" className="btn" value="Start Experiment" 
           onClick={this.showExpt}/>
         <br/><br/>
-        Note: once you click "Ok" for one question, you won't be
+        Note: once you click "Ok" for a question, you won't be
         able to change your response. 
       </div>
       )

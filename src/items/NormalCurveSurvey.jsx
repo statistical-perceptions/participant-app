@@ -7,6 +7,7 @@ import {
   getExpt,
   storeAnswer
 } from "../actions/dataActions";
+import { forceCenter } from 'd3';
 
 class NormalCurveSurvey extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class NormalCurveSurvey extends Component {
 
   get initialState() {
     const data = this.props.data;
-    console.log(data);
+    // console.log(data);
     const unitHeight = data["max-height"];
     const circRad = data["circle-radius"];
     const len1 = data["len1"];
@@ -160,7 +161,7 @@ class NormalCurveSurvey extends Component {
     let tickDist;
     let rangeVal;
     const axisLength = colNumInit * colNumVal;
-    console.log("tickNum", data["tickNum"], axisLength % (parseInt(data["tickNum"]) + 1) === 0);
+    // console.log("tickNum", data["tickNum"], axisLength % (parseInt(data["tickNum"]) + 1) === 0);
     if ("tickNum" in data && axisLength % (parseInt(data["tickNum"]) + 1) === 0) {
       tickNum = parseInt(data["tickNum"]);
       tickDist = colNumInit * distancing / (tickNum + 1);
@@ -253,9 +254,7 @@ class NormalCurveSurvey extends Component {
     const answer = {
       [key1]: this.state.col11,
       [key2]: this.state.col21,
-      area: this.state.overlapVals[
-        Math.abs(this.state.col22 - this.state.col11)
-      ]
+      area: this.areaRef.current.innerHTML
     }
     this.props.storeAnswer(question, answer);
     this.setState({ submitted: true });
@@ -439,11 +438,16 @@ class NormalCurveSurvey extends Component {
 
   render() {
     return (
-      <div
+      <div 
         onMouseMove={e => this.triDrag(e)}
         onMouseUp={e => this.triUp(e)}>
         <div className="container">
-          <h3>Question: {this.props.questionNC}</h3>
+          <h3>Question: </h3>
+          <div style={{ width: "60%", margin: "auto" }}>
+            <p style={{ textAlign: "left" }}>
+              {this.props.questionNC}
+            </p>
+          </div>
         </div> 
         <svg width={this.state.svgWidth} height={this.state.svgHeight + 10} ref={this.svgRef}>
           {/* <rect opacity="0.2" width="100%" height="100%" fill="red"/> */}
@@ -532,13 +536,14 @@ class NormalCurveSurvey extends Component {
           {this.props.graph2}
         </div>
         <br />
-        <h4>Area Under Curve: <span ref={this.areaRef}></span> | First x-coordinate: {this.state.col11} | Second x-coordinate: {this.state.col21} </h4>
+        <h4>First x-coordinate: {this.state.col11} | Second x-coordinate: {this.state.col21} </h4>
+        <span style={{ color: "white" }} ref={this.areaRef}></span>
         {
           !this.state.submitted && 
           <div>
             <input type="submit" className="btn" value="Ok"
               onClick={this.onSubmit}/> <br/>
-            <p style={{ color: "grey" }}>
+            <p style={{ color: "grey", width: "40%", margin: "auto" }}>
               Reminder: Once you click "OK", your response to this question 
               will be recorded, and you won't be able to change your answer. 
             </p>
