@@ -13,13 +13,18 @@ import Success from "./components/Success";
 import PreviewEnterID from "./components/PreviewEnterID";
 import PreviewExpt from "./components/PreviewExpt";
 import PreviewSuccess from "./components/PreviewSuccess"
+import NormalCurveSurvey from "./items/NormalCurveSurvey";
+
+var data = require("./inputDataPy2.json");
 
 function App() {
   return (
     <Provider store={store}>
       <HashRouter basename="/participant-app/">
         <div className="App">
-          <Route exact path="/" component={HomePage}/>
+          {/* <Route exact path="/" component={HomePage}/> */}
+          <Route exact path="/" 
+          render={(props) => (<NormalCurveSurvey data={data} />)}/>
 
           <Route exact path="/success" component={Success}/>
           <Route exact path="/expt/:username/:expt" component={EnterID}/>

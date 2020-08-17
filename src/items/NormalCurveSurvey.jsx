@@ -160,6 +160,7 @@ class NormalCurveSurvey extends Component {
     let tickDist;
     let rangeVal;
     const axisLength = colNumInit * colNumVal;
+    console.log("tickNum", data["tickNum"], axisLength % (parseInt(data["tickNum"]) + 1) === 0);
     if ("tickNum" in data && axisLength % (parseInt(data["tickNum"]) + 1) === 0) {
       tickNum = parseInt(data["tickNum"]);
       tickDist = colNumInit * distancing / (tickNum + 1);
@@ -499,10 +500,29 @@ class NormalCurveSurvey extends Component {
             }
             onMouseDown={(e, num) => this.triMouseDown(e, 2)}
           />
+          {[...Array(this.state.tickNum).keys()].map(
+            (tick) =>
+              <rect
+                width="2"
+                height="20"
+                fill="black"
+                x={this.state.axisStart + (this.state.tickDist * (tick + 1)) - 1} 
+                y={this.state.ceilDist + 20}
+              />
+          )}
+          {[...Array(this.state.tickNum).keys()].map(
+            (tick) =>
+            <text 
+            textAnchor="middle" 
+            x={this.state.axisStart + (this.state.tickDist * (tick + 1)) - 1} 
+            y={this.state.ceilDist + 55}>
+              {this.state.lowVal + (this.state.rangeVal * (tick + 1))}
+            </text>
+          )}
           <text text-anchor="middle" x={this.state.axisStart} y={this.state.ceilDist + 55}>{this.state.lowVal}</text>
           <text text-anchor="middle" x={this.state.axisStart + this.state.axisEnd} y={this.state.ceilDist + 55}>{this.state.lowVal + this.state.colNum}</text>
-                    Sorry, please use a different browser.
-                </svg>
+          Sorry, please use a different browser.
+        </svg>
         <br />
         <div class="boxed">
           <div class="color-box" style={{ backgroundColor: "DarkCyan" }}></div>
