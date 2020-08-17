@@ -65,7 +65,7 @@ class Histogram extends Component {
   }
 
   onSubmit() {
-    const question = this.props.questionHist;
+    const question = this.props.questionHistKey;
     const answer = this.state.sliderPos;
     this.props.storeAnswer(question, answer);
     this.setState({ submitted: true });

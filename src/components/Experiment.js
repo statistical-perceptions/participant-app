@@ -146,12 +146,18 @@ class Experiment extends Component {
           const questionNC = expt[key]["Question"];
           const graph1 = expt[key]["graph1key"];
           const graph2 = expt[key]["graph2key"];
+          const questionNCKey = expt[key]["normal-curve-question-key"];
+          const graph1legend = expt[key]["normal-curve-legend-key1"];
+          const graph2legend = expt[key]["normal-curve-legend-key2"];
           const dataFileName = expt[key]["FileName"];
           const dataFileContent = expt[key]["FileContent"];
           return (
             <div className="container">
               <NormalCurveSurvey childRef={ref => (this.childNormalCurve = ref)} 
                 questionNC={questionNC} graph1={graph1} graph2={graph2} 
+                questionNCKey={questionNCKey} 
+                graph1legend={graph1legend}
+                graph2legend={graph2legend}
                 fileName={dataFileName} data={dataFileContent} />
               <br/>
               <this.whichSubmit />
@@ -159,13 +165,16 @@ class Experiment extends Component {
           )
         case "threshold":
           const questionHist = expt[key]["Question"];
+          const questionHistKey = expt[key]["threshold-key"];
           const histLowRange = expt[key]["lowRange"];
           const histHighRange = expt[key]["highRange"];
           const histFileContent = expt[key]["FileContent"];
           return (
             <div className="container">
               <Histogram childRef={ref => (this.childHistogram = ref)} 
-                questionHist={questionHist} histLowRange={histLowRange}
+                questionHist={questionHist} 
+                questionHistKey={questionHistKey}
+                histLowRange={histLowRange}
                 histHighRange={histHighRange} histData={histFileContent} />
               <br/>
               <this.whichSubmit />

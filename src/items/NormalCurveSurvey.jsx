@@ -171,9 +171,9 @@ class NormalCurveSurvey extends Component {
   }
 
   onSubmit() {
-    const question = this.props.questionNC;
-    const key1 = this.props.graph1;
-    const key2 = this.props.graph2;
+    const question = this.props.questionNCKey;
+    const key1 = this.props.graph1legend;
+    const key2 = this.props.graph2legend;
     const answer = {
       [key1]: this.state.col11,
       [key2]: this.state.col21,
