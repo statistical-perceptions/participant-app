@@ -249,6 +249,7 @@ class NormalCurve extends Component {
   render() {
     return (
       <div onMouseMove={e => this.triDrag(e)} onMouseUp={e => this.triUp(e)}>
+        {/* clean up question */}
         <div className="container">
           <h3>Question: {this.props.questionNC}</h3>
         </div> 

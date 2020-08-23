@@ -48,7 +48,11 @@ class StaticText extends Component {
   showItem() {
     return (
       <div className="container">
-        {this.props.text}
+        <div style={{ width: "60%", margin: "auto" }}>
+          <p style={{ textAlign: "left" }}>
+            {this.props.text}
+          </p>
+        </div>
       </div>
     )
   }
