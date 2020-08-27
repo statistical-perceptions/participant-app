@@ -14,13 +14,22 @@ import PreviewEnterID from "./components/PreviewEnterID";
 import PreviewExpt from "./components/PreviewExpt";
 import PreviewSuccess from "./components/PreviewSuccess"
 
+import NormalCurveSurvey from "./items/NormalCurveSurvey";
+const data = require('./inputDataPy2.json');
+const data2 = require('./inputDataPy4.json');
+
 
 function App() {
   return (
     <Provider store={store}>
       <HashRouter basename="/participant-app/">
         <div className="App">
-          <Route exact path="/" component={HomePage}/>
+          {/* <Route exact path="/" component={HomePage}/> */}
+          <Route 
+          exact path="/" 
+          component={
+            () => <NormalCurveSurvey data={data2} graph1="green" graph2="red" /> 
+            }/>
 
           <Route exact path="/success" component={Success}/>
           <Route exact path="/expt/:username/:expt" component={EnterID}/>
