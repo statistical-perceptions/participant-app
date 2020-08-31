@@ -222,6 +222,22 @@ class NormalCurveSurvey extends Component {
       maxLength = len2;
     }
 
+    let color1;
+    if ("color1" in data) {
+      color1 = data["color1"];
+    }
+    else {
+      color1 = "DarkCyan";
+    }
+
+    let color2;
+    if ("color2" in data) {
+      color2 = data["color2"];
+    }
+    else {
+      color2 = "Crimson";
+    }
+
     return {
       axisLength: data["axis-length"],
       startPos1: data["startPos1"],
@@ -273,7 +289,9 @@ class NormalCurveSurvey extends Component {
       edgeLim: edgeLim,
       fixCurve1: fixCurve1,
       fixCurve2: fixCurve2,
-      maxLength: maxLength
+      maxLength: maxLength,
+      color1: color1,
+      color2: color2
     };
   }
 
@@ -326,8 +344,8 @@ class NormalCurveSurvey extends Component {
     onMouseLeave={e => this.hideTag1(e)}
     onMouseMove={e => this.updateTag1(e)} 
     className="icon circle1" 
-    stroke="DarkCyan" 
-    fill="DarkCyan" 
+    stroke={this.state.color1}
+    fill={this.state.color1}
     fillOpacity="0.3" 
     strokeOpacity="0.3" cx={CX} cy={CY} r={this.state.circRad}>
     </circle>;
@@ -347,8 +365,8 @@ class NormalCurveSurvey extends Component {
     onMouseLeave={e => this.hideTag2(e)}
     onMouseMove={e => this.updateTag2(e)} 
     className="icon circle2" 
-    stroke="Crimson" 
-    fill="Crimson" 
+    stroke={this.state.color2}
+    fill={this.state.color2}
     fillOpacity="0.3" 
     strokeOpacity="0.3" cx={CX} cy={CY} r={this.state.circRad}>
 
