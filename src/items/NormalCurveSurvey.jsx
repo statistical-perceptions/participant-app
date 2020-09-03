@@ -228,7 +228,7 @@ class NormalCurveSurvey extends Component {
       color1 = data["color1"];
     }
     else {
-      color1 = "DarkCyan";
+      color1 = "CornflowerBlue";
     }
 
     let color2;
@@ -687,10 +687,10 @@ class NormalCurveSurvey extends Component {
         </svg>
         <br />
         <div class="boxed">
-          <div class="color-box" style={{ backgroundColor: "DarkCyan" }}></div>
+          <div class="color-box" style={{ backgroundColor: this.state.color1 }}></div>
           {this.props.graph1}
           <br />
-          <div class="color-box" style={{ backgroundColor: "Crimson" }}></div>
+          <div class="color-box" style={{ backgroundColor: this.state.color2 }}></div>
           {this.props.graph2}
         </div>
         <br />
