@@ -20,6 +20,8 @@ class NormalCurveSurvey extends Component {
     this.lengthRef = React.createRef();
     this.startPos1Ref = React.createRef();
     this.startPos2Ref = React.createRef();
+    this.tagRef1 = React.createRef();
+    this.tagRef2 = React.createRef();
 
     this.dotReturn = this.dotReturn.bind(this);
     this.curveArea = this.curveArea.bind(this);
@@ -29,6 +31,14 @@ class NormalCurveSurvey extends Component {
     this.curveArea = this.curveArea.bind(this);
     this.svgColReturn = this.svgColReturn.bind(this);
     this.svgColReturn = this.svgColReturn.bind(this);
+    this.updateTag1 = this.updateTag1.bind(this);
+    this.updateTag2 = this.updateTag2.bind(this);
+    this.displayTag1 = this.displayTag1.bind(this);
+    this.displayTag2 = this.displayTag2.bind(this);
+    this.hideTag1 = this.hideTag1.bind(this);
+    this.hideTag2 = this.hideTag2.bind(this);
+    this.returnTri1 = this.returnTri1.bind(this);
+    this.returnTri2 = this.returnTri2.bind(this);
 
     this.resetState = this.resetState.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -57,14 +67,17 @@ class NormalCurveSurvey extends Component {
 
     const axisStart = Math.ceil(edgeLength / 2);
     const axisStartCol = edgeCol;
+    // console.log("startCol", axisStartCol);
     const axisWidth = length - ((len1 / 2 + 1) * distancing + (len2 / 2 + 1) * distancing - 1);
     const axisEndCol = internalLength / distancing;
     const axisEnd = axisEndCol * distancing;
 
-    const triCent1 = (0.5 * len1 + 1) * distancing;
-    const triCent2 = (0.5 * len2 + 1) * distancing;
+    const triCent1 = Math.ceil(0.5 * len1) * distancing;
+    const triCent2 = Math.ceil(0.5 * len2) * distancing;
     const triCentCol1 = Math.ceil(triCent1 / distancing);
     const triCentCol2 = Math.ceil(triCent2 / distancing);
+    // console.log("triCentCol1: ", triCentCol1);
+    // console.log("triCentCol2: ", triCentCol2);
 
     const variance1 = Math.abs(Math.ceil(len1 / 2) - axisStartCol);
     const variance2 = Math.abs(Math.ceil(len2 / 2) - axisStartCol);
@@ -79,73 +92,89 @@ class NormalCurveSurvey extends Component {
 
     const startPos1 = data["startPos1"];
     let distancing1 = startPos1 + variance1 - 1;
-    let col11 = startPos1;
+    let col11 = startPos1 + variance1;
     let col12 = startPos1 + len1 - 1;
+    let col11Rel = startPos1;
 
-    const startPos2 = data["startPos2"];
-    let distancing2 = startPos2 + variance2 - 1;
-    let col21 = startPos2;
-    let col22 = startPos2 + len2 - 1;
-
-
+    let variance = axisStartCol - variance1;
     if (edgeLim) {
-      let variance = axisStartCol - variance2;
-      if (startPos2 + variance < axisStartCol - 1) {
-        distancing2 = axisStartCol - 1;
-        col21 = 0;
-        col22 = len2 - 1;
-      }
-      else if (startPos2 + variance + len2 + 1 > axisStartCol + axisEndCol) {
-        const endCol = axisEndCol - len2;
-        distancing2 = axisStartCol + endCol - 1;
-        col21 = endCol;
-        col22 = endCol + len2 - 1;
-      }
-      else {
-        distancing2 = startPos2 + axisStartCol - 1;
-        col21 = startPos2;
-        col22 = startPos2 + len2 - 1;
-      }
-      
-      variance = axisStartCol - variance1;
-      if (startPos1 + variance < axisStartCol - 1) {
-        distancing1 = axisStartCol - 1;
+      if (col11 < axisStartCol - 1) {
+        distancing1 = (axisStartCol - 1) * distancing;
         col11 = 0;
         col12 = len1 - 1;
       }
-      else if (startPos1 + variance + len1 + 1 > axisStartCol + axisEndCol) {
+      else if (col11 + len1 + 1 > axisStartCol + axisEndCol) {
         const endCol = axisEndCol - len1;
-        distancing1 = axisStartCol + endCol - 1;
+        distancing1 = distancing * (axisStartCol + endCol - 1);
         col11 = endCol;
-        col12 = endCol + len1 - 1;
+        col12 = endCol + len2 - 1;
       }
       else {
-        distancing1 = startPos1 + axisStartCol - 1;
-        col11 = startPos1;
-        col12 = startPos1 + len1 - 1;
+        distancing1 = distancing * col11;
+        col11 = col11Rel - variance;
+        col12 = col11Rel - variance + len1 - 1;
       }
     }
     else {
+      // col11 = col11 - 1;
       if (col11 + triCentCol1 < axisStartCol) {
-        distancing1 = variance1 - 1;
+        distancing1 = (variance1) * distancing;
         col11 = 0;
         col12 = len1 - 1;
       }
       else if (col11 + triCentCol1 > axisStartCol + axisEndCol) {
-        distancing1 = variance1 + axisEndCol - 1;
+        distancing1 = distancing * (variance1 + axisEndCol);
         col11 = axisEndCol;
         col12 = axisEndCol + len1 - 1;
       }
-  
+      else {
+        distancing1 = distancing * (col11);
+        col11 = col11Rel;
+        col12 = col11Rel + len1 - 1;
+      }
+    }
+
+    const startPos2 = data["startPos2"];
+    let distancing2 = startPos2 + variance2 - 1;
+    let col21 = startPos2 + variance2;
+    let col22 = startPos2 + len2 - 1;
+    let col21Rel = startPos2;
+
+    variance = axisStartCol - variance2;
+    if (edgeLim) {
+      if (col21 < axisStartCol - 1) {
+        distancing2 = (axisStartCol - 1) * distancing;
+        col21 = 0;
+        col22 = len2 - 1;
+      }
+      else if (col21 + len2 + 1 > axisStartCol + axisEndCol) {
+        const endCol = axisEndCol - len2;
+        distancing2 = distancing * (axisStartCol + endCol);
+        col21 = endCol;
+        col22 = endCol + len2 - 1;
+      }
+      else {
+        distancing2 = distancing * col21;
+        col21 = col21Rel - variance;
+        col22 = col21Rel - variance + len2 - 1;
+      }
+    }
+    else {
+      // col21 = col21 - 1;
       if (col21 + triCentCol2 < axisStartCol) {
-        distancing2 = variance2 - 1;
+        distancing2 = (variance2) * distancing;
         col21 = 0;
         col22 = len2 - 1;
       }
       else if (col21 + triCentCol2 > axisStartCol + axisEndCol) {
-        distancing2 = variance2 + axisEndCol - 1;
+        distancing2 = distancing * (variance2 + axisEndCol - 1);
         col21 = axisEndCol;
         col22 = axisEndCol + len2 - 1;
+      }
+      else {
+        distancing2 = distancing * (col21);
+        col21 = col21Rel;
+        col22 = col21Rel + len2 - 1;
       }
     }
 
@@ -173,6 +202,43 @@ class NormalCurveSurvey extends Component {
       rangeVal = axisLength;
     }
 
+    let fixCurve1;
+    if ("fixCurve1" in data) {
+      fixCurve1 = data["fixCurve1"];
+    }
+    else {
+      fixCurve1 = false;
+    }
+
+    let fixCurve2;
+    if ("fixCurve2" in data) {
+      fixCurve2 = data["fixCurve2"];
+    }
+    else {
+      fixCurve2 = false;
+    }
+
+    let maxLength = len1;
+    if (len2 > len1) {
+      maxLength = len2;
+    }
+
+    let color1;
+    if ("color1" in data) {
+      color1 = data["color1"];
+    }
+    else {
+      color1 = "DarkCyan";
+    }
+
+    let color2;
+    if ("color2" in data) {
+      color2 = data["color2"];
+    }
+    else {
+      color2 = "Crimson";
+    }
+
     return {
       axisLength: data["axis-length"],
       startPos1: data["startPos1"],
@@ -188,8 +254,8 @@ class NormalCurveSurvey extends Component {
       len2: len2,
       colValHeiS2: data["colValHeiS2"],
       distancing: distancing,
-      distancing1 : distancing1 * distancing,
-      distancing2: distancing2 * distancing,
+      distancing1 : distancing1,
+      distancing2: distancing2,
       triCent1: triCentCol1 * distancing,
       triCentCol1: triCentCol1,
       triCent2: triCentCol2 * distancing,
@@ -221,7 +287,12 @@ class NormalCurveSurvey extends Component {
       tickNum: tickNum,
       tickDist: tickDist,
       rangeVal: rangeVal,
-      edgeLim: edgeLim
+      edgeLim: edgeLim,
+      fixCurve1: fixCurve1,
+      fixCurve2: fixCurve2,
+      maxLength: maxLength,
+      color1: color1,
+      color2: color2
     };
   }
 
@@ -229,16 +300,16 @@ class NormalCurveSurvey extends Component {
     this.setState(this.initialState);
   }
 
-  componentDidMount() {
-    const { childRef } = this.props;
-    childRef(this);
-    this.getData();
-  }
+  // componentDidMount() {
+  //   const { childRef } = this.props;
+  //   childRef(this);
+  //   this.getData();
+  // }
 
-  componentWillUnmount() {
-    const { childRef } = this.props;
-    childRef(undefined);
-  }
+  // componentWillUnmount() {
+  //   const { childRef } = this.props;
+  //   childRef(undefined);
+  // }
 
   getData() {
     const db = this.props.expt.dbInfo.db;
@@ -263,10 +334,20 @@ class NormalCurveSurvey extends Component {
   dotReturn(xPos, yPos) {
     const xPosOrig = xPos;
 
-    const CX = this.state.distancing1 + this.state.distancing * xPosOrig + 10;
+    const CX = this.state.distancing1 + this.state.distancing * (xPosOrig + 1) + this.state.circRad - this.state.maxLength + 10;
     const CY = this.state.ceilDist - this.state.distancing * yPos + 10;
 
-    var hard = <circle className="icon" stroke="DarkCyan" fill="DarkCyan" fillOpacity="0.3" strokeOpacity="0.3" cx={CX} cy={CY} r={this.state.circRad}></circle>;
+    var hard = 
+    <circle 
+    onMouseEnter={e => this.displayTag1(e)}
+    onMouseLeave={e => this.hideTag1(e)}
+    onMouseMove={e => this.updateTag1(e)} 
+    className="icon circle1" 
+    stroke={this.state.color1}
+    fill={this.state.color1}
+    fillOpacity="0.3" 
+    strokeOpacity="0.3" cx={CX} cy={CY} r={this.state.circRad}>
+    </circle>;
 
     return hard;
   }
@@ -274,12 +355,63 @@ class NormalCurveSurvey extends Component {
   dotReturn2(xPos, yPos) {
     const xPosOrig = xPos;
 
-    const CX = this.state.distancing2 + this.state.distancing * xPosOrig + 10;
+    const CX = this.state.distancing2 + this.state.distancing * (xPosOrig + 1) + this.state.circRad - this.state.maxLength + 10;
     const CY = this.state.ceilDist - this.state.distancing * yPos + 10;
 
-    var hard = <circle className="icon" stroke="Crimson" fill="Crimson" fillOpacity="0.3" strokeOpacity="0.3" cx={CX} cy={CY} r={this.state.circRad}></circle>;
+    var hard = 
+    <circle 
+    onMouseEnter={e => this.displayTag2(e)}
+    onMouseLeave={e => this.hideTag2(e)}
+    onMouseMove={e => this.updateTag2(e)} 
+    className="icon circle2" 
+    stroke={this.state.color2}
+    fill={this.state.color2}
+    fillOpacity="0.3" 
+    strokeOpacity="0.3" cx={CX} cy={CY} r={this.state.circRad}>
+
+    </circle>;
 
     return hard;
+  }
+
+  returnTri1() {
+    if (this.state.fixCurve1) {
+      return (null);
+    }
+    else {
+      return (
+        <polygon
+            points={
+              [
+                [this.state.triCent1 + this.state.distancing1 - 15, this.state.ceilDist + 35],
+                [this.state.triCent1 + this.state.distancing1 + 15, this.state.ceilDist + 35],
+                [this.state.triCent1 + this.state.distancing1, this.state.ceilDist + 20]
+              ]
+            }
+            onMouseDown={(e, num) => this.triMouseDown(e, 1)}
+          />
+      )
+    }
+  }
+
+  returnTri2() {
+    if (this.state.fixCurve2) {
+      return (null);
+    }
+    else {
+      return (
+        <polygon
+            points={
+              [
+                [this.state.triCent2 + this.state.distancing2 - 15, this.state.ceilDist + 35],
+                [this.state.triCent2 + this.state.distancing2 + 15, this.state.ceilDist + 35],
+                [this.state.triCent2 + this.state.distancing2, this.state.ceilDist + 20]
+              ]
+            }
+            onMouseDown={(e, num) => this.triMouseDown(e, 2)}
+          />
+      )
+    }
   }
 
   svgColReturn(e, dragger) {
@@ -300,12 +432,12 @@ class NormalCurveSurvey extends Component {
     e.preventDefault();
     var x = svgP.x - distFromCent + this.state.mousePointerRange;
     var col = Math.round((x - this.state.axisStart) / this.state.distancing) + variance;
-    var colRelative = Math.round((x - this.state.axisStart) / this.state.distancing) + 1;
+    var colRelative = Math.round((x - this.state.axisStart) / this.state.distancing) - 1;
     return [col, colRelative];
   }
 
   svgColPlacement(col, colRelative, dragger) {
-    // console.log(col);
+    // console.log(col, colRelative);
     // console.log(this.state.axisStartCol);
     // console.log(this.state.axisStart);
     if (this.state.edgeLim) {
@@ -340,12 +472,14 @@ class NormalCurveSurvey extends Component {
       }
     }
     else {
+      col = col - 1;
       if (dragger === 2) {
+        // colRelative = colRelative - this.state.axisStartCol + this.state.variance2;
         if (col + this.state.triCentCol2 < this.state.axisStartCol) {
-          this.setState({ distancing2: (this.state.variance2 - 1) * this.state.distancing, col21: 0, col22: this.state.len2 - 1 });
+          this.setState({ distancing2: (this.state.variance2) * this.state.distancing, col21: 0, col22: this.state.len2 - 1 });
         }
         else if (col + this.state.triCentCol2 > this.state.axisStartCol + this.state.axisEndCol) {
-          this.setState({ distancing2: this.state.distancing * (this.state.variance2 + this.state.axisEndCol - 1), col21: this.state.axisEndCol, col22: this.state.axisEndCol + this.state.len2 - 1 })
+          this.setState({ distancing2: this.state.distancing * (this.state.variance2 + this.state.axisEndCol), col21: this.state.axisEndCol, col22: this.state.axisEndCol + this.state.len2 - 1 })
         }
         else {
           this.setState({ distancing2: this.state.distancing * col, col21: colRelative, col22: colRelative + this.state.len2 - 1 });
@@ -353,11 +487,12 @@ class NormalCurveSurvey extends Component {
         this.curveArea();
       }
       else if (dragger === 1) {
+        // colRelative = colRelative - this.state.axisStartCol + this.state.variance1;
         if (col + this.state.triCentCol1 < this.state.axisStartCol) {
-          this.setState({ distancing1: (this.state.variance1 - 1) * this.state.distancing, col11: 0, col12: this.state.len1 - 1 });
+          this.setState({ distancing1: (this.state.variance1) * this.state.distancing, col11: 0, col12: this.state.len1 - 1 });
         }
         else if (col + this.state.triCentCol1 > this.state.axisStartCol + this.state.axisEndCol) {
-          this.setState({ distancing1: this.state.distancing * (this.state.variance1 + this.state.axisEndCol - 1), col11: this.state.axisEndCol, col12: this.state.axisEndCol + this.state.len1 - 1 })
+          this.setState({ distancing1: this.state.distancing * (this.state.variance1 + this.state.axisEndCol), col11: this.state.axisEndCol, col12: this.state.axisEndCol + this.state.len1 - 1 })
         }
         else {
           this.setState({ distancing1: this.state.distancing * col, col11: colRelative, col12: colRelative + this.state.len1 - 1 });
@@ -436,6 +571,46 @@ class NormalCurveSurvey extends Component {
     }
   }
 
+  updateTag1(e) {
+    e.preventDefault()
+    var x = e.clientX,
+        y = e.clientY;
+
+    const elem = this.tagRef1.current;
+    elem.style.top = (y + 5) + 'px';
+    elem.style.left = (x + 5) + 'px';
+  }
+
+  updateTag2(e) {
+    e.preventDefault();
+    var x = e.clientX,
+        y = e.clientY;
+
+    const elem = this.tagRef2.current;
+    elem.style.top = (y + 5) + 'px';
+    elem.style.left = (x + 5) + 'px';
+  }
+
+  displayTag1(e) {
+    e.preventDefault();
+    this.tagRef1.current.style.display = "block";
+  }
+
+  displayTag2(e) {
+    e.preventDefault();
+    this.tagRef2.current.style.display = "block";
+  }
+
+  hideTag1(e) {
+    e.preventDefault();
+    this.tagRef1.current.style.display = "none";
+  }
+
+  hideTag2(e) {
+    e.preventDefault();
+    this.tagRef2.current.style.display = "none";
+  }
+
   render() {
     return (
       <div 
@@ -472,38 +647,21 @@ class NormalCurveSurvey extends Component {
           <rect width={this.state.axisEnd}
             height="2"
             fill="black"
-            x={this.state.axisStart - 1}
+            x={this.state.axisStartCol * this.state.distancing - 1}
             y={this.state.ceilDist + 20} />
           <rect width="2"
             height="20"
             fill="black"
-            x={this.state.axisStart - 1}
+            x={this.state.axisStartCol * this.state.distancing - 1}
             y={this.state.ceilDist + 20} />
           <rect width="2"
             height="20"
             fill="black"
-            x={this.state.axisEnd + this.state.axisStart - 1}
+            x={this.state.axisEnd + this.state.axisStartCol * this.state.distancing - 1}
             y={this.state.ceilDist + 20} />
-          <polygon
-            points={
-              [
-                [this.state.triCent1 + this.state.distancing1 - 15, this.state.ceilDist + 35],
-                [this.state.triCent1 + this.state.distancing1 + 15, this.state.ceilDist + 35],
-                [this.state.triCent1 + this.state.distancing1, this.state.ceilDist + 20]
-              ]
-            }
-            onMouseDown={(e, num) => this.triMouseDown(e, 1)}
-          />
-          <polygon
-            points={
-              [
-                [this.state.triCent2 + this.state.distancing2 - 15, this.state.ceilDist + 35],
-                [this.state.triCent2 + this.state.distancing2 + 15, this.state.ceilDist + 35],
-                [this.state.triCent2 + this.state.distancing2, this.state.ceilDist + 20]
-              ]
-            }
-            onMouseDown={(e, num) => this.triMouseDown(e, 2)}
-          />
+          {/* triangle rendering below */}
+          {this.returnTri1()}
+          {this.returnTri2()}
           {[...Array(this.state.tickNum).keys()].map(
             (tick) =>
               <rect
@@ -549,6 +707,15 @@ class NormalCurveSurvey extends Component {
             </p>
           </div>
         }
+        <span 
+        className="tag1" 
+        ref={this.tagRef1}
+        >{this.props.graph1}</span>
+        
+        <span 
+        className="tag2" 
+        ref={this.tagRef2}
+        >{this.props.graph2}</span>
       </div>
     )
   }

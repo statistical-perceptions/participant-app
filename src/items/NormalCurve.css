@@ -46,3 +46,53 @@ td {
     color: #bdbdbd;
     margin: 20px;
 }
+
+.tag1 {
+    display: none;
+    position:fixed;
+    overflow:hidden;
+    background-color: white;
+    border: 1px solid black;
+    font-size: 10px;
+    z-index: 9999;
+    padding: 5px;
+    max-width: 20%;
+    /* display:block;
+    position:fixed;
+    overflow:hidden;
+    background-color: white;
+    border: 1px solid black;
+    font-size: 10px;
+    z-index: 9999; */
+}
+
+/* .circle1:hover {
+    fill: blue
+} */
+
+/* .circle1:hover .tag1 {
+    display:block;
+    background-color: blue;
+} */
+
+.tag2 {
+    display: none;
+    position:fixed;
+    overflow:hidden;
+    background-color: white;
+    border: 1px solid black;
+    font-size: 10px;
+    z-index: 9999;
+    padding: 5px;
+    max-width: 20%;
+}
+
+/* .circle2:hover + .tag2 {
+    display:block;
+    position:fixed;
+    overflow:hidden;
+    background-color: white;
+    border: 1px solid black;
+    font-size: 10px;
+    z-index: 9999;
+} */
