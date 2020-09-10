@@ -96,3 +96,7 @@ td {
     font-size: 10px;
     z-index: 9999;
 } */
+
+.extraPadding {
+  padding: 10px;
+}

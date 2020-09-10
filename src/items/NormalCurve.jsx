@@ -80,16 +80,16 @@ class NormalCurve extends Component {
     this.setState(this.initialState);
   }
 
-  componentDidMount() {
-    const { childRef } = this.props;
-    childRef(this);
-    this.getData();
-  }
+  // componentDidMount() {
+  //   const { childRef } = this.props;
+  //   childRef(this);
+  //   this.getData();
+  // }
 
-  componentWillUnmount() {
-    const { childRef } = this.props;
-    childRef(undefined);
-  }
+  // componentWillUnmount() {
+  //   const { childRef } = this.props;
+  //   childRef(undefined);
+  // }
 
   getData() {
     const db = this.props.expt.dbInfo.db;

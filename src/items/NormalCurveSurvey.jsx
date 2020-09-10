@@ -42,6 +42,7 @@ class NormalCurveSurvey extends Component {
 
     this.resetState = this.resetState.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.noAnswer = this.noAnswer.bind(this);
 
     this.state = this.initialState;
   }
@@ -240,6 +241,7 @@ class NormalCurveSurvey extends Component {
     }
 
     return {
+      submitted: false,
       axisLength: data["axis-length"],
       startPos1: data["startPos1"],
       startPos2: data["startPos2"],
@@ -300,16 +302,16 @@ class NormalCurveSurvey extends Component {
     this.setState(this.initialState);
   }
 
-  // componentDidMount() {
-  //   const { childRef } = this.props;
-  //   childRef(this);
-  //   this.getData();
-  // }
+  componentDidMount() {
+    const { childRef } = this.props;
+    childRef(this);
+    this.getData();
+  }
 
-  // componentWillUnmount() {
-  //   const { childRef } = this.props;
-  //   childRef(undefined);
-  // }
+  componentWillUnmount() {
+    const { childRef } = this.props;
+    childRef(undefined);
+  }
 
   getData() {
     const db = this.props.expt.dbInfo.db;
@@ -327,6 +329,13 @@ class NormalCurveSurvey extends Component {
       [key2]: this.state.col21,
       area: this.areaRef.current.innerHTML
     }
+    this.props.storeAnswer(question, answer);
+    this.setState({ submitted: true });
+  }
+
+  noAnswer() {
+    const question = this.props.questionNCKey;
+    const answer = "Prefer Not to Answer";
     this.props.storeAnswer(question, answer);
     this.setState({ submitted: true });
   }
@@ -699,12 +708,14 @@ class NormalCurveSurvey extends Component {
         {
           !this.state.submitted && 
           <div>
-            <input type="submit" className="btn" value="Ok"
+            <input type="submit" className="extraPadding" value="I Confirm My Answer"
               onClick={this.onSubmit}/> <br/>
             <p style={{ color: "grey", width: "40%", margin: "auto" }}>
-              Reminder: Once you click "OK", your response to this question 
+              Reminder: Once you click "I Confirm My Answer", your response to this question 
               will be recorded, and you won't be able to change your answer. 
-            </p>
+            </p> <br/>
+            <input type="submit" className="btn" value="I Prefer Not to Answer"
+              onClick={this.noAnswer}/>
           </div>
         }
         <span 

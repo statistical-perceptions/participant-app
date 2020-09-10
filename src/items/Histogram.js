@@ -135,10 +135,10 @@ class Histogram extends Component {
           {
           !this.state.submitted && 
           <div>
-            <input type="submit" className="btn" value="Ok"
+            <input type="submit" className="btn" value="I Confirm My Answer"
               onClick={this.onSubmit}/> <br/>
             <p style={{ color: "grey" }}>
-              Reminder: Once you click "Ok", your response to this question 
+              Reminder: Once you click "I Confirm My Answer", your response to this question 
               will be recorded, and you won't be able to change your answer. 
             </p>
           </div>
