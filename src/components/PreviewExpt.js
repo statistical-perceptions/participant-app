@@ -82,12 +82,12 @@ class Experiment extends Component {
         {
           !this.props.expt.isFinalQ ? 
           <div>
-            Please click "I Confirm My Answer" above before clicking "Next Question" <br/><br/>
+            {/* Please click "I Confirm My Answer" above before clicking "Next Question" <br/><br/> */}
             <input type="submit" className="extraPadding" value="Next Question"
               onClick={this.onNextQuestion}/>
           </div> :
           <div>
-            Please click "OK" above before clicking "Submit" <br/><br/>
+            Please click "I Confirm My Answer" above before clicking "Submit" <br/><br/>
             This is the final question. <p></p>
             <input type="submit" className="extraPadding" value="Submit"
               onClick={this.onFinalSubmit}/>

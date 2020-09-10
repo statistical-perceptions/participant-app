@@ -66,13 +66,13 @@ class StaticText extends Component {
     return (
       <div className="container">
         {this.showItem()} <br/><br/>
-        {
+        {/* {
           !this.state.submitted && 
           <div>
             <input type="submit" className="btn" value="Ok"
               onClick={this.onSubmit}/> <br/>
           </div>
-        }
+        } */}
       </div>
     )
   }
