@@ -339,7 +339,7 @@ class NormalCurveSurvey extends Component {
     const CY = this.state.ceilDist - this.state.distancing * yPos + 10;
 
     var hard = 
-    <circle 
+    [<circle 
     onMouseEnter={e => this.displayTag1(e)}
     onMouseLeave={e => this.hideTag1(e)}
     onMouseMove={e => this.updateTag1(e)} 
@@ -348,7 +348,17 @@ class NormalCurveSurvey extends Component {
     fill={this.state.color1}
     fillOpacity="0.3" 
     strokeOpacity="0.3" cx={CX} cy={CY} r={this.state.circRad}>
-    </circle>;
+    </circle>,
+    <circle
+    onMouseEnter={e => this.displayTag1(e)}
+    onMouseLeave={e => this.hideTag1(e)}
+    onMouseMove={e => this.updateTag1(e)} 
+    className="icon circle1" 
+    stroke={this.state.color1}
+    fill={this.state.color1}
+    fillOpacity="0" 
+    strokeOpacity="0" cx={CX} cy={CY} r={this.state.distancing}>
+    </circle>];
 
     return hard;
   }
@@ -360,7 +370,7 @@ class NormalCurveSurvey extends Component {
     const CY = this.state.ceilDist - this.state.distancing * yPos + 10;
 
     var hard = 
-    <circle 
+    [<circle 
     onMouseEnter={e => this.displayTag2(e)}
     onMouseLeave={e => this.hideTag2(e)}
     onMouseMove={e => this.updateTag2(e)} 
@@ -369,8 +379,17 @@ class NormalCurveSurvey extends Component {
     fill={this.state.color2}
     fillOpacity="0.3" 
     strokeOpacity="0.3" cx={CX} cy={CY} r={this.state.circRad}>
-
-    </circle>;
+    </circle>,
+    <circle
+    onMouseEnter={e => this.displayTag2(e)}
+    onMouseLeave={e => this.hideTag2(e)}
+    onMouseMove={e => this.updateTag2(e)} 
+    className="icon circle2" 
+    stroke={this.state.color2}
+    fill={this.state.color2}
+    fillOpacity="0" 
+    strokeOpacity="0" cx={CX} cy={CY} r={this.state.distancing}>
+    </circle>];
 
     return hard;
   }
