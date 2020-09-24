@@ -13,7 +13,7 @@ import {
 
 import Slider from "../items/Slider";
 import StaticText from "../items/StaticText";
-import NormalCurve from "../items/NormalCurve.jsx";
+// import NormalCurve from "../items/NormalCurve.jsx";
 import NormalCurveSurvey from "../items/NormalCurveSurvey";
 import Histogram from "../items/Histogram";
 
