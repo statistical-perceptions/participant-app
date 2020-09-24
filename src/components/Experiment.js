@@ -17,6 +17,9 @@ import NormalCurve from "../items/NormalCurve.jsx";
 import NormalCurveSurvey from "../items/NormalCurveSurvey";
 import Histogram from "../items/Histogram";
 
+/**
+ * This component displays an experiment question
+ */
 class Experiment extends Component {
   constructor(props) {
     super(props);
@@ -33,6 +36,9 @@ class Experiment extends Component {
     this.getData();
     const username = this.props.match.params.username;
     const expt = this.props.match.params.expt;
+    // if the store doesn't have participant ID, we ask participants to 
+    // re-enter their ID 
+    // (this happens if users close the tab then open it again or refresh)
     if (!this.props.expt.participantID) {
       alert("Please enter your unique ID");
       this.props.history.push("/expt/" + username + "/" + expt);
@@ -40,11 +46,13 @@ class Experiment extends Component {
   }
 
   // method to push user to the next question 
+  // similar to an iterator
   nextQuestion() {
     const username = this.props.match.params.username;
     const expt = this.props.match.params.expt;
     const nextQ = this.props.expt.questionKeys[this.props.expt.numQ + 1];
     const lastQ = this.props.expt.questionKeys[this.props.expt.questionKeys.length - 1];
+    // decide if the next question is the final question
     if (nextQ == lastQ) {
       this.props.isFinalQ(true);
     }

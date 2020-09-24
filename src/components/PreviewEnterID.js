@@ -14,6 +14,9 @@ import {
 } 
 from "../actions/dataActions";
 
+/**
+ * A preview version for researchers. 
+ */
 class PreviewEnterID extends Component {
   constructor(props) {
     super(props);

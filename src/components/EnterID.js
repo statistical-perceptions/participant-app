@@ -14,6 +14,9 @@ import {
 } 
 from "../actions/dataActions";
 
+/**
+ * This is what participants will see when they first take an experiment
+ */
 class EnterID extends Component {
   constructor(props) {
     super(props);
@@ -30,9 +33,14 @@ class EnterID extends Component {
 
     const username = this.props.match.params.username;
     const studyExpt = this.props.match.params.expt;
+    // store the database - collection info into redux store to be readily 
+    // accessible for all components
     this.props.storeDBInfo(username, studyExpt);
   }
 
+  /**
+   * Get experiment data (queried by database, studyName, and exptName)
+   */
   getData() {
     const username = this.props.match.params.username;
     const studyName = this.props.match.params.expt.split("-")[0];
@@ -44,6 +52,9 @@ class EnterID extends Component {
     this.setState({ [e.target.name]: e.target.value })
   }
 
+  /**
+   * This method will lead participants to the first question of an experiment
+   */
   showExpt() {
     this.props.storePartID(this.state.ParticipantID);
     const username = this.props.match.params.username;
@@ -56,11 +67,12 @@ class EnterID extends Component {
       questionKeys = allKeys.filter(str => str.charAt(0) == "q");
       this.props.storeQKeys(questionKeys);
     }
-    // console.log(questionKeys);
+    // Let the next question know if it's the final question
     if (questionKeys.length == 1) {
       this.props.isFinalQ(true);
     }
     this.props.setNumQ(0);
+    // Note that this.props.history can only be accessible if we use a React Router
     this.props.history.push("/expt/" + username + "/" + studyExpt + 
       "/" + questionKeys[0]);
   }

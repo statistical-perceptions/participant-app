@@ -6,6 +6,10 @@ import {
   sendExpt
 } from "../actions/dataActions"
 
+/**
+ * Store answers
+ * Lead participants to the demographics qualtrics survey
+ */
 class Success extends Component {
   componentDidMount() {
     // console.log(this.props);

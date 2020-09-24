@@ -17,7 +17,12 @@ import NormalCurve from "../items/NormalCurve.jsx";
 import NormalCurveSurvey from "../items/NormalCurveSurvey";
 import Histogram from "../items/Histogram";
 
-class Experiment extends Component {
+/**
+ * A preview version for researchers.
+ * Note that data is put into the react store, but the final page doesn't 
+ * POST data to database. 
+ */
+class PreviewExpt extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -224,4 +229,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getExpt, sendExpt, setNumQ, isFinalQ }
-)(Experiment);
+)(PreviewExpt);

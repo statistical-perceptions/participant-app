@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
+/**
+ * A preview version for researchers. 
+ * Note that data is never submitted to API. 
+ */
 class PreviewSuccess extends Component {
   componentDidMount() {
     // console.log(this.props);
