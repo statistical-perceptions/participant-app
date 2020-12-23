@@ -306,6 +306,7 @@ class NormalCurveSurvey extends Component {
     const { childRef } = this.props;
     childRef(this);
     this.getData();
+    this.props.setWhichItem("normal-curve");
   }
 
   componentWillUnmount() {

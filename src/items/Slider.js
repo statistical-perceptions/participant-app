@@ -38,6 +38,7 @@ class Slider extends Component {
     const { childRef } = this.props;
     childRef(this);
     this.getData();
+    this.props.setWhichItem("slider");
   }
 
   componentWillUnmount() {

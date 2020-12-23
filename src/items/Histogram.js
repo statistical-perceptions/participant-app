@@ -46,6 +46,7 @@ class Histogram extends Component {
     childRef(this);
     this.getData();
     this.drawChart();
+    this.props.setWhichItem("threshold");
   }
 
   componentWillUnmount() {

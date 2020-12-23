@@ -14,6 +14,7 @@ class StaticText extends Component {
     // ###TODO###: change the name of the following binding if you see fit
     // this binds the state to the showItem function below
     this.showItem = this.showItem.bind(this);
+    // this.showImage = this.showImage.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -28,6 +29,7 @@ class StaticText extends Component {
     const { childRef } = this.props;
     childRef(this);
     this.getData();
+    this.props.setWhichItem("static-text");
   }
 
   // additional setup to communicate with Experiment.js
@@ -63,9 +65,33 @@ class StaticText extends Component {
 
   // please render anything else you see fit
   render() {
+    const imageURLs = this.props.imageURLs;
+    var Images = ({sth}) => <img src={''} />
+    if (imageURLs.length != 0) {
+      console.log(imageURLs);
+      Images = ({sth}) => (
+        imageURLs.map(imag => (
+          <div style={{ 
+            width: "30%", 
+            padding: "10px"
+          }}>
+            <img src={imag.parsedLink} style={{ width: "100%" }}/>
+          </div>
+        ))
+      );
+    }
     return (
       <div className="container">
-        {this.showItem()} <br/><br/>
+        {this.showItem()} <br/>
+        <div style={{ 
+          display: "flex", 
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          flexWrap: "wrap" 
+        }}>
+          <Images data={''}/>
+        </div>
         {/* {
           !this.state.submitted && 
           <div>

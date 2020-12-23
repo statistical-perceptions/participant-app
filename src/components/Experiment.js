@@ -30,6 +30,7 @@ class Experiment extends Component {
     this.onNextQuestion = this.onNextQuestion.bind(this);
     this.onFinalSubmit = this.onFinalSubmit.bind(this);
     this.whichSubmit = this.whichSubmit.bind(this);
+    this.setWhichItem = this.setWhichItem.bind(this);
   }
 
   componentDidMount() {
@@ -96,13 +97,23 @@ class Experiment extends Component {
             <br/><br/><br/><br/><br/><br/>
           </div> :
           <div>
-            Please click "I Confirm My Answer" above before clicking "Submit" <br/><br/>
-            This is the final question. <p></p>
-            <input type="submit" className="extraPadding" value="Submit"
-              onClick={this.onFinalSubmit}/>
+            {
+              this.state.whichItem == "static-text"
+              ?
+              <></>
+              :
+              <div>
+                Please click "I Confirm My Answer" above before clicking "Submit" <br/><br/>
+              </div>
+            }
             <div>
-              <br/><br/><br/><br/><br/><br/>
-            </div>
+                This is the final page. <p></p>
+                <input type="submit" className="extraPadding" value="Submit"
+                  onClick={this.onFinalSubmit}/>
+                <div>
+                  <br/><br/><br/><br/><br/><br/>
+                </div>
+              </div>
           </div>
         }
       </div>
@@ -117,6 +128,16 @@ class Experiment extends Component {
     this.props.getExpt(username, studyName, exptName);
   }
 
+  /**
+   * Set the whichItem field of setState. 
+   * This function is used by all experiment items to let Experiment.js know
+   * which item is currently on display.
+   * @param {String} itemName Name of the item that's currently on display
+   */
+  setWhichItem(itemName) {
+    this.setState({ whichItem: itemName });
+  }
+
   displayExpt() {
     const username = this.props.match.params.username;
     const expt = this.props.expt.exptToDisplay;
@@ -129,6 +150,7 @@ class Experiment extends Component {
       // your method(s) will be called repeatedly => not good. 
       switch(expt[key]["Type"]) {
         case "slider":
+          // this.setState({ whichItem: "slider" });
           const lowRange = expt[key]["lowRange"];
           const highRange = expt[key]["highRange"];
           const question = expt[key]["Question"];
@@ -137,7 +159,7 @@ class Experiment extends Component {
             <div className="container">
               <Slider childRef={ref => (this.childSlider = ref)}
                 question={question} sliderCSVKey={sliderCSVKey}
-                lowRange={lowRange} highRange={highRange} />
+                lowRange={lowRange} highRange={highRange} setWhichItem={this.setWhichItem}/>
               <br/>
               {/* keep the following line */}
               <this.whichSubmit />
@@ -145,16 +167,22 @@ class Experiment extends Component {
           )
           break;
         case "static-text":
+          // this.setState({ whichItem: "static-text" });
           const text = expt[key]["Static Text"];
+          var imageURLs = [];
+          if (Object.keys(expt[key]).includes("Images")) {
+            imageURLs = expt[key]["Images"];
+          }
           return (
             <div className="container">
               <StaticText childRef={ref => (this.childStaticText = ref)}
-                text={text}/>
+                text={text} imageURLs={imageURLs} setWhichItem={this.setWhichItem}/>
               <br/>
               <this.whichSubmit />
             </div>
           )
         case "normal-curve":
+          // this.setState({ whichItem: "normal-curve" });
           const questionNC = expt[key]["Question"];
           const graph1 = expt[key]["graph1key"];
           const graph2 = expt[key]["graph2key"];
@@ -170,12 +198,14 @@ class Experiment extends Component {
                 questionNCKey={questionNCKey} 
                 graph1legend={graph1legend}
                 graph2legend={graph2legend}
-                fileName={dataFileName} data={dataFileContent} />
+                fileName={dataFileName} data={dataFileContent} 
+                setWhichItem={this.setWhichItem}/>
               <br/>
               <this.whichSubmit />
             </div>
           )
         case "threshold":
+          // this.setState({ whichItem: "threshold" });
           const questionHist = expt[key]["Question"];
           const questionHistKey = expt[key]["threshold-key"];
           const histLowRange = expt[key]["lowRange"];
@@ -187,7 +217,8 @@ class Experiment extends Component {
                 questionHist={questionHist} 
                 questionHistKey={questionHistKey}
                 histLowRange={histLowRange}
-                histHighRange={histHighRange} histData={histFileContent} />
+                histHighRange={histHighRange} histData={histFileContent} 
+                setWhichItem={this.setWhichItem}/>
               <br/>
               <this.whichSubmit />
             </div>
