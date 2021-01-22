@@ -16,6 +16,7 @@ import StaticText from "../items/StaticText";
 import NormalCurve from "../items/NormalCurve.jsx";
 import NormalCurveSurvey from "../items/NormalCurveSurvey";
 import Histogram from "../items/Histogram";
+import GraphSlider from "../items/GraphSlider";
 
 class Experiment extends Component {
   constructor(props) {
@@ -182,6 +183,15 @@ class Experiment extends Component {
                 histHighRange={histHighRange} histData={histFileContent} />
               <br/>
               <this.whichSubmit />
+            </div>
+          )
+        case "graph-slider":
+          const output = expt[key]["Output"];
+          return (
+            <div>
+              <GraphSlider childRef={ref => (this.childGraphSlider = ref)} 
+                output={output} />
+              <br/>
             </div>
           )
         default: 

@@ -24,12 +24,12 @@ function App() {
     <Provider store={store}>
       <HashRouter basename="/participant-app/">
         <div className="App">
-          <Route exact path="/" component={HomePage}/>
-          {/* <Route 
+          {/* <Route exact path="/" component={HomePage}/> */}
+          <Route 
           exact path="/" 
           component={
             () => <NormalCurveSurvey data={data2} graph1="green" graph2="red" /> 
-            }/> */}
+            }/>
           <Route exact path="/success" component={Success}/>
           <Route exact path="/expt/:username/:expt" component={EnterID}/>
           <Route exact path="/expt/:username/:expt/:qKey" component={Experiment}/>
