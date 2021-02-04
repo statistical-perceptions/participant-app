@@ -9,6 +9,7 @@ class GraphSlider extends Component {
         const output = this.props.output;
         this.createSlider = this.createSlider.bind(this);
         this.svgRef = React.createRef();
+        this.createLine = this.createLine.bind(this);
 
         this.state = {
             minLoc: 50,
@@ -39,6 +40,18 @@ class GraphSlider extends Component {
                     e.preventDefault();
                     this.setState({dragging: true})
                 }}
+            />
+        )
+    }
+
+    createLine() {
+        return (
+            <rect
+                x={this.state.slideDist + this.state.minLoc}
+                y={this.state.ceilDist - 250}
+                width="2"
+                height="300"
+                fill="black"
             />
         )
     }
@@ -119,6 +132,7 @@ class GraphSlider extends Component {
                             )
                     )}
                     {this.createSlider()}
+                    {this.createLine()}
                 </svg>
             </div>
         )
