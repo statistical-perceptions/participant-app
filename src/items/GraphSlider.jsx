@@ -6,7 +6,7 @@ class GraphSlider extends Component {
     constructor(props) {
         super(props);
 
-        const output = this.props.output;
+        const Output = this.props.data;
         this.createSlider = this.createSlider.bind(this);
         this.svgRef = React.createRef();
         this.createLine = this.createLine.bind(this);
@@ -18,11 +18,16 @@ class GraphSlider extends Component {
             graphWidth: 300,
             graphHeight: 300,
             tickNum: 4,
-            lines: Object.keys(Output).length,
+            lines: Object.keys(Output['pointsData']).length,
             slideDist: 150,
             ceilDist: 300,
             dragging: false,
-            data: output
+            data: Output.pointsData,
+            x1: 0,
+            x2: 300,
+            y1: 0,
+            y2: 300,
+            title: Output.title
         }
     }
 
@@ -59,6 +64,9 @@ class GraphSlider extends Component {
     render() {
         return (
             <div className="carrier">
+                <div>
+                    <h1 ref={this.titleRef}>{this.state.title}</h1>
+                </div>
                 <svg 
                 width={this.state.svgWidth} 
                 height={this.state.svgHeight} 
@@ -134,6 +142,15 @@ class GraphSlider extends Component {
                     {this.createSlider()}
                     {this.createLine()}
                 </svg>
+                <div class="legend">
+                    {[...Array(this.state.lines).keys()].map(
+                        (line) => 
+                            <div>
+                                <div class="color-box" style={{ backgroundColor: this.state.data[line.toString()].color }}></div>
+                                <span class="option">{this.state.data[line.toString()].name}</span>
+                            </div>
+                    )}
+                </div>
             </div>
         )
     }
