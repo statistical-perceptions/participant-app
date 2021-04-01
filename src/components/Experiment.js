@@ -16,6 +16,8 @@ import StaticText from "../items/StaticText";
 // import NormalCurve from "../items/NormalCurve.jsx";
 import NormalCurveSurvey from "../items/NormalCurveSurvey";
 import Histogram from "../items/Histogram";
+import ThresholdSliderSurvey from "../items/ThresholdSliderSurvey";
+
 
 /**
  * This component displays an experiment question
@@ -65,6 +67,10 @@ class Experiment extends Component {
   // will be triggered when the next question is not the final question
   onNextQuestion() {
     // ###TODO###: add more if statements below that follow the templates 
+    if (this.childThresholdSlider) {
+      this.childThresholdSlider.resetState();
+      this.nextQuestion();
+    };
     if (this.childSlider) {
       this.childSlider.resetState();
       this.nextQuestion();
