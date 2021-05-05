@@ -178,7 +178,7 @@ class Experiment extends Component {
             return (
               <div className="container">
               <TradeOff childRef={ref => (this.childStaticText = ref)}
-                questionTO={sliderPos} threegraphs={sliderPos} setWhichItem={this.setWhichItem}/>
+                questionTO={questionTO} sliderPos={sliderPos} setWhichItem={this.setWhichItem}/>
                 <br/>
                 <this.whichSubmit />
               </div>
