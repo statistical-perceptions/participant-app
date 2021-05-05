@@ -183,7 +183,7 @@ class Experiment extends Component {
                 <this.whichSubmit />
               </div>
             )          
-          break;
+          
         case "static-text":
           // this.setState({ whichItem: "static-text" });
           const text = expt[key]["Static Text"];
