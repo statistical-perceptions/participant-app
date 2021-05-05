@@ -170,7 +170,7 @@ class Experiment extends Component {
               <this.whichSubmit />
             </div>
           )
-          case "trade-off":
+          case "tradeoff":
             // this.setState({ whichItem: "tradeoff" });
             const questionTO = expt[key]["QuestionTradeOff"];
             const sliderPos =expt[key]["sliderPos"]; 
