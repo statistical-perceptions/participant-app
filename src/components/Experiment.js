@@ -12,6 +12,7 @@ import {
 } from "../actions/dataActions";
 
 import Slider from "../items/Slider";
+import TradeOff from "../items/TradeOff";
 import StaticText from "../items/StaticText";
 // import NormalCurve from "../items/NormalCurve.jsx";
 import NormalCurveSurvey from "../items/NormalCurveSurvey";
@@ -71,6 +72,10 @@ class Experiment extends Component {
     };
     if (this.childNormalCurve) {
       this.childNormalCurve.resetState();
+      this.nextQuestion();
+    }; 
+    if (this.childTradeOff) {
+      this.childTradeOff.resetState();
       this.nextQuestion();
     }; 
     if (this.childStaticText) {
@@ -165,6 +170,19 @@ class Experiment extends Component {
               <this.whichSubmit />
             </div>
           )
+          case "trade-off":
+            // this.setState({ whichItem: "tradeoff" });
+            const questionTO = expt[key]["QuestionTradeOff"];
+            const threegraphs =expt[key]["threegraphs"]; 
+    
+            return (
+              <div className="container">
+              <TradeOff childRef={ref => (this.childStaticText = ref)}
+                questionTO={questionTO} threegraphs={threegraphs} setWhichItem={this.setWhichItem}/>
+                <br/>
+                <this.whichSubmit />
+              </div>
+            )          
           break;
         case "static-text":
           // this.setState({ whichItem: "static-text" });
