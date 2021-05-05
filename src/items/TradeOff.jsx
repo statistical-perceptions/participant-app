@@ -51,7 +51,7 @@ class TradeOff extends Component {
   
     
         this.resetState = this.resetState.bind(this);
-        this.onChange = this.onChange.bind(this);
+        //this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.noAnswer = this.noAnswer.bind(this);
 
