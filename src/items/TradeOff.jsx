@@ -257,7 +257,7 @@ class TradeOff extends Component {
     }
     onSubmit() {
         const question = this.props.questionTOkey;
-        const answer = this.props.threeGraphs;
+        const answer = this.props.sliderPos;
 
 
         this.props.storeAnswer(question, answer);
