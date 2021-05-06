@@ -1,4 +1,4 @@
-.hist-slider {
+.tradeoff-slider {
     background: #d3d3d3;
     outline: black;
     opacity: 0.7;
@@ -24,8 +24,8 @@
 }
 .e{
   position: absolute;
-  top:425px;
-  left:450px;
+  top:150px;
+  left:390px;
 }
 .d{
     transform: rotate(180deg);
@@ -34,7 +34,7 @@
   position:relative
 }
   
-  .hist-slider::-moz-range-thumb {
+  .tradeoff-slider::-moz-range-thumb {
       width: 10px;  
       height: 10px;
       background: #4CAF50;
