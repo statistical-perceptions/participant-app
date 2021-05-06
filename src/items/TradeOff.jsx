@@ -256,17 +256,17 @@ class TradeOff extends Component {
         this.props.getExpt(db, studyName, exptName);
     }
     onSubmit() {
-        const question = this.props.questionTOkey;
-        const answer = this.props.sliderPos;
+        //const question = this.props.questionTOkey;
+        const sliderPos = this.props.sliderPos;
 
-
-        this.props.storeAnswer(question, answer);
+        this.props.storeAnswer(sliderPos, this.state.value);
+        //this.props.storeAnswer(question, answer);
         this.setState({ submitted: true });
       }
     noAnswer() {
-        const question = this.props.questionTOKey;
-        const answer = "Prefer Not to Answer";
-        this.props.storeAnswer(question, answer);
+ 
+        const sliderPos = "Prefer Not to Answer";
+        this.props.storeAnswer(sliderPos, this.state.value);
         this.setState({ submitted: true });
     }
     changeGraphColNumber(){
@@ -442,6 +442,7 @@ class TradeOff extends Component {
         const threeGraphs = this.state.threeGraphs;
         return(
             <div>
+
             <svg width = {1400} height = {1000} style={{}} class = "b"> 
                 {this.rectReturn1(500,450)}
                 {this.rectReturn2(580,450)}
@@ -862,6 +863,7 @@ class TradeOff extends Component {
               }
 
             </svg>
+
             <input type="range" min={0} max={(this.state.rect1Arr.length)-1} 
           className="hist-slider" onChange={this.onChange1}
           name="sliderPos" value={this.state.sliderPos} ref={this.sliderRef} list = "tickmarks"
