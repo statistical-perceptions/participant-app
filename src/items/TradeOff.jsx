@@ -62,7 +62,7 @@ class TradeOff extends Component {
   
 // setting the initial state of this component 
     get initialState() {
-        const data = this.props.data;
+        //const data = this.props.data;
 
 
 
