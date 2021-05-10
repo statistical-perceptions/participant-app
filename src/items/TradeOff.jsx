@@ -256,17 +256,19 @@ class TradeOff extends Component {
         this.props.getExpt(db, studyName, exptName);
     }
     onSubmit() {
-        //const question = this.props.questionTOkey;
+        //const threeGraphs = this.state.threeGraphs;
+        const questionTO = this.props.questionTOKey;
         const sliderPos = this.props.sliderPos;
+        area: this.sliderRef.current.innerHTML
 
-        this.props.storeAnswer(sliderPos, this.state.value);
+        this.props.storeAnswer( questionTO,sliderPos);
         //this.props.storeAnswer(question, answer);
         this.setState({ submitted: true });
       }
     noAnswer() {
- 
+        const questionTO = this.props.questionTOKey;
         const sliderPos = "Prefer Not to Answer";
-        this.props.storeAnswer(sliderPos, this.state.value);
+        this.props.storeAnswer(questionTO,sliderPos);
         this.setState({ submitted: true });
     }
     changeGraphColNumber(){
@@ -441,8 +443,16 @@ class TradeOff extends Component {
     showTradeOff(){
         const threeGraphs = this.state.threeGraphs;
         return(
+            
             <div>
-
+        <div className="container">
+          <h3>Question: </h3>
+          <div style={{ width: "60%", margin: "auto" }}>
+            <p style={{ textAlign: "left" }}>
+              {this.props.questionTO}
+            </p>
+          </div>
+        </div> 
             <svg width = {1400} height = {1000} style={{}} class = "b"> 
                 {this.rectReturn1(500,450)}
                 {this.rectReturn2(580,450)}
@@ -865,7 +875,7 @@ class TradeOff extends Component {
             </svg>
 
             <input type="range" min={0} max={(this.state.rect1Arr.length)-1} 
-          className="hist-slider" onChange={this.onChange1}
+          className="tradeoff-slider" onChange={this.onChange1}
           name="sliderPos" value={this.state.sliderPos} ref={this.sliderRef} list = "tickmarks"
           style={{ width:300, left:635, top:590}}/>
 
@@ -879,7 +889,7 @@ class TradeOff extends Component {
 
         <div>
          {this.showTradeOff()} <br/>
-        <span style={{ color: "white" }} ref={this.areaRef}></span>
+        <span style={{ color: "white" }} ref={this.sliderRef}></span>
         {
           !this.state.submitted && 
           <div>

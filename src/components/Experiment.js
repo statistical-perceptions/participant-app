@@ -172,12 +172,15 @@ class Experiment extends Component {
           )
           case "tradeoff":
             // this.setState({ whichItem: "tradeoff" });
-
+            const questionTO = expt[key]["QuestionTO"];
+            const ref={this.sliderRef}
+            
             const sliderPos =expt[key]["sliderPos"]; 
     
             return (
               <div className="container">
               <TradeOff childRef={ref => (this.childStaticText = ref)}
+                 questionTO={questionTO}
                  sliderPos={sliderPos} setWhichItem={this.setWhichItem}/>
                 <br/>
                 <this.whichSubmit />
