@@ -258,7 +258,7 @@ class TradeOff extends Component {
     onSubmit() {
         //const threeGraphs = this.state.threeGraphs;
         const questionTO = this.props.questionTOKey;
-        const sliderPos = this.props.sliderPos;
+        const sliderPos = this.state.sliderPos;
         
 
         this.props.storeAnswer( questionTO,sliderPos);
@@ -877,7 +877,7 @@ class TradeOff extends Component {
             <input type="range" min={0} max={(this.state.rect1Arr.length)-1} 
           className="tradeoff-slider" onChange={this.onChange1}
           name="sliderPos" value={this.state.sliderPos} ref={this.sliderRef} list = "tickmarks"
-          style={{ width:300, left:635, top:590}}/>
+          style={{ width:300, left:550, top:650}}/>
 
             </div>
         )
