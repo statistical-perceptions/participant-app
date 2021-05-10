@@ -259,7 +259,7 @@ class TradeOff extends Component {
         //const threeGraphs = this.state.threeGraphs;
         const questionTO = this.props.questionTOKey;
         const sliderPos = this.props.sliderPos;
-        area: this.sliderRef.current.innerHTML
+        
 
         this.props.storeAnswer( questionTO,sliderPos);
         //this.props.storeAnswer(question, answer);

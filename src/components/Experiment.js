@@ -173,8 +173,8 @@ class Experiment extends Component {
           case "tradeoff":
             // this.setState({ whichItem: "tradeoff" });
             const questionTO = expt[key]["QuestionTO"];
-            const ref={this.sliderRef}
-            
+
+
             const sliderPos =expt[key]["sliderPos"]; 
     
             return (
