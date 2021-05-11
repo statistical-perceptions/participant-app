@@ -9,8 +9,7 @@ import {
 } from "../actions/dataActions";
 
 
-
-class TradeOff extends Component {
+class TradeoffThree extends Component {
     constructor() {
         // putting super() here so that we can use this.blahblah
         super();
@@ -257,18 +256,18 @@ class TradeOff extends Component {
     }
     onSubmit() {
         //const threeGraphs = this.state.threeGraphs;
-        const questionTO = this.props.questionTOKey;
-        const sliderPos = this.state.sliderPos;
+        const questionTOKey3 = this.props.questionTOKey3;
+        const sliderPos3 = this.state.sliderPos3;
         
 
-        this.props.storeAnswer( questionTO,sliderPos);
+        this.props.storeAnswer( questionTOKey3,sliderPos3);
         //this.props.storeAnswer(question, answer);
         this.setState({ submitted: true });
       }
     noAnswer() {
-        const questionTO = this.props.questionTOKey;
-        const sliderPos = "Prefer Not to Answer";
-        this.props.storeAnswer(questionTO,sliderPos);
+        const questionTO3 = this.props.questionTOKey3;
+        const sliderPos3 = "Prefer Not to Answer";
+        this.props.storeAnswer(questionTO3,sliderPos3);
         this.setState({ submitted: true });
     }
     changeGraphColNumber(){
@@ -755,7 +754,7 @@ class TradeOff extends Component {
               }
               </svg>
               <svg class = "e" width = {1400} height = {1000}>
-              <text x = {200} y = {115}>Filler text for eventual question will go here</text>
+              <text x = {200} y = {115}>Put the slider at a position where False Positive Rate for Black People is 80%</text>
               <text x = {230} y = {265}>Legend:</text>
               <text x = {305} y = {265}> White People</text>
               <rect x = {290} y = {255} height = {10} width = {10} stroke = {this.state.stroke1} fill = {this.state.stroke1}></rect>
@@ -876,7 +875,7 @@ class TradeOff extends Component {
 
             <input type="range" min={0} max={(this.state.rect1Arr.length)-1} 
           className="tradeoff-slider" onChange={this.onChange1}
-          name="sliderPos" value={this.state.sliderPos} ref={this.sliderRef} list = "tickmarks"
+          name="sliderPos3" value={this.state.sliderPos3} ref={this.sliderRef} list = "tickmarks"
           style={{ width:300, left:880, top:700}}/>
 
             </div>
@@ -916,7 +915,7 @@ class TradeOff extends Component {
 
 
 // Listing required functions / data
-TradeOff.propTypes = {
+TradeoffThree.propTypes = {
     getExpt: PropTypes.func.isRequired,
     expt: PropTypes.object.isRequired,
     storeAnswer: PropTypes.func.isRequired
@@ -931,268 +930,4 @@ const mapStateToProps = state => ({
 export default connect(
    mapStateToProps,
    { getExpt, storeAnswer }
- )(TradeOff); 
-
-/*
-class TradeOff extends Component {
-    constructor() {
-      // putting super() here so that we can use this.blahblah
-      super();
-      this.sliderRef = React.createRef();
-      this.slider2Ref = React.createRef();
-      this.threeGraphRef = React.createRef();
-      this.rectRef = React.createRef();
-      this.svgRef = React.createRef();
-      this.graphColRef=React.createRef();
-      this.refLine1Ref = React.createRef();
-      this.refLine2Ref = React.createRef();
-
-      this.refLine4Ref = React.createRef();
-      this.refLine3Ref = React.createRef();
-      this.refLine6Ref = React.createRef();
-      this.refLine5Ref = React.createRef();
-      this.refLine7Ref = React.createRef();
-      this.refLine8Ref = React.createRef();
-
-      this.stroke1Ref = React.createRef();
-      this.areaRef = React.createRef();
-      this.onChange2 = this.onChange2.bind(this);
-      this.rectReturn1 = this.rectReturn1.bind(this);
-      this.rectReturn2 = this.rectReturn2.bind(this);
-      this.rectReturn3 = this.rectReturn3.bind(this);
-      this.rectReturn4 = this.rectReturn4.bind(this);
-      this.rectReturn5 = this.rectReturn5.bind(this);
-      this.rectReturn6 = this.rectReturn6.bind(this);
-      this.textReturn1 = this.textReturn1.bind(this);
-      this.changeGraphColNumber = this.changeGraphColNumber.bind(this);
-      this.line1 = this.line1.bind(this);
-      this.changeGraphNumber = this.changeGraphNumber.bind(this);
-      this.changeStroke1=this.changeStroke1.bind(this);
-
-      this.establishStateData = this.establishStateData.bind(this);
-      this.state = this.establishStateData(this.props.data);
-      this.onChange1 = this.onChange1.bind(this);
-
-  
-      this.resetState = this.resetState.bind(this);
-      this.onChange = this.onChange.bind(this);
-      this.onSubmit = this.onSubmit.bind(this);
-      this.showSlider = this.showSlider.bind(this);
-
-      this.state = this.initialState;
-    }
-  
-// setting the initial state of this component 
-get initialState() {
-    const data = this.props.data;
-
-    return{
-        stroke1 : "#FF0000",
-        stroke2 : "#0000FF",
-        rect1Height : 100,
-        rect2Height : 100,
-        rect3Height : 100,
-        rect4Height: 100,
-        rect5Height:100,
-        rect6Height:100,
-        rect7Height:100,
-        rect8Height:100,
-        rectWidth : 40,
-        sliderPos:1,
-        sliderPos2:1,
-        rect1Arr: [0.76,0.76, 0.68, 0.65, 0.63, 0.62, 0.60, 0.59, 0.58, 0.57, 0.56, 0.56, 0.55, 0.54, 0.54, 0.53, 0.53, 0.52, 0.52, 0.52, 0.51, 0.51, 0.509 ,0.506, 0.503, 0.50],
-        rect2Arr: [0.399528104378295,
-          0.419528104378295,
-          0.436856783892294,
-          0.446993411594998,
-          0.454185463406292,
-          0.459764052189148,
-          0.464322091108996,
-          0.468175858104678,
-          0.471514142920291,
-          0.4744587188117,
-          0.477092731703146,
-          0.479475486198254,
-          0.481650770622995,
-          0.483651838314833,
-          0.485504537618676,
-          0.48722935940585,
-          0.48884282243429,
-          0.4903584379797,
-          0.491787398325699,
-          0.493139078857456,
-          0.494421411217145,
-          0.495641165321381,
-          0.496804165712253,
-          0.497915459776524,
-          0.498979450136994,
-          0.5],
-        rect3Arr: [0.75,
-          0.750612329917804,
-          0.751250724134086,
-          0.751917500572648,
-          0.752615300807172,
-          0.753347153269713,
-          0.754116552685526,
-          0.754927561004581,
-          0.75578493721218,
-          0.756694306539426,
-          0.75766238435649,
-          0.758697277428794,
-          0.7598088970111,
-          0.761009537626203,
-          0.762314708281047,
-          0.763744360978112,
-          0.76532476871298,
-          0.767091514247826,
-          0.769094485137193,
-          0.771406745334602,
-          0.774141568686512,
-          0.777488721956225,
-          0.781803953043001,
-          0.787885929664624,
-          0.798283137373023,
-          0.818283137373023],
-        rect4Arr: [0.75,
-          0.748775340164392,
-          0.747498551731828,
-          0.746164998854703,
-          0.744769398385657,
-          0.743305693460574,
-          0.741766894628947,
-          0.740144877990839,
-          0.73843012557564,
-          0.736611386921148,
-          0.73467523128702,
-          0.732605445142412,
-          0.7303822059778,
-          0.727980924747594,
-          0.725370583437905,
-          0.722511278043775,
-          0.719350462574041,
-          0.715816971504349,
-          0.711811029725613,
-          0.707186509330796,
-          0.701716862626977,
-          0.695022556087551,
-          0.686392093913997,
-          0.674228140670752,
-          0.653433725253954,
-          0.633433725253954],
-        rect5Arr: [0.689038170367751,
-          0.677038170367751,
-          0.638915075436954,
-          0.616614494491005,
-          0.600791980506157,
-          0.588519085183875,
-          0.578491399560208,
-          0.570013112169709,
-          0.56266888557536,
-          0.556190818614259,
-          0.550395990253079,
-          0.545153930363841,
-          0.540368304629411,
-          0.535965955707367,
-          0.531890017238912,
-          0.52809540930713,
-          0.524545790644563,
-          0.521211436444659,
-          0.518067723683462,
-          0.515094026513597,
-          0.512272895322282,
-          0.509589436292963,
-          0.507030835433044,
-          0.504585988491648,
-          0.502245209698614,
-          0.5],
-        rect6Arr: [0.75,0.750244931967122,
-          0.750500289653634,
-          0.750767000229059,
-          0.751046120322869,
-          0.751338861307885,
-          0.75164662107421,
-          0.751971024401832,
-          0.752313974884872,
-          0.75267772261577,
-          0.753064953742596,
-          0.753478910971518,
-          0.75392355880444,
-          0.754403815050481,
-          0.754925883312419,
-          0.755497744391245,
-          0.756129907485192,
-          0.75683660569913,
-          0.757637794054877,
-          0.758562698133841,
-          0.759656627474605,
-          0.76099548878249,
-          0.762721581217201,
-          0.76515437186585,
-          0.769313254949209,
-          0.781313254949209, 
-          ],
-        rect7Arr: [0.4,0.8],
-        rect8Arr: [0.2,0.3],
-        line1Height:0.4,
-        line2Height:0.5,
-        line3Height:0.4,
-        line4Height:0.2,
-        line5Height:0.4,
-        line6Height:0.3,
-        line7Height:0.2,
-        line8Height:0.1,
-        threeGraphs: false,
-        threeGraphOne: true,
-        fourGraphOne: true
-
-    }
-    };
-  
-
-  resetState() {
-    this.setState(this.initialState);
-  }
-    // additional setup to communicate with Experiment.js
-  componentDidMount() {
-    const { childRef } = this.props;
-    childRef(this);
-    this.getData();
-    this.props.setWhichItem("trade-off");
-  }
-  // additional setup to communicate with Experiment.js
-  componentWillUnmount() {
-    const { childRef } = this.props;
-    childRef(undefined);
-  }
-
-  // get experiment data from the database 
-  getData() {
-    const db = this.props.expt.dbInfo.db;
-    const studyName = this.props.expt.dbInfo.col.split("-")[0];
-    const exptName = this.props.expt.dbInfo.col.split("-")[1];
-    this.props.getExpt(db, studyName, exptName);
-  }
-
-
-
-
-
-// Listing required functions / data
-TradeOff.propTypes = {
-    getExpt: PropTypes.func.isRequired,
-    expt: PropTypes.object.isRequired,
-    storeAnswer: PropTypes.func.isRequired
-  }
-
-// mapping Redux state to props that we can use in our component
-// expt contains all info from a given experiment 
-const mapStateToProps = state => ({
-   expt: state.expt
- })
-
-export default connect(
-   mapStateToProps,
-   { getExpt, storeAnswer }
- )(TradeOff); 
-
-*/
+ )(TradeoffThree); 

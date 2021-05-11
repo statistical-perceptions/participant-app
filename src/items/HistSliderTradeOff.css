@@ -10,8 +10,10 @@
   }
 
 .b{
+    position: absolute;
     transform: scaleY(-1);
-    left: 400px;
+    top: 500px;
+    left: 300px;
 }
 
 .wrap{
@@ -24,8 +26,8 @@
 }
 .e{
   position: absolute;
-  top:200px;
-  left:400px;
+  top:550px;
+  left:700px;
 }
 .d{
     transform: rotate(180deg);
@@ -77,3 +79,6 @@
     top: 375px;
   
   }
+  /*.extraPadding {
+    padding: 10px;
+  }*/

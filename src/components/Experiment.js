@@ -13,6 +13,8 @@ import {
 
 import Slider from "../items/Slider";
 import TradeOff from "../items/TradeOff";
+import TradeOffThree from "../items/TradeOffThree";
+import TradeOffTwo from "../items/TradeOffTwo";
 import StaticText from "../items/StaticText";
 // import NormalCurve from "../items/NormalCurve.jsx";
 import NormalCurveSurvey from "../items/NormalCurveSurvey";
@@ -76,6 +78,14 @@ class Experiment extends Component {
     }; 
     if (this.childTradeOff) {
       this.childTradeOff.resetState();
+      this.nextQuestion();
+    }; 
+    if (this.childTradeOffTwo) {
+      this.childTradeOffTwo.resetState();
+      this.nextQuestion();
+    }; 
+    if (this.childTradeOffThree) {
+      this.childTradeOffThree.resetState();
       this.nextQuestion();
     }; 
     if (this.childStaticText) {
@@ -179,14 +189,47 @@ class Experiment extends Component {
     
             return (
               <div className="container">
-              <TradeOff childRef={ref => (this.childStaticText = ref)}
+              <TradeOff childRef={ref => (this.childTradeOff = ref)}
                  questionTO={questionTO}
                  sliderPos={sliderPos} setWhichItem={this.setWhichItem}/>
                 <br/>
                 <this.whichSubmit />
               </div>
             )          
-          
+            case "tradeofftwo":
+              // this.setState({ whichItem: "tradeoff" });
+              const questionTO2 = expt[key]["QuestionTO2"];
+  
+  
+              const sliderPos2 =expt[key]["sliderPos2"]; 
+      
+              return (
+                <div className="container">
+                <TradeOffTwo childRef={ref => (this.childTradeOffTwo = ref)}
+                   questionTO2={questionTO2}
+                   sliderPos2={sliderPos2} setWhichItem={this.setWhichItem}/>
+                  <br/>
+                  <this.whichSubmit />
+                </div>
+              )          
+
+              case "tradeoffthree":
+                // this.setState({ whichItem: "tradeoff" });
+                const questionTO3 = expt[key]["QuestionTO3"];
+    
+    
+                const sliderPos3 =expt[key]["sliderPos3"]; 
+        
+                return (
+                  <div className="container">
+                  <TradeOffThree childRef={ref => (this.childTradeOffThree = ref)}
+                     questionTO3={questionTO3}
+                     sliderPos3={sliderPos3} setWhichItem={this.setWhichItem}/>
+                    <br/>
+                    <this.whichSubmit />
+                  </div>
+                )          
+            
         case "static-text":
           // this.setState({ whichItem: "static-text" });
           const text = expt[key]["Static Text"];

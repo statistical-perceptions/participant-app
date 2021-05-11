@@ -8,9 +8,7 @@ import {
   storeAnswer
 } from "../actions/dataActions";
 
-
-
-class TradeOff extends Component {
+class TradeoffTwo extends Component {
     constructor() {
         // putting super() here so that we can use this.blahblah
         super();
@@ -257,18 +255,18 @@ class TradeOff extends Component {
     }
     onSubmit() {
         //const threeGraphs = this.state.threeGraphs;
-        const questionTO = this.props.questionTOKey;
-        const sliderPos = this.state.sliderPos;
+        const questionTO2 = this.props.questionTOKey2;
+        const sliderPos2 = this.state.sliderPos2;
         
 
-        this.props.storeAnswer( questionTO,sliderPos);
+        this.props.storeAnswer( questionTO2,sliderPos2);
         //this.props.storeAnswer(question, answer);
         this.setState({ submitted: true });
       }
     noAnswer() {
-        const questionTO = this.props.questionTOKey;
-        const sliderPos = "Prefer Not to Answer";
-        this.props.storeAnswer(questionTO,sliderPos);
+        const questionTO2 = this.props.questionTOKey2;
+        const sliderPos2 = "Prefer Not to Answer";
+        this.props.storeAnswer(questionTO2,sliderPos2);
         this.setState({ submitted: true });
     }
     changeGraphColNumber(){
@@ -449,7 +447,7 @@ class TradeOff extends Component {
           <h3>Question: </h3>
           <div style={{ width: "60%", margin: "auto" }}>
             <p style={{ textAlign: "left" }}>
-              {this.props.questionTO}
+              {this.props.questionTO2}
             </p>
           </div>
         </div> 
@@ -755,7 +753,7 @@ class TradeOff extends Component {
               }
               </svg>
               <svg class = "e" width = {1400} height = {1000}>
-              <text x = {200} y = {115}>Filler text for eventual question will go here</text>
+              <text x = {200} y = {115}>Put the slider at a position where False Positive Rate for Black and White People is Equal</text>
               <text x = {230} y = {265}>Legend:</text>
               <text x = {305} y = {265}> White People</text>
               <rect x = {290} y = {255} height = {10} width = {10} stroke = {this.state.stroke1} fill = {this.state.stroke1}></rect>
@@ -876,7 +874,7 @@ class TradeOff extends Component {
 
             <input type="range" min={0} max={(this.state.rect1Arr.length)-1} 
           className="tradeoff-slider" onChange={this.onChange1}
-          name="sliderPos" value={this.state.sliderPos} ref={this.sliderRef} list = "tickmarks"
+          name="sliderPos2" value={this.state.sliderPos2} ref={this.sliderRef} list = "tickmarks"
           style={{ width:300, left:880, top:700}}/>
 
             </div>
@@ -916,7 +914,7 @@ class TradeOff extends Component {
 
 
 // Listing required functions / data
-TradeOff.propTypes = {
+TradeoffTwo.propTypes = {
     getExpt: PropTypes.func.isRequired,
     expt: PropTypes.object.isRequired,
     storeAnswer: PropTypes.func.isRequired
@@ -931,7 +929,7 @@ const mapStateToProps = state => ({
 export default connect(
    mapStateToProps,
    { getExpt, storeAnswer }
- )(TradeOff); 
+ )(TradeoffTwo); 
 
 /*
 class TradeOff extends Component {
@@ -946,14 +944,12 @@ class TradeOff extends Component {
       this.graphColRef=React.createRef();
       this.refLine1Ref = React.createRef();
       this.refLine2Ref = React.createRef();
-
       this.refLine4Ref = React.createRef();
       this.refLine3Ref = React.createRef();
       this.refLine6Ref = React.createRef();
       this.refLine5Ref = React.createRef();
       this.refLine7Ref = React.createRef();
       this.refLine8Ref = React.createRef();
-
       this.stroke1Ref = React.createRef();
       this.areaRef = React.createRef();
       this.onChange2 = this.onChange2.bind(this);
@@ -968,24 +964,20 @@ class TradeOff extends Component {
       this.line1 = this.line1.bind(this);
       this.changeGraphNumber = this.changeGraphNumber.bind(this);
       this.changeStroke1=this.changeStroke1.bind(this);
-
       this.establishStateData = this.establishStateData.bind(this);
       this.state = this.establishStateData(this.props.data);
       this.onChange1 = this.onChange1.bind(this);
-
   
       this.resetState = this.resetState.bind(this);
       this.onChange = this.onChange.bind(this);
       this.onSubmit = this.onSubmit.bind(this);
       this.showSlider = this.showSlider.bind(this);
-
       this.state = this.initialState;
     }
   
 // setting the initial state of this component 
 get initialState() {
     const data = this.props.data;
-
     return{
         stroke1 : "#FF0000",
         stroke2 : "#0000FF",
@@ -1144,11 +1136,9 @@ get initialState() {
         threeGraphs: false,
         threeGraphOne: true,
         fourGraphOne: true
-
     }
     };
   
-
   resetState() {
     this.setState(this.initialState);
   }
@@ -1164,7 +1154,6 @@ get initialState() {
     const { childRef } = this.props;
     childRef(undefined);
   }
-
   // get experiment data from the database 
   getData() {
     const db = this.props.expt.dbInfo.db;
@@ -1172,27 +1161,19 @@ get initialState() {
     const exptName = this.props.expt.dbInfo.col.split("-")[1];
     this.props.getExpt(db, studyName, exptName);
   }
-
-
-
-
-
 // Listing required functions / data
 TradeOff.propTypes = {
     getExpt: PropTypes.func.isRequired,
     expt: PropTypes.object.isRequired,
     storeAnswer: PropTypes.func.isRequired
   }
-
 // mapping Redux state to props that we can use in our component
 // expt contains all info from a given experiment 
 const mapStateToProps = state => ({
    expt: state.expt
  })
-
 export default connect(
    mapStateToProps,
    { getExpt, storeAnswer }
  )(TradeOff); 
-
 */
