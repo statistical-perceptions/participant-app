@@ -183,15 +183,17 @@ class Experiment extends Component {
           case "tradeoff":
             // this.setState({ whichItem: "tradeoff" });
             const questionTO = expt[key]["QuestionTO"];
+           // const tradeOff1legend = expt[key]["trade-off-legend-key"];
+            const sliderPositionTO = expt[key]["sliderPositionTO"];
 
-
-            const sliderPos =expt[key]["sliderPos"]; 
+            //const sliderPos =expt[key]["sliderPos"]; 
     
             return (
               <div className="container">
               <TradeOff childRef={ref => (this.childTradeOff = ref)}
-                 questionTO={questionTO}
-                 sliderPos={sliderPos} setWhichItem={this.setWhichItem}/>
+                 questionTO={questionTO} 
+                 sliderPositionTO={sliderPositionTO}
+                  setWhichItem={this.setWhichItem}/>
                 <br/>
                 <this.whichSubmit />
               </div>
@@ -199,6 +201,7 @@ class Experiment extends Component {
             case "tradeofftwo":
               // this.setState({ whichItem: "tradeoff" });
               const questionTO2 = expt[key]["QuestionTO2"];
+
   
   
               const sliderPos2 =expt[key]["sliderPos2"]; 
@@ -206,7 +209,7 @@ class Experiment extends Component {
               return (
                 <div className="container">
                 <TradeOffTwo childRef={ref => (this.childTradeOffTwo = ref)}
-                   questionTO2={questionTO2}
+                   questionTO2={questionTO2} 
                    sliderPos2={sliderPos2} setWhichItem={this.setWhichItem}/>
                   <br/>
                   <this.whichSubmit />

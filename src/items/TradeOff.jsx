@@ -33,6 +33,9 @@ class TradeOff extends Component {
         this.stroke1Ref = React.createRef();
         this.areaRef = React.createRef();
         this.onChange2 = this.onChange2.bind(this);
+
+
+
         this.rectReturn1 = this.rectReturn1.bind(this);
         this.rectReturn2 = this.rectReturn2.bind(this);
         this.rectReturn3 = this.rectReturn3.bind(this);
@@ -81,6 +84,7 @@ class TradeOff extends Component {
             rectWidth : 40,
             sliderPos:1,
             sliderPos2:1,
+
             rect1Arr: [0.76,0.76, 0.68, 0.65, 0.63, 0.62, 0.60, 0.59, 0.58, 0.57, 0.56, 0.56, 0.55, 0.54, 0.54, 0.53, 0.53, 0.52, 0.52, 0.52, 0.51, 0.51, 0.509 ,0.506, 0.503, 0.50],
             rect2Arr: [0.399528104378295,
             0.419528104378295,
@@ -214,6 +218,8 @@ class TradeOff extends Component {
             ],
             rect7Arr: [0.4,0.8],
             rect8Arr: [0.2,0.3],
+
+
             line1Height:0.4,
             line2Height:0.5,
             line3Height:0.4,
@@ -257,18 +263,22 @@ class TradeOff extends Component {
     }
     onSubmit() {
         //const threeGraphs = this.state.threeGraphs;
-        const questionTO = this.props.questionTOKey;
-        const sliderPos = this.state.sliderPos;
-        
+        const questionTO = "tradeoff";
 
-        this.props.storeAnswer( questionTO,sliderPos);
+
+        //const sliderPos = this.state.sliderPos;
+        const reply={
+          sliderPositionTO: this.state.sliderPos
+        }
+
+        this.props.storeAnswer( questionTO,reply);
         //this.props.storeAnswer(question, answer);
         this.setState({ submitted: true });
       }
     noAnswer() {
         const questionTO = this.props.questionTOKey;
-        const sliderPos = "Prefer Not to Answer";
-        this.props.storeAnswer(questionTO,sliderPos);
+        const reply = "Prefer Not to Answer";
+        this.props.storeAnswer(questionTO,reply);
         this.setState({ submitted: true });
     }
     changeGraphColNumber(){
@@ -445,13 +455,14 @@ class TradeOff extends Component {
         return(
             
             <div>
-        <div className="container">
+        <div className="container" name="QuestionTO">
           <h3>Question: </h3>
           <div style={{ width: "60%", margin: "auto" }}>
             <p style={{ textAlign: "left" }}>
               {this.props.questionTO}
             </p>
           </div>
+          
         </div> 
             <svg width = {1400} height = {1000} style={{}} class = "b"> 
                 {this.rectReturn1(500,450)}
@@ -755,7 +766,7 @@ class TradeOff extends Component {
               }
               </svg>
               <svg class = "e" width = {1400} height = {1000}>
-              <text x = {200} y = {115}>Filler text for eventual question will go here</text>
+              <text x = {200} y = {115}>Put the slider at a position where accuracy rate for Black and White People is Equal</text>
               <text x = {230} y = {265}>Legend:</text>
               <text x = {305} y = {265}> White People</text>
               <rect x = {290} y = {255} height = {10} width = {10} stroke = {this.state.stroke1} fill = {this.state.stroke1}></rect>
@@ -873,12 +884,20 @@ class TradeOff extends Component {
               }
 
             </svg>
+            <div className="container" name="trade-off-legend-key">
+          <p>TradeOff: </p>
+          <div style={{ width: "60%", margin: "auto" }}>
+            <p style={{ textAlign: "left" }}>
+              {this.props.tradeOff1legend}
+            </p>
+             </div>
 
             <input type="range" min={0} max={(this.state.rect1Arr.length)-1} 
           className="tradeoff-slider" onChange={this.onChange1}
           name="sliderPos" value={this.state.sliderPos} ref={this.sliderRef} list = "tickmarks"
           style={{ width:300, left:880, top:700}}/>
 
+              </div>
             </div>
         )
     }

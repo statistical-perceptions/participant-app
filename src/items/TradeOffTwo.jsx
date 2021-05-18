@@ -7,6 +7,7 @@ import {
   getExpt,
   storeAnswer
 } from "../actions/dataActions";
+import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
 class TradeoffTwo extends Component {
     constructor() {
@@ -20,6 +21,7 @@ class TradeoffTwo extends Component {
         this.graphColRef=React.createRef();
         this.refLine1Ref = React.createRef();
         this.refLine2Ref = React.createRef();
+
   
         this.refLine4Ref = React.createRef();
         this.refLine3Ref = React.createRef();
@@ -79,6 +81,7 @@ class TradeoffTwo extends Component {
             rectWidth : 40,
             sliderPos:1,
             sliderPos2:1,
+
             rect1Arr: [0.76,0.76, 0.68, 0.65, 0.63, 0.62, 0.60, 0.59, 0.58, 0.57, 0.56, 0.56, 0.55, 0.54, 0.54, 0.53, 0.53, 0.52, 0.52, 0.52, 0.51, 0.51, 0.509 ,0.506, 0.503, 0.50],
             rect2Arr: [0.399528104378295,
             0.419528104378295,
@@ -212,6 +215,8 @@ class TradeoffTwo extends Component {
             ],
             rect7Arr: [0.4,0.8],
             rect8Arr: [0.2,0.3],
+            
+
             line1Height:0.4,
             line2Height:0.5,
             line3Height:0.4,
@@ -255,8 +260,11 @@ class TradeoffTwo extends Component {
     }
     onSubmit() {
         //const threeGraphs = this.state.threeGraphs;
-        const questionTO2 = this.props.questionTOKey2;
+        const questionTO2 = "tradeoff2";
+
         const sliderPos2 = this.state.sliderPos2;
+          
+        //const sliderPos2 = this.state.sliderPos2;
         
 
         this.props.storeAnswer( questionTO2,sliderPos2);

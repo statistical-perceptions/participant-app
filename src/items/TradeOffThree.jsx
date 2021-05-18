@@ -80,6 +80,7 @@ class TradeoffThree extends Component {
             rectWidth : 40,
             sliderPos:1,
             sliderPos2:1,
+            
             rect1Arr: [0.76,0.76, 0.68, 0.65, 0.63, 0.62, 0.60, 0.59, 0.58, 0.57, 0.56, 0.56, 0.55, 0.54, 0.54, 0.53, 0.53, 0.52, 0.52, 0.52, 0.51, 0.51, 0.509 ,0.506, 0.503, 0.50],
             rect2Arr: [0.399528104378295,
             0.419528104378295,
@@ -213,6 +214,9 @@ class TradeoffThree extends Component {
             ],
             rect7Arr: [0.4,0.8],
             rect8Arr: [0.2,0.3],
+
+            
+
             line1Height:0.4,
             line2Height:0.5,
             line3Height:0.4,
@@ -256,7 +260,7 @@ class TradeoffThree extends Component {
     }
     onSubmit() {
         //const threeGraphs = this.state.threeGraphs;
-        const questionTOKey3 = this.props.questionTOKey3;
+        const questionTOKey3 = "tradeoff3";
         const sliderPos3 = this.state.sliderPos3;
         
 
