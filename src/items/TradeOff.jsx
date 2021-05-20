@@ -11,56 +11,56 @@ import {
 
 
 class TradeOff extends Component {
-    constructor() {
-        // putting super() here so that we can use this.blahblah
-        super();
-        this.sliderRef = React.createRef();
-        this.slider2Ref = React.createRef();
-        this.threeGraphRef = React.createRef();
-        this.rectRef = React.createRef();
-        this.svgRef = React.createRef();
-        this.graphColRef=React.createRef();
-        this.refLine1Ref = React.createRef();
-        this.refLine2Ref = React.createRef();
-  
-        this.refLine4Ref = React.createRef();
-        this.refLine3Ref = React.createRef();
-        this.refLine6Ref = React.createRef();
-        this.refLine5Ref = React.createRef();
-        this.refLine7Ref = React.createRef();
-        this.refLine8Ref = React.createRef();
-  
-        this.stroke1Ref = React.createRef();
-        this.areaRef = React.createRef();
-        this.onChange2 = this.onChange2.bind(this);
+  constructor() {
+    // putting super() here so that we can use this.blahblah
+    super();
+    this.sliderRef = React.createRef();
+    this.slider2Ref = React.createRef();
+    this.threeGraphRef = React.createRef();
+    this.rectRef = React.createRef();
+    this.svgRef = React.createRef();
+    this.graphColRef=React.createRef();
+    this.refLine1Ref = React.createRef();
+    this.refLine2Ref = React.createRef();
+
+    this.refLine4Ref = React.createRef();
+    this.refLine3Ref = React.createRef();
+    this.refLine6Ref = React.createRef();
+    this.refLine5Ref = React.createRef();
+    this.refLine7Ref = React.createRef();
+    this.refLine8Ref = React.createRef();
+
+    this.stroke1Ref = React.createRef();
+    this.areaRef = React.createRef();
+    this.onChange2 = this.onChange2.bind(this);
 
 
 
-        this.rectReturn1 = this.rectReturn1.bind(this);
-        this.rectReturn2 = this.rectReturn2.bind(this);
-        this.rectReturn3 = this.rectReturn3.bind(this);
-        this.rectReturn4 = this.rectReturn4.bind(this);
-        this.rectReturn5 = this.rectReturn5.bind(this);
-        this.rectReturn6 = this.rectReturn6.bind(this);
-        this.textReturn1 = this.textReturn1.bind(this);
-        this.changeGraphColNumber = this.changeGraphColNumber.bind(this);
-        this.line1 = this.line1.bind(this);
-        this.changeGraphNumber = this.changeGraphNumber.bind(this);
-        this.changeStroke1=this.changeStroke1.bind(this);
-  
+    this.rectReturn1 = this.rectReturn1.bind(this);
+    this.rectReturn2 = this.rectReturn2.bind(this);
+    this.rectReturn3 = this.rectReturn3.bind(this);
+    this.rectReturn4 = this.rectReturn4.bind(this);
+    this.rectReturn5 = this.rectReturn5.bind(this);
+    this.rectReturn6 = this.rectReturn6.bind(this);
+    this.textReturn1 = this.textReturn1.bind(this);
+    this.changeGraphColNumber = this.changeGraphColNumber.bind(this);
+    this.line1 = this.line1.bind(this);
+    this.changeGraphNumber = this.changeGraphNumber.bind(this);
+    this.changeStroke1=this.changeStroke1.bind(this);
 
 
-        this.onChange1 = this.onChange1.bind(this);
-  
-    
-        this.resetState = this.resetState.bind(this);
-        //this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.noAnswer = this.noAnswer.bind(this);
 
-  
-        this.state = this.initialState;
-      }
+    this.onChange1 = this.onChange1.bind(this);
+
+
+    this.resetState = this.resetState.bind(this);
+    //this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.noAnswer = this.noAnswer.bind(this);
+
+
+    this.state = this.initialState;
+  }
 
   
 // setting the initial state of this component 
@@ -73,18 +73,8 @@ class TradeOff extends Component {
             submitted: false,
             stroke1 : "#FF0000",
             stroke2 : "#0000FF",
-            rect1Height : 100,
-            rect2Height : 100,
-            rect3Height : 100,
-            rect4Height: 100,
-            rect5Height:100,
-            rect6Height:100,
-            rect7Height:100,
-            rect8Height:100,
             rectWidth : 40,
-            sliderPos:1,
-            sliderPos2:1,
-
+            sliderPos:0,
             rect1Arr: [0.76,0.76, 0.68, 0.65, 0.63, 0.62, 0.60, 0.59, 0.58, 0.57, 0.56, 0.56, 0.55, 0.54, 0.54, 0.53, 0.53, 0.52, 0.52, 0.52, 0.51, 0.51, 0.509 ,0.506, 0.503, 0.50],
             rect2Arr: [0.399528104378295,
             0.419528104378295,
@@ -218,8 +208,6 @@ class TradeOff extends Component {
             ],
             rect7Arr: [0.4,0.8],
             rect8Arr: [0.2,0.3],
-
-
             line1Height:0.4,
             line2Height:0.5,
             line3Height:0.4,
@@ -263,22 +251,18 @@ class TradeOff extends Component {
     }
     onSubmit() {
         //const threeGraphs = this.state.threeGraphs;
-        const questionTO = "tradeoff";
+        const questionTO = this.props.questionTOKey;
+        const sliderPos = this.state.sliderPos;
+        
 
-
-        //const sliderPos = this.state.sliderPos;
-        const reply={
-          sliderPositionTO: this.state.sliderPos
-        }
-
-        this.props.storeAnswer( questionTO,reply);
+        this.props.storeAnswer( questionTO,sliderPos);
         //this.props.storeAnswer(question, answer);
         this.setState({ submitted: true });
       }
     noAnswer() {
         const questionTO = this.props.questionTOKey;
-        const reply = "Prefer Not to Answer";
-        this.props.storeAnswer(questionTO,reply);
+        const sliderPos = "Prefer Not to Answer";
+        this.props.storeAnswer(questionTO,sliderPos);
         this.setState({ submitted: true });
     }
     changeGraphColNumber(){
@@ -301,15 +285,7 @@ class TradeOff extends Component {
         }
     }
       onChange1(e){
-          this.setState({ [e.target.name]: e.target.value })
-          this.setState({rect1Height :200*this.state.rect1Arr[e.target.value]})
-          this.setState({rect2Height :200*this.state.rect2Arr[e.target.value]})
-          this.setState({rect3Height :200*this.state.rect3Arr[e.target.value]})
-          this.setState({rect4Height :200*this.state.rect4Arr[e.target.value]})
-          this.setState({rect5Height :200*this.state.rect5Arr[e.target.value]})
-          this.setState({rect6Height :200*this.state.rect6Arr[e.target.value]})
-          this.setState({rect7Height :200*this.state.rect7Arr[e.target.value]})
-          this.setState({rect8Height :200*this.state.rect8Arr[e.target.value]})
+        this.setState({ [e.target.name]: e.target.value })
       }
       onChange10(e){
         this.setState({line1Height:e})
@@ -375,66 +351,66 @@ class TradeOff extends Component {
         }
     }
   
-      rectReturn1(xPos, yPos){
-          var hard = 
-          <rect
-          x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke1} height = {this.state.rect1Height} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
-          return hard;
-        }
-        rectReturn2(xPos, yPos){
-          var hard = 
-          <rect
-          x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke2} height = {this.state.rect2Height} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
-          return hard;
-        }
-        rectReturn3(xPos, yPos){
-          var hard = 
-          <rect
-          x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke1} height = {this.state.rect3Height} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
-          return hard;
-        }
-        rectReturn4(xPos, yPos){
-          var hard = 
-          <rect
-          x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke2} height = {this.state.rect4Height} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
-          return hard;
-        }
-        rectReturn5(xPos, yPos){
-          var hard = 
-          <rect
-          x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke1} height = {this.state.rect5Height} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
-          return hard;
-        }
-        rectReturn6(xPos, yPos){
-          var hard = 
-          <rect
-          x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke2} height = {this.state.rect6Height} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
-          return hard;
-        }
-        rectReturn7(xPos, yPos){
-          var hard = 
-          <rect
-          x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke1} height = {this.state.rect7Height} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
-          return hard;
-        }
-        rectReturn8(xPos, yPos){
-          var hard = 
-          <rect
-          x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke2} height = {this.state.rect8Height} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
-          return hard;
-        }
-        rectReturn9(xPos, yPos){
-          var hard = 
-          <rect
-          x = {xPos} y = {yPos} stroke = {"#000000"} fill = {"#ffa500"} height = {this.state.rect5Height} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
-          return hard;
-        }
-        rectReturn10(xPos, yPos){
-          var hard = 
-          <rect
-          x = {xPos} y = {yPos} stroke = {"#000000"} fill = {"#ffa500"} height = {this.state.rect6Height} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
-          return hard;
-        }
+    rectReturn1(xPos, yPos){
+      var hard = 
+      <rect
+      x = {xPos} y = {yPos} stroke = {this.state.stroke1} fill = {this.state.stroke1} height = {200*this.state.rect1Arr[this.state.sliderPos]} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
+      return hard;
+    }
+    rectReturn2(xPos, yPos){
+      var hard = 
+      <rect
+      x = {xPos} y = {yPos} stroke = {this.state.stroke2} fill = {this.state.stroke2} height = {200*this.state.rect2Arr[this.state.sliderPos]} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
+      return hard;
+    }
+    rectReturn3(xPos, yPos){
+      var hard = 
+      <rect
+      x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke1} height = {200*this.state.rect3Arr[this.state.sliderPos]} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
+      return hard;
+    }
+    rectReturn4(xPos, yPos){
+      var hard = 
+      <rect
+      x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke2} height = {200*this.state.rect4Arr[this.state.sliderPos]} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
+      return hard;
+    }
+    rectReturn5(xPos, yPos){
+      var hard = 
+      <rect
+      x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke1} height = {200*this.state.rect5Arr[this.state.sliderPos]} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
+      return hard;
+    }
+    rectReturn6(xPos, yPos){
+      var hard = 
+      <rect
+      x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke2} height = {200*this.state.rect6Arr[this.state.sliderPos]} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
+      return hard;
+    }
+    rectReturn7(xPos, yPos){
+      var hard = 
+      <rect
+      x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke1} height = {200*this.state.rect7Arr[this.state.sliderPos]} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
+      return hard;
+    }
+    rectReturn8(xPos, yPos){
+      var hard = 
+      <rect
+      x = {xPos} y = {yPos} stroke = {"#000000"} fill = {this.state.stroke2} height = {200*this.state.rect8Arr[this.state.sliderPos]} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
+      return hard;
+    }
+    rectReturn9(xPos, yPos){
+      var hard = 
+      <rect
+      x = {xPos} y = {yPos} stroke = {"#000000"} fill = {"#ffa500"} height = {200*this.state.rect5Arr[this.state.sliderPos]} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
+      return hard;
+    }
+    rectReturn10(xPos, yPos){
+      var hard = 
+      <rect
+      x = {xPos} y = {yPos} stroke = {"#000000"} fill = {"#ffa500"} height = {200*this.state.rect5Arr[this.state.sliderPos]} width = {this.state.rectWidth} fillOpacity = "0.7" strokeOpacity = "0.7"></rect>;
+      return hard;
+    }
         line1(xPos1,xPos2,yPos1,yPos2){
           var hard = 
           <line x1 = {xPos1 + 300} x2 = {300 + xPos2} y1 = {yPos1} y2 = {yPos2} stroke = "#000000"></line>;
@@ -455,14 +431,13 @@ class TradeOff extends Component {
         return(
             
             <div>
-        <div className="container" name="QuestionTO">
+        <div className="container">
           <h3>Question: </h3>
           <div style={{ width: "60%", margin: "auto" }}>
             <p style={{ textAlign: "left" }}>
               {this.props.questionTO}
             </p>
           </div>
-          
         </div> 
             <svg width = {1400} height = {1000} style={{}} class = "b"> 
                 {this.rectReturn1(500,450)}
@@ -766,7 +741,7 @@ class TradeOff extends Component {
               }
               </svg>
               <svg class = "e" width = {1400} height = {1000}>
-              <text x = {200} y = {115}>Put the slider at a position where accuracy rate for Black and White People is Equal</text>
+              <text x = {200} y = {115}>Filler text for eventual question will go here</text>
               <text x = {230} y = {265}>Legend:</text>
               <text x = {305} y = {265}> White People</text>
               <rect x = {290} y = {255} height = {10} width = {10} stroke = {this.state.stroke1} fill = {this.state.stroke1}></rect>
@@ -884,20 +859,12 @@ class TradeOff extends Component {
               }
 
             </svg>
-            <div className="container" name="trade-off-legend-key">
-          <p>TradeOff: </p>
-          <div style={{ width: "60%", margin: "auto" }}>
-            <p style={{ textAlign: "left" }}>
-              {this.props.tradeOff1legend}
-            </p>
-             </div>
 
             <input type="range" min={0} max={(this.state.rect1Arr.length)-1} 
           className="tradeoff-slider" onChange={this.onChange1}
           name="sliderPos" value={this.state.sliderPos} ref={this.sliderRef} list = "tickmarks"
-          style={{ width:300, left:880, top:700}}/>
+          style={{ width:300, left:550, top:650}}/>
 
-              </div>
             </div>
         )
     }
