@@ -12,11 +12,13 @@ import {
 } from "../actions/dataActions";
 
 import Slider from "../items/Slider";
+import TradeOff from "../items/TradeOff";
+import TradeOffThree from "../items/TradeOffThree";
+import TradeOffTwo from "../items/TradeOffTwo";
 import StaticText from "../items/StaticText";
 // import NormalCurve from "../items/NormalCurve.jsx";
 import NormalCurveSurvey from "../items/NormalCurveSurvey";
-import Histogram from "../items/Histogram";
-
+import Threshold from "../items/Threshold"
 /**
  * This component displays an experiment question
  */
@@ -73,6 +75,22 @@ class Experiment extends Component {
       this.childNormalCurve.resetState();
       this.nextQuestion();
     }; 
+    if (this.childThreshold) {
+      this.childThreshold.resetState();
+      this.nextQuestion();
+    }; 
+    if (this.childTradeOff) {
+      this.childTradeOff.resetState();
+      this.nextQuestion();
+    }; 
+    if (this.childTradeOffTwo) {
+      this.childTradeOffTwo.resetState();
+      this.nextQuestion();
+    }; 
+    if (this.childTradeOffThree) {
+      this.childTradeOffThree.resetState();
+      this.nextQuestion();
+    }; 
     if (this.childStaticText) {
       this.nextQuestion();
     };
@@ -91,11 +109,22 @@ class Experiment extends Component {
         {
           !this.props.expt.isFinalQ ? 
           <div>
+          {
+            this.state.whichItem == "static-text"
+            ?
+            <></>
+            :
+            <div>
+              Please click "I Confirm My Answer" below before clicking "Next Question" <br/><br/>
+            </div>
+          }
+          <div>
             {/* Please click "I Confirm My Answer" above before clicking "Next Question" <br/><br/> */}
             <input type="submit" className="extraPadding" value="Next Question"
               onClick={this.onNextQuestion}/> 
             <br/><br/><br/><br/><br/><br/>
-          </div> :
+          </div>
+          </div>:
           <div>
             {
               this.state.whichItem == "static-text"
@@ -165,7 +194,59 @@ class Experiment extends Component {
               <this.whichSubmit />
             </div>
           )
-          break;
+          case "tradeoff":
+            // this.setState({ whichItem: "tradeoff" });
+            const questionTO = expt[key]["QuestionTO"];
+           // const tradeOff1legend = expt[key]["trade-off-legend-key"];
+            const sliderPositionTO = expt[key]["sliderPositionTO"];
+
+            //const sliderPos =expt[key]["sliderPos"]; 
+    
+            return (
+              <div className="container">
+              <TradeOff childRef={ref => (this.childTradeOff = ref)}
+                 questionTO={questionTO} 
+                 sliderPositionTO={sliderPositionTO}
+                  setWhichItem={this.setWhichItem}/>
+                <br/>
+                <this.whichSubmit />
+              </div>
+            )          
+            case "tradeofftwo":
+              // this.setState({ whichItem: "tradeoff" });
+              const questionTO2 = expt[key]["QuestionTO2"];
+
+  
+  
+              const sliderPos2 =expt[key]["sliderPos2"]; 
+      
+              return (
+                <div className="container">
+                <TradeOffTwo childRef={ref => (this.childTradeOffTwo = ref)}
+                   questionTO2={questionTO2} 
+                   sliderPos2={sliderPos2} setWhichItem={this.setWhichItem}/>
+                  <br/>
+                  <this.whichSubmit />
+                </div>
+              )          
+
+              case "tradeoffthree":
+                // this.setState({ whichItem: "tradeoff" });
+                const questionTO3 = expt[key]["QuestionTO3"];
+    
+                const tradeoffFileContent = expt[key]["FileContent"];
+                const sliderPos3 =expt[key]["sliderPos3"]; 
+        
+                return (
+                  <div className="container">
+                  <TradeOffThree childRef={ref => (this.childTradeOffThree = ref)}
+                     questionTO3={questionTO3} data={tradeoffFileContent}
+                     sliderPos3={sliderPos3} setWhichItem={this.setWhichItem}/>
+                    <br/>
+                    <this.whichSubmit />
+                  </div>
+                )          
+            
         case "static-text":
           // this.setState({ whichItem: "static-text" });
           const text = expt[key]["Static Text"];
@@ -208,17 +289,12 @@ class Experiment extends Component {
           // this.setState({ whichItem: "threshold" });
           const questionHist = expt[key]["Question"];
           const questionHistKey = expt[key]["threshold-key"];
-          const histLowRange = expt[key]["lowRange"];
-          const histHighRange = expt[key]["highRange"];
           const histFileContent = expt[key]["FileContent"];
+          console.log("Test to see if we got here")
           return (
             <div className="container">
-              <Histogram childRef={ref => (this.childHistogram = ref)} 
-                questionHist={questionHist} 
-                questionHistKey={questionHistKey}
-                histLowRange={histLowRange}
-                histHighRange={histHighRange} histData={histFileContent} 
-                setWhichItem={this.setWhichItem}/>
+              <Threshold
+                jsonData={histFileContent} />
               <br/>
               <this.whichSubmit />
             </div>
